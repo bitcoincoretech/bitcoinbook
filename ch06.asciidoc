@@ -1,34 +1,34 @@
 [[ch06]]
 [[transactions]]
-== Transactions
+== Tranzacții
 
 [[ch06_intro]]
-=== Introduction
+== Introducere
 
-((("transactions", "defined")))((("warnings and cautions", see="also security")))Transactions are the most important part of the bitcoin system. Everything else in bitcoin is designed to ensure that transactions can be created, propagated on the network, validated, and finally added to the global ledger of transactions (the blockchain). Transactions are data structures that encode the transfer of value between participants in the bitcoin system. Each transaction is a public entry in bitcoin's blockchain, the global double-entry bookkeeping ledger.
+((("tranzacții", "definit")))((("avertismente și precauții", see="also security")))Tranzacțiile sunt cea mai importantă parte a sistemului bitcoin. Totul în bitcoin este conceput pentru a se asigura că tranzacțiile pot fi create, propagate în rețea, validate și, în sfârșit, adăugate în registrul global al tranzacțiilor (lanț-de-blocuri). Tranzacțiile sunt structuri de date care codifică transferul valorii între participanții la sistemul bitcoin. Fiecare tranzacție este o intrare publică în lanțul-de-blcuri (blockchain) bitcoin, registrul global de evidență contabilă.
 
-In this chapter we will examine all the various forms of transactions, what they contain, how to create them, how they are verified, and how they become part of the permanent record of all transactions. When we use the term "wallet" in this chapter, we are referring to the software that constructs transactions, not just the database of keys.
+În acest capitol vom examina toate formele de tranzacții, ce conțin, cum le creăm, cum sunt verificate și cum devin parte a înregistrării permanente a tuturor tranzacțiilor. Când folosim termenul ”portofel” din acest capitol, ne referim la software-ul care construiește tranzacții, nu doar baza de date de chei.
 
 [[tx_structure]]
-=== Transactions in Detail
+=== Tranzacțiile în Detaliu
 
-((("use cases", "buying coffee", id="alicesix")))In <<ch02_bitcoin_overview>>, we looked at the transaction Alice used to pay for coffee at Bob's coffee shop using a block explorer (<<alices_transactions_to_bobs_cafe>>).
+((("utilizări", "cumpărat cafea", id="alicesix")))În <<ch02_bitcoin_overview>> am analizat, folosind un explorator de blocuri,  tranzacția pe care Alice a folosit-o pentru a plăti cafeaua la Cafeneaua lui Bob(<<alices_transactions_to_bobs_cafe>>).
 
-The block explorer application shows a transaction from Alice's "address" to Bob's "address." This is a much simplified view of what is contained in a transaction. In fact, as we will see in this chapter, much of the information shown is constructed by the block explorer and is not actually in the transaction.
+Aplicația de explorator de blocuri (block explorer) arată o tranzacție de la ”adresa” lui Alice la ”adresa” lui Bob. Aceasta este o privire simplificată a ceea ce este conținut într-o tranzacție. De fapt, după cum vom vedea în acest capitol, o mare parte din informațiile prezentate sunt construite de exploratorul de blocuri și nu se află de fapt în tranzacție.
 
 [[alices_transactions_to_bobs_cafe]]
-.Alice's transaction to Bob's Cafe
-image::images/mbc2_0208.png["Alice Coffee Transaction"]
+.Tranzacția lui Alice către Cafeneaua lui Bob
+image::images/mbc2_0208.png["Tranzacția cu cafea a lui Alice"]
 
 [[transactions_behind_the_scenes]]
-==== Transactions&#x2014;Behind the Scenes
+==== Tranzacțiile - În Spatele Scenei
 
-((("transactions", "behind the scenes details of")))Behind the scenes, an actual transaction looks very different from a transaction provided by a typical block explorer. In fact, most of the high-level constructs we see in the various bitcoin application user interfaces _do not actually exist_ in the bitcoin system.
+((("tranzacții", "în spatele scenei")))În spatele scenei, o tranzacție propriu zisă arată foarte diferit de o tranzacție oferită de un explorator de blocuri obișnuit. De fapt, majoritatea conceptelor de nivel înalt pe care le vedem în diferitele interfețe cu utilizatorul ale aplicațiilor bitcoin _nu există de fapt_ în sistemul bitcoin.
 
-We can use Bitcoin Core's command-line interface (+getrawtransaction+ and +decoderawtransaction+) to retrieve Alice's "raw" transaction, decode it, and see what it contains. The result looks like this:
+Putem folosi interfața liniei de comandă a Bitcoin Core (+getrawtransaction+ și +decoderawtransaction+) pentru a prelua tranzacția ”brută” a lui Alice, a o decoda și a vedea ce conține. Rezultatul arată astfel:
 
 [[alice_tx]]
-.Alice's transaction decoded
+.Tranzacția lui Alice decodificată
 [source,json]
 ----
 {
@@ -55,53 +55,53 @@ We can use Bitcoin Core's command-line interface (+getrawtransaction+ and +decod
 }
 ----
 
-You may notice a few things about this transaction, mostly the things that are missing! Where is Alice's address? Where is Bob's address? Where is the 0.1 input "sent" by Alice? In bitcoin, there are no coins, no senders, no recipients, no balances, no accounts, and no addresses. All those things are constructed at a higher level for the benefit of the user, to make things easier to understand.
+Este posibil să observați câteva lucruri la această tranzacție, mai ales lucrurile care lipsesc! Unde este adresa lui Alice? Unde este adresa lui Bob? Unde este intrarea 0.1 ”trimisă” de Alice? În bitcoin, nu există monede, nici expeditori, nici destinatari, nici solduri, nici conturi și nici adrese. Toate aceste lucruri sunt construite la un nivel superior pentru beneficiul utilizatorului, pentru a face lucrurile mai ușor de înțeles.
 
-You may also notice a lot of strange and indecipherable fields and hexadecimal strings. Don't worry, we will explain each field shown here in detail in this chapter.
+Este posibil să observați, de asemenea, o mulțime de câmpuri ciudate și indescifrabile și șiruri de caractere hexazecimale. Nu vă faceți griji, vă vom explica fiecare câmp prezentat aici în detaliu în acest capitol.
 
 [[tx_inputs_outputs]]
-=== Transaction Outputs and Inputs
+=== Ieșirile și Intrările Tranzacției
 
-((("transactions", "outputs and inputs", id="Tout06")))((("outputs and inputs", "outputs defined")))((("unspent transaction outputs (UTXO)")))((("UTXO sets")))((("transactions", "outputs and inputs", "output characteristics")))((("outputs and inputs", "output characteristics")))The fundamental building block of a bitcoin transaction is a  _transaction output_. Transaction outputs are indivisible chunks of bitcoin currency, recorded on the blockchain, and recognized as valid by the entire network. Bitcoin full nodes track all available and spendable outputs, known as _unspent transaction outputs_, or _UTXO_. The collection of all UTXO is known as the _UTXO set_ and currently numbers in the millions of UTXO. The UTXO set grows as new UTXO is created and shrinks when UTXO is consumed. Every transaction represents a change (state transition) in the UTXO set.
+((("tranzacții", "ieșiri și intrări", id="Tout06")))((("ieșiri și intrăr", "ieșiri definite")))((("ieșiri de tranzacție nefolosite (UTXO)")))((("Seturi UTXO")))((("tranzacții", "ieșiri și intrări", "caracteristicile ieșirii")))((("ieșiri și intrări", "caracteristicile ieșirii")))Piatra de căpătâi unei tranzacții bitcoin este o _ieșire de tranzacție_. Ieșirile tranzacției sunt bucăți indivizibile de monedă bitcoin, înregistrate pe lanțul de blocuri (blockchain) și recunoscute ca fiind valabile de întreaga rețea. Nodurile complete Bitcoin urmăresc toate ieșirile disponibile și cheltuibile, cunoscute sub denumirea de ”ieșiri de tranzacție necheltuite” (unspent transaction outputs) sau _UTXO_. Colecția tuturor UTXO-urilor este cunoscută sub numele de _setul UTXO_ și în prezent conține milioane de UTXO-uri. Setul UTXO crește pe măsură ce un UTXO nou este creat și se micșorează atunci când un UTXO este consumat. Fiecare tranzacție reprezintă o modificare (tranziție de stare) în setul UTXO.
 
-((("balances")))When we say that a user's wallet has "received" bitcoin, what we mean is that the wallet has detected an UTXO that can be spent with one of the keys controlled by that wallet. Thus, a user's bitcoin "balance" is the sum of all UTXO that user's wallet can spend and which may be scattered among hundreds of transactions and hundreds of blocks. The concept of a balance is created by the wallet application. The wallet calculates the user's balance by scanning the blockchain and aggregating the value of any UTXO the wallet can spend with the keys it controls. Most wallets maintain a database or use a database service to store a quick reference set of all the UTXO they can spend with the keys they control.
+((("solduri")))Când spunem că portofelul unui utilizator a ”primit” bitcoin, la ce ne referim este că portofelul a detectat un UTXO care poate fi cheltuit cu una dintre cheile controlate de acel portofel. Astfel, ”soldul” bitcoin al unui utilizator este suma tuturor UTXO pe care portofelul utilizatorului le poate cheltui și care poate fi dispersat între sute de tranzacții și sute de blocuri. Conceptul de balanță este creat de aplicația portofel. Portofelul calculează soldul utilizatorului scanând lanțul-de-blocuri (blockchain-ul) și agregând valoarea fiecărui UTXO pe care portofelul îl poate cheltui cu cheile pe care le controlează. Majoritatea portofelelor mențin o bază de date sau folosesc un serviciu de baze de date pentru a stoca un set de referință rapidă a tuturor UTXO-urilor pe care le pot cheltui cu cheile pe care le controlează.
 
-((("satoshis")))A transaction output can have an arbitrary (integer) value denominated as a multiple of satoshis.  Just as dollars can be divided down to two decimal places as cents, bitcoin can be divided down to eight decimal places as satoshis. Although an output can have any arbitrary value, once created it is indivisible. This is an important characteristic of outputs that needs to be emphasized: outputs are _discrete_ and _indivisible_ units of value, denominated in integer satoshis. An unspent output can only be consumed in its entirety by a transaction.
+((("satoshis")))O ieșire a unei tranzacții poate avea o valoare arbitrară (întreagă) exprimată ca multiplu de satoshi. La fel cum dolarii pot fi împărțiți în două zecimale ca cenți, bitcoin poate fi împărțit în opt zecimale sub formă de satoshi. Deși o ieșire poate avea orice valoare arbitrară, odată creată, aceasta este indivizibilă. Aceasta este o caracteristică importantă a ieșirilor care trebuie subliniată: ieșirile sunt unități de valoare _discrete_ și _indivizibile_, exprimate în satoshi întregi. O ieșire neutilizată poate fi consumată numai în totalitate printr-o tranzacție.
 
-((("change, making")))If an UTXO is larger than the desired value of a transaction, it must still be consumed in its entirety and change must be generated in the transaction. In other words, if you have an UTXO worth 20 bitcoin and want to pay only 1 bitcoin, your transaction must consume the entire 20-bitcoin UTXO and produce two outputs: one paying 1 bitcoin to your desired recipient and another paying 19 bitcoin in change back to your wallet. As a result of the indivisible nature of transaction outputs, most bitcoin transactions will have to generate change.
+((("rest, creare")))Dacă o UTXO este mai mare decât valoarea dorită a unei tranzacții, ea trebuie să fie consumată în întregime și restul trebuie să fie generat în tranzacție. Cu alte cuvinte, dacă aveți o UTXO în valoare de 20 bitcoin și doriți să plătiți doar 1 bitcoin, tranzacția dumneavoastră trebuie să consume întregul UTXO de 20 de bitcoin și să producă două ieșiri: una plătind 1 bitcoin destinatarului dorit și alta plătind 19 bitcoin ca rest înapoi în portofel. Ca urmare a naturii indivizibile a ieșirilor tranzacțiilor, majoritatea tranzacțiilor bitcoin vor trebui să genereze rest.
 
-Imagine a shopper buying a $1.50 beverage, reaching into her wallet and trying to find a combination of coins and bank notes to cover the $1.50 cost. The shopper will choose exact change if available e.g. a dollar bill and two quarters (a quarter is $0.25), or a combination of smaller denominations (six quarters), or if necessary, a larger unit such as a $5 note. If she hands too much money, say $5, to the shop owner, she will expect $3.50 change, which she will return to her wallet and have available for future transactions.
+Imaginați-vă că un client cumpără o băutură de 1,50 USD, uitându-se în portofel pentru a găsi o combinație de monede și bancnote pentru a acoperi costul de 1,50 USD. Clientul va alege suma exactă dacă este disponibilă, de exemplu, o bancnotă de un dolar și două monede de 25 de cenți sau o combinație de 6 monede de 25 de cenți sau, dacă este necesar, o unitate mai mare, cum ar fi o bancnotă de 5 dolari. Dacă înmânează prea mulți bani, să zicem 5 dolari, clientul se va aștepta să primească rest în valoare de 3,50 USD, pe care îl va pune înapoi în portofel și va fi disponibil pentru tranzacțiile viitoare.
 
-Similarly, a bitcoin transaction must be created from a user's UTXO in whatever denominations that user has available. Users cannot cut an UTXO in half any more than they can cut a dollar bill in half and use it as currency. The user's wallet application will typically select from the user's available UTXO to compose an amount greater than or equal to the desired transaction amount.
+În mod similar, o tranzacție bitcoin trebuie creată din UTXO-urile unui utilizator, indiferent de valoarea pe care o are utilizatorul. Utilizatorii nu pot tăia un UTXO în jumătate mai mult decât pot tăia o bancnotă în jumătate și să o folosească. Aplicația portofel a utilizatorului va selecta, de obicei, dintre UTXO-urile disponibile pentru a compune o sumă mai mare sau egală cu valoarea tranzacției dorite.
 
-As with real life, the bitcoin application can use several strategies to satisfy the purchase amount: combining several smaller units, finding exact change, or using a single unit larger than the transaction value and making change. All of this complex assembly of spendable UTXO is done by the user's wallet automatically and is invisible to users. It is only relevant if you are programmatically constructing raw transactions from UTXO.
+La fel ca în viața reală, aplicația bitcoin poate folosi mai multe strategii pentru a compune suma de cumpărare: combinarea mai multor unități mai mici, găsirea unei sume exacte sau utilizarea unei singure unități mai mari decât valoarea tranzacției și primirea restului. Toate aceste ansamblări complexe de UTXO-uri cheltuibile sunt realizate automat de portofelul utilizatorului și sunt invizibile pentru utilizatori. Este relevant numai dacă construiți tranzacții brute din UTXO-uri în mod programatic.
 
-A transaction consumes previously recorded unspent transaction outputs and creates new transaction outputs that can be consumed by a future transaction. This way, chunks of bitcoin value move forward from owner to owner in a chain of transactions consuming and creating UTXO.
+O tranzacție consumă ieșiri de tranzacție necheltuite anterior și creează noi ieșiri de tranzacție care pot fi consumate de o tranzacție viitoare. În acest fel, bucăți de valoare bitcoin înaintează de la proprietar la proprietar într-un lanț de tranzacții care consumă și creează UTXO.
 
-((("transactions", "coinbase transactions")))((("coinbase transactions")))((("mining and consensus", "coinbase transactions")))The exception to the output and input chain is a special type of transaction called the _coinbase_ transaction, which is the first transaction in each block. This transaction is placed there by the "winning" miner and creates brand-new bitcoin payable to that miner as a reward for mining. This special coinbase transaction does not consume UTXO; instead, it has a special type of input called the "coinbase." This is how bitcoin's money supply is created during the mining process, as we will see in <<mining>>.
+((("tranzacții", "tranzacții cu monedă de bază")))((("tranzacții cu monedă de bază")))((("minerit și consens", "tranzacții cu monedă de bază")))Excepția de la lanțul de ieșiri și de intrări este un tip special de tranzacție numit tranzacție _cu monedă de bază_ (coinbase), care este prima tranzacție din fiecare bloc. Această tranzacție este plasată acolo de minerul ”câștigător” și creează bitcoin nou plătit acelui miner drept recompensă pentru minerit. Această tranzacție specială  cu monedă de bază (coinbase) nu consumă UTXO; în schimb, are un tip special de intrare numit monedă de bază (coinbase). Așa este creeată rezerva monetară bitcoin în timpul procesului de minerit, după cum vom vedea în <<mining>>.
 
-[TIP]
+[SFAT]
 ====
-What comes first? Inputs or outputs, the chicken or the egg? Strictly speaking, outputs come first because coinbase transactions, which generate new bitcoin, have no inputs and create outputs from nothing.
+Cine a fost mai întâi? Intrările sau ieșirile, găina sau oul? Strict vorbind, ieșirile au fost mai întâi pentru că tranzacțiile cu monedă de bază (coinbase), care generează bitcoin nou, nu au intrări și creează ieșiri din nimic.
 ====
 
 [[tx_outs]]
-==== Transaction Outputs
+==== Ieșirile Tranzacției
 
-((("transactions", "outputs and inputs", "output components")))((("outputs and inputs", "output parts")))Every bitcoin transaction creates outputs, which are recorded on the bitcoin ledger. Almost all of these outputs, with one exception (see <<op_return>>) create spendable chunks of bitcoin called UTXO, which are then recognized by the whole network and available for the owner to spend in a future transaction.
+((("tranzacții", "ieșiri și intrări", "componenetele ieșirii")))((("ieșiri și intrări", "părțile ieșirii")))Fiecare tranzacție bitcoin creează ieșiri, care sunt înregistrate în registrul bitcoin. Aproape toate aceste ieșiri, cu o excepție (vezi <<op_return>>) crează bucăți cheltuibile de bitcoin numite UTXO, care sunt apoi recunoscute de întreaga rețea și disponibile pentru proprietar să le cheltuiască într-o tranzacție viitoare.
 
-UTXO are tracked by every full-node bitcoin client in the UTXO set. New transactions consume (spend) one or more of these outputs from the UTXO set.
+UTXO-urile sunt urmărite în setul UTXO de fiecare client nod-complet bitcoin. Tranzacțiile noi consumă (cheltuiesc) una sau mai multe dintre aceste ieșiri din setul UTXO.
 
-Transaction outputs consist of two parts:
+Ieșirile tranzacției sunt compuse din două părți:
 
-* An amount of bitcoin, denominated in _satoshis_, the smallest bitcoin unit
-* A cryptographic puzzle that determines the conditions required to spend the output
+* O cantitate de bitcoin, exprimată în _satoshi_, cea mai mică unitate bitcoin
+* Un puzzle criptografic care determină condițiile necesare pentru a cheltui ieșirea
 
-((("locking scripts")))((("scripting", "locking scripts")))((("witnesses")))((("scriptPubKey")))The cryptographic puzzle is also known as a  _locking script_, a _witness script_, or a +scriptPubKey+.
+((("scripturi de blocare")))((("scriptare", "scripturi de blocare")))((("martor")))((("scriptPubKey")))Puzzle-ul criptografic este cunoscut și ca un _script de blocare_, un _script martor_ sau un +scriptPubKey+.
 
-The transaction scripting language, used in the locking script mentioned previously, is discussed in detail in <<tx_script>>.
+Limbajul de script al tranzacției, utilizat în scriptul de blocare menționat anterior, este discutat în detaliu în <<tx_script>>.
 
-Now, let's look at Alice's transaction (shown previously in <<transactions_behind_the_scenes>>) and see if we can identify the outputs. In the JSON encoding, the outputs are in an array (list) named +vout+:
+Acum, să ne uităm la tranzacția lui Alice (prezentată anterior în <<transactions_behind_the_scenes>>) și să vedem dacă putem identifica ieșirile. În codarea JSON, ieșirile sunt într-o listă numită +vout+:
 
 [source,json]
 ----
@@ -118,32 +118,32 @@ Now, let's look at Alice's transaction (shown previously in <<transactions_behin
 ]
 ----
 
-As you can see, the transaction contains two outputs. Each output is defined by a value and a cryptographic puzzle. In the encoding shown by Bitcoin Core, the value is shown in bitcoin, but in the transaction itself it is recorded as an integer denominated in satoshis. The second part of each output is the cryptographic puzzle that sets the conditions for spending. Bitcoin Core shows this as +scriptPubKey+ and shows us a human-readable representation of the script.
+După cum puteți vedea, tranzacția conține două ieșiri. Fiecare ieșire este definită de o valoare și un puzzle criptografic. În codificarea afișată de Bitcoin Core, valoarea este afișată în bitcoin, dar în tranzacția în sine este înregistrată ca un număr întreg exprimat în satoshi. A doua parte a fiecărei ieșiri este puzzle-ul criptografic care stabilește condițiile pentru cheltuire. Bitcoin Core arată acest lucru ca +scriptPubKey+ și ne arată o reprezentare care poate fi citită de către un om.
 
-The topic of locking and unlocking UTXO will be discussed later, in <<tx_lock_unlock>>. The scripting language that is used for the script in +scriptPubKey+ is discussed in <<tx_script>>. But before we delve into those topics, we need to understand the overall structure of transaction inputs and outputs.
+Subiectul de blocare și deblocare a UTXO-urilor va fi discutat mai târziu, în <<tx_lock_unlock>>. Limbajul de script folosit pentru scriptul din +scriptPubKey+ este discutat în <<tx_script>>. Dar înainte de a aprofunda aceste subiecte, trebuie să înțelegem structura generală a intrărilor și ieșirilor unei tranzacții.
 
-===== Transaction serialization&#x2014;outputs
+===== Serializarea tranzacțiilor - ieșiri
 
-((("transactions", "outputs and inputs", "structure of")))((("outputs and inputs", "structure of")))((("serialization", "outputs")))When transactions are transmitted over the network or exchanged between applications, they are _serialized_. Serialization is the process of converting the internal representation of a data structure into a format that can be transmitted one byte at a time, also known as a byte stream. Serialization is most commonly used for encoding data structures for transmission over a network or for storage in a file. The serialization format of a transaction output is shown in <<tx_out_structure>>.
+((("tranzacții", "ieșiri și intrări", "structura")))((("ieșiri și intrări", "structura")))((("serializare", "ieșiri")))Când tranzacțiile sunt transmise prin rețea sau schimbate între aplicații, acestea sunt _serializate_. Serializarea este procesul de transformare a reprezentării interne a unei structuri de date într-un format care poate fi transmis un octet cu octet, cunoscut și sub numele de flux de octeți. Serializarea este cel mai frecvent utilizată pentru codificarea structurilor de date pentru transmisie printr-o rețea sau pentru stocarea într-un fișier. Formatul de serializare al unei ieșiri a tranzacției este prezentat în <<tx_out_structure>>.
 
 [[tx_out_structure]]
-.Transaction output serialization
+.Serializare ieșirie tranzacție
 [options="header"]
 |=======
-|Size| Field | Description
-| 8 bytes (little-endian) | Amount  | Bitcoin value in satoshis (10^-8^ bitcoin)
-| 1&#x2013;9 bytes (VarInt) | Locking-Script Size | Locking-Script length in bytes, to follow
-| Variable | Locking-Script | A script defining the conditions needed to spend the output
+| Dimensiune | Câmp | Descriere
+| 8 octeți (little-endian) | Sumă | Valoarea Bitcoin în satoshi (10^-8^ bitcoin)
+| 1–9 octeți (VarInt) | Dimensiunea scriptului de blocare | Lungimea scriptului în octeți
+| Variabilă | Script de Blocare | Un script care definește condițiile necesare pentru a cheltui ieșirea
 |=======
 
-Most bitcoin libraries and frameworks do not store transactions internally as byte-streams, as that would require complex parsing every time you needed to access a single field. For convenience and readability, bitcoin libraries store transactions internally in data structures (usually object-oriented structures).
+Majoritatea bibliotecilor și framewor-urilor bitcoin nu stochează tranzacțiile intern ca fluxuri de octeți, deoarece acest lucru ar necesita o parcurgere complexă de fiecare dată când aveți nevoie să accesați un singur câmp. Pentru comoditate și lizibilitate, bibliotecile bitcoin stochează tranzacțiile intern în structuri de date (de obicei structuri orientate pe obiect).
 
-((("deserialization")))((("parsing")))((("transactions", "parsing")))The process of converting from the byte-stream representation of a transaction to a library's internal representation data structure is called _deserialization_ or _transaction parsing_. The process of converting back to a byte-stream for transmission over the network, for hashing, or for storage on disk is called _serialization_.  Most bitcoin libraries have built-in functions for transaction serialization and deserialization.
+((("deserializare")))((("parcurgere")))((("tranzacții", "tranzacții")))Procesul convertire din reprezentarea flux-de-octeți a unei tranzacții în structura de date folosită intern de o bibliotecă se numeste _deserializare_ sau _parcurgerea tranzacției_. Procesul de conversie înapoi într-un flux-de-octeți pentru a fi transmis prin rețea, pentru rezumare (hashing) sau pentru stocarea pe disc se numește _serializare_. Majoritatea bibliotecilor bitcoin au funcții integrate pentru serializarea și deserializarea tranzacțiilor.
 
-See if you can manually decode Alice's transaction from the serialized hexadecimal form, finding some of the elements we saw previously. The section containing the two outputs is highlighted in <<example_6_1>> to help you:
+Vedeți dacă puteți decodifica manual tranzacția lui Alice din forma hexazecimală serializată, găsind unele dintre elementele pe care le-am văzut anterior. Secțiunea care conține cele două ieșiri este evidențiată în <<example_6_1>> pentru a vă ajuta:
 
 [[example_6_1]]
-.Alice's transaction, serialized and presented in hexadecimal notation
+.Tranzacția lui Alice, serializată și prezentată în notare hexazecimală
 ====
 +0100000001186f9f998a5aa6f048e51dd8419a14d8a0f1a8a2836dd73+
 +4d2804fe65fa35779000000008b483045022100884d142d86652a3f47+
@@ -157,26 +157,26 @@ See if you can manually decode Alice's transaction from the serialized hexadecim
 +00000000+
 ====
 
-Here are some hints:
+Iată câteva indicii:
 
-* There are two outputs in the highlighted section, each serialized as shown in <<tx_out_structure>>.
-* The value of 0.015 bitcoin is 1,500,000 satoshis. That's +16 e3 60+ in hexadecimal.
-* In the serialized transaction, the value +16 e3 60+ is encoded in little-endian (least-significant-byte-first) byte order, so it looks like +60 e3 16+.
-* The +scriptPubKey+ length is 25 bytes, which is +19+ in hexadecimal.
+* Există două ieșiri în secțiunea evidențiată, fiecare serializată așa cum se arată în <<tx_out_structure>>.
+* Valoarea de 0,015 bitcoin este 1.500.000 de satoshi. Adică +16 e3 60+ în hexazecimal.
+* În tranzacția serializată, valoarea +16 e3 60+ este codificată în little-endian (cel mai puțin semnificativ-octet-primul), deci arată ca +60 e3 16+.
+* Lungimea +scriptPubKey+ este de 25 octeți, ceea ce este +19+ în hexazecimal.
 
 [[tx_inputs]]
-==== Transaction Inputs
+==== Intrările Tranzacției
 
-((("transactions", "outputs and inputs", "input components")))((("outputs and inputs", "input components")))((("unspent transaction outputs (UTXO)")))((("UTXO sets")))Transaction inputs identify (by reference) which UTXO will be consumed and provide proof of ownership through an unlocking script.
+((("tranzacții", "ieșiri și intrări", "componentele intrării")))((("ieșiri și intrări", "componentele intrării")))((("ieșiri necheltuite ale tranzacșiei (UTXO)")))((("seturi UTXO")))Intrările tranzacției identifică (prin referință) care UTXO va fi consumat și oferă dovada proprietății printr-un script de deblocare.
 
-To build a transaction, a wallet selects from the UTXO it controls, UTXO with enough value to make the requested payment. Sometimes one UTXO is enough, other times more than one is needed. For each UTXO that will be consumed to make this payment, the wallet creates one input pointing to the UTXO and unlocks it with an unlocking script.
+Pentru a construi o tranzacție, un portofel selectează din UTXO-urile pe care le controlează, UTXO-uri cu suficientă valoare pentru a efectua plata solicitată. Uneori este suficient un UTXO, alte ori este nevoie de mai mult de unul. Pentru fiecare UTXO care va fi consumat pentru a efectua această plată, portofelul creează o intrare care este îndreptată către UTXO și o deblochează cu un script de deblocare.
 
-Let's look at the components of an input in greater detail. The first part of an input is a pointer to an UTXO by reference to the transaction hash and an output index, which identifies the specific UTXO in that transaction. The second part is an unlocking script, which the wallet constructs in order to satisfy the spending conditions set in the UTXO. Most often, the unlocking script is a digital signature and public key proving ownership of the bitcoin. However, not all unlocking scripts contain signatures. The third part is a sequence number, which will be discussed later.
+Să analizăm mai detaliat componentele unei intrări. Prima parte a unei intrări este un indicator către o UTXO prin referire la rezumatul (hash-ul) tranzacției și un index de ieșire, care identifică UTXO-ul specific în tranzacția respectivă. A doua parte este un script de deblocare, pe care portofelul îl construiește pentru a satisface condițiile de cheltuieli stabilite în UTXO. Cel mai adesea, scriptul de deblocare este o semnătură digitală și o cheie publică care dovedește proprietatea asupra bitcoinului. Cu toate acestea, nu toate scripturile de deblocare conțin semnături. A treia parte este un număr de secvență, despre care vom discuta mai târziu.
 
-Consider our example in <<transactions_behind_the_scenes>>. The transaction inputs are an array (list) called +vin+:
+Luați în considerare exemplul nostru din <<transactions_behind_the_scenes>>. Intrările tranzacției sunt un o listă numit +vin+:
 
 [[vin]]
-.The transaction inputs in Alice's transaction
+.Intrările tranzacției în tranzacția lui Alice
 [source,json]
 ----
 "vin": [
@@ -189,31 +189,31 @@ Consider our example in <<transactions_behind_the_scenes>>. The transaction inpu
 ]
 ----
 
-As you can see, there is only one input in the list (because one UTXO contained sufficient value to make this payment). The input contains four elements:
+După cum vedeți, există o singură intrare în listă (deoarece o UTXO conținea suficientă valoare pentru a efectua această plată). Intrarea conține patru elemente:
 
-* A ((("transaction IDs (txd)")))transaction ID, referencing the transaction that contains the UTXO being spent
-* An output index (+vout+), identifying which UTXO from that transaction is referenced (first one is zero)
-* A +scriptSig+, which satisfies the conditions placed on the UTXO, unlocking it for spending
-* A sequence number (to be discussed later)
+* Un ID de tranzacție ((("ID de tranzacției (txd)"))), care face referire la tranzacția care conține UTXO care urmează să fie cheltuită
+* Un indice de ieșire (+vout+), care identifică la care UTXO se face referire din tranzacția respectivă (primul este zero)
+* Un +scriptSig+, care satisface condițiile plasate pe UTXO, deblocând-o pentru a fi cheltuită
+* Un număr de secvență (care va fi discutat mai târziu)
 
-In Alice's transaction, the input points to the transaction ID:
+În tranzacția lui Alice, intrarea indică ID-ul tranzacției:
 
 ----
 7957a35fe64f80d234d76d83a2a8f1a0d8149a41d81de548f0a65a8a999f6f18
 ----
 
-and output index +0+ (i.e., the first UTXO created by that transaction). The unlocking script is constructed by Alice's wallet by first retrieving the referenced UTXO, examining its locking script, and then using it to build the necessary unlocking script to satisfy it.
+și indexul de ieșire +0+ (adică, primul UTXO creat de acea tranzacție). Scriptul de deblocare este construit de către portofelul lui Alice. Portofelul extrage mai întâi UTXO-ul referit, îi examinează scriptul de blocare, apoi îl utilizează pentru a crea scriptul de deblocare necesar.
 
-Looking just at the input you may have noticed that we don't know anything about this UTXO, other than a reference to the transaction containing it. We don't know its value (amount in satoshi), and we don't know the locking script that sets the conditions for spending it. To find this information, we must retrieve the referenced UTXO by retrieving the underlying transaction. Notice that because the value of the input is not explicitly stated, we must also use the referenced UTXO in order to calculate the fees that will be paid in this transaction (see <<tx_fees>>).
+Analizând doar intrarea, este posibil să fi observat că nu știm nimic despre această UTXO, decât o referire la tranzacția care o conține. Nu știm valoarea acesteia (suma în satoshi) și nu știm scriptul de blocare care stabilește condițiile pentru cheltuirea acesteia. Pentru a găsi aceste informații, trebuie să obținem UTXO-ul referit prin găsirea tranzacției în care a fost inclus. Observați că, deoarece valoarea intrării nu este specificată explicit, trebuie să folosim și UTXO-ul referit pentru a calcula comisioanele care vor fi plătite în această tranzacție (vezi <<tx_fees>>).
 
-It's not just Alice's wallet that needs to retrieve UTXO referenced in the inputs. Once this transaction is broadcast to the network, every validating node will also need to retrieve the UTXO referenced in the transaction inputs in order to validate the transaction.
+Nu este doar portofelul lui Alice care trebuie să obțină UTXO-ul la care se face referire în intrări. Odată ce această tranzacție este transmisă în rețea, fiecare nod de validare va trebui, de asemenea, să recupereze UTXO-ul la care se face referire în intrările tranzacției pentru a valida tranzacția.
 
-Transactions on their own seem incomplete because they lack context. They reference UTXO in their inputs but without retrieving that UTXO we cannot know the value of the inputs or their locking conditions. When writing bitcoin software, anytime you decode a transaction with the intent of validating it or counting the fees or checking the unlocking script, your code will first have to retrieve the referenced UTXO from the blockchain in order to build the context implied but not present in the UTXO references of the inputs. For example, to calculate the amount paid in fees, you must know the sum of the values of inputs and outputs. But without retrieving the UTXO referenced in the inputs, you do not know their value. So a seemingly simple operation like counting fees in a single transaction in fact involves multiple steps and data from multiple transactions.
+Tranzacțiile de unele singure par incomplete, deoarece le lipsește contextul. Ele referă UTXO-uri în intrările lor, dar fără a prelua acele UTXO-uri nu putem cunoaște valoarea intrărilor sau condițiile de blocare ale acestora. Când scrieți software bitcoin, oricând decodați o tranzacție cu intenția de a o valida sau de a calcule comisioanele sau de a verifica scriptul de deblocare, codul dumneavoastră va trebui mai întâi să obțină UTXO-ul referit din lanțul-de-blocuri (blockchain) pentru a construi contextul insinuat, dar care nu este prezent în referințele UTXO ale intrărilor. De exemplu, pentru a calcula suma plătită pentru comisioane, trebuie să cunoașteți suma valorilor intrărilor și ieșirilor. Dar fără a prelua UTXO-urile la care se face referire în intrări, nu le cunoașteți valoarea. Așadar, o operație aparent simplă, precum calcularea comisioanelor într-o singură tranzacție implică de fapt mai multe etape și date din mai multe tranzacții.
 
-We can use the same sequence of commands with Bitcoin Core as we used when retrieving Alice's transaction (+getrawtransaction+ and +decoderawtransaction+). With that we can get the UTXO referenced in the preceding input and take a look:
+Putem folosi aceeași secvență de comenzi din Bitcoin Core ca atunci când am obținut tranzacția lui Alice (+getrawtransaction+ și +decoderawtransaction+). Cu aceaste comenzi putem obține UTXO-ul la care se face referire în intrarea precedentă și să aruncăm o privire:
 
 [[alice_input_tx]]
-.Alice's UTXO from the previous transaction, referenced in the input
+.UTXO-ul lui Alice din tranzacția anterioară, la care se face referire în intrare
 [source,json]
 ----
 "vout": [
@@ -224,30 +224,30 @@ We can use the same sequence of commands with Bitcoin Core as we used when retri
  ]
 ----
 
-We see that this UTXO has a value of 0.1 BTC and that it has a locking script (+scriptPubKey+) that contains "OP_DUP OP_HASH160...".
+Vedem că această UTXO are o valoare de 0,1 BTC și că are un script de blocare (+scriptPubKey+) care conține ”OP_DUP OP_HASH160 ...”.
 
-[TIP]
+[SFAT]
 ====
-To fully understand Alice's transaction we had to retrieve the previous transaction(s) referenced as inputs. A function that retrieves previous transactions and unspent transaction outputs is very common and exists in almost every bitcoin library and API.
+Pentru a înțelege pe deplin tranzacția lui Alice, a trebuit să obținem tranzacția(iile) anterioară(e)  la care am făcut referință. O funcție care obține tranzacțiile anterioare și ieșirile tranzacțiilor necheltuite este foarte frecventă și există în aproape fiecare bibliotecă și API bitcoin.
 ====
 
-===== Transaction serialization&#x2014;inputs
+===== Serializarea tranzacțiilor - intrări
 
-((("serialization", "inputs")))((("transactions", "outputs and inputs", "input serialization")))((("outputs and inputs", "input serialization")))When transactions are serialized for transmission on the network, their inputs are encoded into a byte stream as shown in <<tx_in_structure>>.
+((("serializare", "intrări")))((("tranzacții", "ieșiri și intrări", "serializarea intrării")))((("ieșiri și intrări", "serializarea intrării")))Când tranzacțiile sunt serializate pentru a fi transmise în rețea, intrările lor sunt codificate într-un flux de octeți, așa cum se arată în <<tx_in_structure>>.
 
 [[tx_in_structure]]
-.Transaction input serialization
+.Serializare intrare tranzacție
 [options="header"]
 |=======
-|Size| Field | Description
-| 32 bytes | Transaction Hash | Pointer to the transaction containing the UTXO to be spent
-| 4 bytes | Output Index | The index number of the UTXO to be spent; first one is 0
-| 1&#x2013;9 bytes (VarInt) | Unlocking-Script Size | Unlocking-Script length in bytes, to follow
-| Variable | Unlocking-Script | A script that fulfills the conditions of the UTXO locking script
-| 4 bytes | Sequence Number | Used for locktime or disabled (0xFFFFFFFF)
+| Dimensiune | Câmp | Descriere
+| 32 octeți | Rezumant (Hash) Tranzacție | Pointer la tranzacția care conține UTXO care trebuie cheltuită
+| 4 octeți | Indicele Ieșire | Numărul de index al UTXO care trebuie cheltuit; primul este 0
+| 1–9 octeți (VarInt) | Dimensiunea Scriptului de Deblocare | Lungimea Scriptului de Deblocare în octeți, va urma
+| Variabilă | Script de Deblocare | Un script care îndeplinește condițiile scriptului de blocare UTXO
+| 4 octeți | Număr de Secvență | Folosit pentru timpul de blocare (locktime) sau dezactivat (0xFFFFFFFF)
 |=======
 
-As with the outputs, let's see if we can find the inputs from Alice's transaction in the serialized format. First, the inputs decoded:
+Ca și în cazul ieșirilor, să vedem dacă putem găsi intrările din tranzacția lui Alice în format serializat. În primul rând, intrările decodate:
 
 [source,json]
 ----
@@ -261,10 +261,10 @@ As with the outputs, let's see if we can find the inputs from Alice's transactio
 ],
 ----
 
-Now, let's see if we can identify these fields in the serialized hex encoding in <<example_6_2>>:
+Acum, să vedem dacă putem identifica aceste câmpuri în codificarea hexa în <<example_6_2>>:
 
 [[example_6_2]]
-.Alice's transaction, serialized and presented in hexadecimal notation
+.Tranzacția lui Alice, serializată și prezentată în notare hexazecimală
 ====
 +0100000001+*+186f9f998a5aa6f048e51dd8419a14d8a0f1a8a2836dd73+*
 *+4d2804fe65fa35779000000008b483045022100884d142d86652a3f47+*
@@ -278,463 +278,463 @@ Now, let's see if we can identify these fields in the serialized hex encoding in
 +000+
 ====
 
-Hints:
+Sugestii:
 
-* The transaction ID is serialized in reversed byte order, so it starts with (hex) +18+ and ends with +79+
-* The output index is a 4-byte group of zeros, easy to identify
-* The length of the +scriptSig+ is 139 bytes, or +8b+ in hex
-* The sequence number is set to +FFFFFFFF+, again easy to identify((("", startref="alicesix")))
+* ID-ul tranzacției este serializat în ordine inversată a octeților, deci începe cu (hex) +18+ și se termină cu +79+
+* Indexul ieșirii este un grup de 4 biți de zerouri, ușor de identificat
+* Lungimea +scriptSig+ este de 139 octeți, sau +8b+ în hexa
+* Numărul de secvență este setat la +FFFFFFFF+, din nou ușor de identificat((("", startref="alicesix")))
 
 [[tx_fees]]
-==== Transaction Fees
+==== Comisioanele de tranzacție
 
-((("transactions", "outputs and inputs", "transaction fees")))((("fees", "transaction fees")))((("mining and consensus", "rewards and fees")))Most transactions include transaction fees, which compensate the bitcoin miners for securing the network. Fees also serve as a security mechanism themselves, by making it economically infeasible for attackers to flood the network with transactions. Mining and the fees and rewards collected by miners are discussed in more detail in <<mining>>.
+((("tranzacții", "ieșiri și intrări", "comisioane de tranzacție")))((("comisioane", "comisioane de tranzacție")))((("minerit și consens", "recompense și comisioane")))Majoritatea tranzacțiilor includ comisioane de tranzacție, care recompensează minerii bitcoin pentru securizarea rețelei. Comisioanele servesc, de asemenea, ca un mecanism de securitate, făcând imposibil din punct de vedere economic ca atacatorii să inunde rețeaua cu tranzacții. Mineritul și comisioanele, și recompensele încasate de mineri sunt discutate mai detaliat în <<mining>>.
 
-This section examines how transaction fees are included in a typical transaction. Most wallets calculate and include transaction fees automatically. However, if you are constructing transactions programmatically, or using a command-line interface, you must manually account for and include these fees.
+Această secțiune examinează modul în care comisioanele de tranzacție sunt incluse într-o tranzacție obișnuită. Majoritatea portofelelor calculează și includ automat comisioanele de tranzacție. Cu toate acestea, dacă construiți tranzacții programatic sau utilizați o interfață din linia de comandă, trebuie să vă contabilizați și să includeți aceste comisioane manual.
 
-Transaction fees serve as an incentive to include (mine) a transaction into the next block and also as a disincentive against abuse of the system by imposing a small cost on every transaction. Transaction fees are collected by the miner who mines the block that records the transaction on the blockchain.
+Comisioanele de tranzacție sunt un stimulent pentru includerea (minarea) a unei tranzacții în următorul bloc și, de asemenea, ca descurajare împotriva abuzurilor asupra sistemului, impunând un cost mic pentru fiecare tranzacție. Comisioanele de tranzacție sunt colectate de minerul care minează blocul care înregistrează tranzacția în lanțul-de-blocuri (blockchain).
 
-Transaction fees are calculated based on the size of the transaction in kilobytes, not the value of the transaction in bitcoin. Overall, transaction fees are set based on market forces within the bitcoin network. Miners prioritize transactions based on many different criteria, including fees, and might even process transactions for free under certain circumstances. Transaction fees affect the processing priority, meaning that a transaction with sufficient fees is likely to be included in the next block mined, whereas a transaction with insufficient or no fees might be delayed, processed on a best-effort basis after a few blocks, or not processed at all. Transaction fees are not mandatory, and transactions without fees might be processed eventually; however, including transaction fees encourages priority processing.
+Comisioanele de tranzacție sunt calculate în funcție de mărimea tranzacției în kilobytes, nu de valoarea tranzacției în bitcoin. În general, comisioanele de tranzacție sunt stabilite în funcție de forțele pieței din cadrul rețelei bitcoin. Minerii acordă prioritate tranzacțiilor pe baza mai multor criterii diferite, inclusiv comisioanele și chiar pot procesa tranzacții gratuit în anumite circumstanțe. Comisioanele de tranzacție afectează prioritatea procesării, ceea ce înseamnă că o tranzacție cu comisioane suficiente este probabil să fie inclusă în următorul bloc minat, în timp ce o tranzacție cu comisioane insuficiente sau fără comisioane ar putea fi întârziată, procesată după câteva blocuri sau neprocesată deloc. Comisioanele de tranzacție nu sunt obligatorii, iar tranzacțiile fără comisioane pot fi procesate în cele din urmă; cu toate acestea, includerea comisioanelor de tranzacție încurajează procesarea prioritară.
 
-Over time, the way transaction fees are calculated and the effect they have on transaction prioritization has evolved. At first, transaction fees were fixed and constant across the network. Gradually, the fee structure relaxed and may be influenced by market forces, based on network capacity and transaction volume. Since at least the beginning of 2016, capacity limits in bitcoin have created competition between transactions, resulting in higher fees and effectively making free transactions a thing of the past. Zero fee or very low fee transactions rarely get mined and sometimes will not even be propagated across the network.
+De-a lungul timpului, modul în care se calculează comisioanele de tranzacție și efectul pe care îl au asupra prioritizării tranzacțiilor a evoluat. La început, comisioanele de tranzacție au fost fixe și constante în toată rețeaua. Treptat, structura comisioanelor s-a relaxat și poate fi influențată de forțele pieței, pe baza capacității rețelei și a volumului tranzacțiilor. Încă de la începutul anului 2016, limitele de capacitate ale bitcoin au creat concurență între tranzacții, rezultând în taxe mai mari și făcând de domeniul trecutului tranzacțiile gratuite. Tranzacțiile cu comision zero sau foarte mic sunt rareori minate și uneori nici măcar nu vor fi propagate în rețea.
 
-((("fees", "fee relay policies")))((("minrelaytxfee option")))In Bitcoin Core, fee relay policies are set by the +minrelaytxfee+ option. The current default +minrelaytxfee+ is 0.00001 bitcoin or a hundredth of a millibitcoin per kilobyte. Therefore, by default, transactions with a fee less than 0.00001 bitcoin are treated as free and are only relayed if there is space in the mempool; otherwise, they are dropped. Bitcoin nodes can override the default fee relay policy by adjusting the value of +minrelaytxfee+.
+((("taxe", "politici de releu")))((("opțiunea minrelaytxfee")))În Bitcoin Core, politicile comisionului de releu (relay) sunt stabilite prin opțiunea +minrelaytxfee+. Valoarea implicită actuală +minrelaytxfee+ este 0,00001 bitcoin sau o sutime de milibitcoin pe kilobyte. Prin urmare, în mod implicit, tranzacțiile cu un comision mai mic de 0,00001 bitcoin sunt tratate ca fiind gratuite și sunt transmise doar dacă există spațiu în mempool; în caz contrar, sunt abandonate. Nodurile Bitcoin pot înlocui politica de releu a comisioanelor implicite prin ajustarea valorii +minrelaytxfee+.
 
-((("dynamic fees")))((("fees", "dynamic fees")))Any bitcoin service that creates transactions, including wallets, exchanges, retail applications, etc., _must_ implement dynamic fees. Dynamic fees can be implemented through a third-party fee estimation service or with a built-in fee estimation algorithm. If you're unsure, begin with a third-party service and as you gain experience design and implement your own algorithm if you wish to remove the third-party dependency.
+((("comisioane dinamice")))((("comisioane", "comisioane dinamice")))Orice serviciu bitcoin care creează tranzacții, inclusiv portofele, burse, aplicații de retail etc., _trebuie_ să implementeze comisioane dinamice. Comisioanele dinamice pot fi implementate printr-un serviciu terț de estimare a comisioanelor sau cu un algoritm de estimare a comisioanelor încorporat. Dacă nu sunteți sigur, începeți cu un serviciu extern și, pe măsură ce aveți experiență, puteți să proiectați și să implementați propriul algoritm dacă doriți să eliminați dependența față de terți.
 
-Fee estimation algorithms calculate the appropriate fee, based on capacity and the fees offered by "competing" transactions. These algorithms range from simplistic (average or median fee in the last block) to sophisticated (statistical analysis). They estimate the necessary fee (in satoshis per byte) that will give a transaction a high probability of being selected and included within a certain number of blocks. Most services offer users the option of choosing high, medium, or low priority fees. High priority means users pay higher fees but the transaction is likely to be included in the next block. Medium and low priority means users pay lower transaction fees but the transactions may take much longer to confirm.
+Algoritmii de estimare a tarifelor calculează comisionul corespunzător, pe baza capacității și a comisioanelor oferite de tranzacțiile ”concurente”. Acești algoritmi variază de la simplist (comision mediu sau median din ultimul bloc) la sofisticat (analiză statistică). Aceștia estimează comisionul necesar (în satoshi per octet) care va oferi unei tranzacții o probabilitate ridicată de a fi selectată și inclusă într-un anumit număr de blocuri. Majoritatea serviciilor oferă utilizatorilor opțiunea de a alege taxe cu prioritate mare, medie sau mică. Prioritate mare înseamnă că utilizatorii plătesc comisioane mai mari, dar tranzacția va fi probabil inclusă în următorul bloc. Prioritate medie și scăzută înseamnă că utilizatorii plătesc comisioane de tranzacție mai mici, dar tranzacțiile pot dura mult mai mult pentru a fi confirmate.
 
-((("bitcoinfees (third-party service)")))Many wallet applications use third-party services for fee calculations. One popular service is https://bitcoinfees.earn.com/[_https://bitcoinfees.earn.com/_], which provides an API and a visual chart showing the fee in satoshi/byte for different priorities.
+((("comisioane bitcoin (servicii terțe)")))Multe aplicații portofel utilizează servicii terțe pentru calcularea comisioanelor. Un serviciu popular este https://bitcoinfees.earn.com/[_https://bitcoinfees.earn.com/_], care oferă un API și un grafic vizual care arată comisionul în satoshi/byte pentru diferite priorități.
 
-[TIP]
+[SFAT]
 ====
-((("static fees")))((("fees", "static fees")))Static fees are no longer viable on the bitcoin network. Wallets that set static fees will produce a poor user experience as transactions will often get "stuck" and remain unconfirmed. Users who don't understand bitcoin transactions and fees are dismayed by "stuck" transactions because they think they've lost their money.
+((("comisioane statice")))((("comisioane", "comisioane statice")))Comisioanele statice nu mai sunt viabile în rețeaua bitcoin. Portofelele care stabilesc comisioane statice vor oferi o experiență slabă a utilizatorului, deoarece tranzacțiile vor fi adesea ”blocate” și vor rămâne neconfirmate. Utilizatorii care nu înțeleg tranzacțiile și tarifele bitcoin sunt buimăciți de tranzacțiile ”blocate”, deoarece cred că și-au pierdut banii.
 ====
 
-The chart in <<bitcoinfeesearncom>> shows the real-time estimate of fees in 10 satoshi/byte increments and the expected confirmation time (in minutes and number of blocks) for transactions with fees in each range. For each fee range (e.g., 61&#x2013;70 satoshi/byte), two horizontal bars show the number of unconfirmed transactions (1405) and total number of transactions in the past 24 hours (102,975), with fees in that range. Based on the graph, the recommended high-priority fee at this time was 80 satoshi/byte, a fee likely to result in the transaction being mined in the very next block (zero block delay). For perspective, the median transaction size is 226 bytes, so the recommended fee for a transaction size would be 18,080 satoshis (0.00018080 BTC).
+Diagrama din <<bitcoinfeesearncom>> prezintă estimarea în timp real a comisioanelor în segmente de 10 satoshi/octet și timpul de confirmare preconizat (în minute și număr de blocuri) pentru tranzacțiile cu comisioane din fiecare interval. Pentru fiecare interval de comisioane (de exemplu, 61–70 satoshi/octet), două bare orizontale indică numărul de tranzacții neconfirmate (1405) și numărul total de tranzacții din ultimele 24 de ore (102.975), cu comisioanele în acest interval. Pe baza graficului, comisionul recomandat pentru prioritate ridicată la acel moment a fost de 80 satoshi/octet, un comision care ar fi făcut ca tranzacția să fie minată chiar în următorul bloc (întârziere bloc zero). În perspectivă, dimensiunea medie a tranzacției este de 226 de octeți, deci comisionul recomandat pentru o dimensiune a tranzacției ar fi de 18,080 satoshi (0,00018080 BTC).
 
-The fee estimation data can be retrieved via a simple HTTP REST API, at https://bitcoinfees.earn.com/api/v1/fees/recommended[https://bitcoinfees.earn.com/api/v1/fees/recommended]. For example, on the command line using the +curl+ command:
+Datele de estimare a comisioanelor pot fi obținute printr-un simplu apel HTTP REST, la API-ul https://bitcoinfees.earn.com/api/v1/fees/recommended[https://bitcoinfees.earn.com/api/v1/fees/recommended ]. De exemplu, din linia de comandă folosind comanda + curl +:
 
-.Using the fee estimation API
+.Utilizarea API-ului de estimare a comisioanelor
 ----
 $ curl https://bitcoinfees.earn.com/api/v1/fees/recommended
 
 {"fastestFee":80,"halfHourFee":80,"hourFee":60}
 ----
 
-The API returns a JSON object with the current fee estimate for fastest confirmation (+fastestFee+), confirmation within three blocks (+halfHourFee+) and six blocks (+hourFee+), in satoshi per byte.
+API-ul returnează un obiect JSON cu estimarea curentă a comisioanelor pentru confirmarea cea mai rapidă (+fastestFee+), confirmarea pănă în trei blocuri (+halfHourFee+) și până în șase blocuri (+hourFee+), în satoshi pe octet.
 
 [[bitcoinfeesearncom]]
-.Fee estimation service bitcoinfees.earn.com
-image::images/mbc2_0602.png[Fee Estimation Service bitcoinfees.earn.com]
+.Serviciul de estimare a comisioanelor bitcoinfees.earn.com
+image::images/mbc2_0602.png[Serviciul De Estimare a Comisioanelor bitcoinfees.earn.com]
 
-==== Adding Fees to Transactions
+==== Adăugarea comisioanelor la tranzacții
 
-The data structure of transactions does not have a field for fees. Instead, fees are implied as the difference between the sum of inputs and the sum of outputs. Any excess amount that remains after all outputs have been deducted from all inputs is the fee that is collected by the miners:
+Structura de date a tranzacțiilor nu are un câmp pentru comisioane. În schimb, comisioanele sunt considerate implicit ca fiind diferența între suma intrărilor și suma ieșirilor. Orice sumă în exces care rămâne după ce toate ieșirile au fost deduse din toate intrările este comisionul primit de mineri:
 
 [[tx_fee_equation]]
-.Transaction fees are implied, as the excess of inputs minus outputs:
+.Comisioanele de tranzacție sunt considerate implicite ca fiind excesul de la intrări minus ieșiri:
 ----
-Fees = Sum(Inputs) – Sum(Outputs)
+Comisioane = Sumă(Intrări) - Sumă(Ieșiri)
 ----
 
-This is a somewhat confusing element of transactions and an important point to understand, because if you are constructing your own transactions you must ensure you do not inadvertently include a very large fee by underspending the inputs. That means that you must account for all inputs, if necessary by creating change, or you will end up giving the miners a very big tip!
+Acesta este un element oarecum confuz al tranzacțiilor și un punct important de înțeles, deoarece, dacă construiți tranzacțiile proprii, trebuie să vă asigurați că nu includeți, din neatenție, un comision foarte mare, subutilizând intrările. Asta înseamnă că trebuie să țineți cont de toate intrările, dacă este necesar prin crearea unui rest, sau veți ajunge să oferiți minerilor un bacșiș foarte mare!
 
-For example, if you consume a 20-bitcoin UTXO to make a 1-bitcoin payment, you must include a 19-bitcoin change output back to your wallet. Otherwise, the 19-bitcoin "leftover" will be counted as a transaction fee and will be collected by the miner who mines your transaction in a block. Although you will receive priority processing and make a miner very happy, this is probably not what you intended.
+De exemplu, dacă consumați o UTXO de 20 de bitcoin pentru a efectua o plată de 1 bitcoin, trebuie să includeți o ieșire de 19 bitcoin în portofel. În caz contrar, ”restul” de 19 bitcoin va fi contabilizat ca un comision de tranzacție și va fi încasat de minerul care va mina tranzacția dumneavoastră într-un bloc. Deși veți primi prioritate la procesare și veți face un miner foarte fericit, probabil că nu este ceea ce ați intenționat.
 
-[WARNING]
+[ATENȚIE]
 ====
-((("warnings and cautions", "change outputs")))If you forget to add a change output in a manually constructed transaction, you will be paying the change as a transaction fee. "Keep the change!" might not be what you intended.
+((("avertismente și precauții", "ieșiri rest")))Dacă uitați să adăugați o ieșire pentru rest într-o tranzacție construită manual, veți plăti restul ca un comision de tranzacție. ”Păstrează restul!” s-ar putea să nu fie ceea ce intenționați.
 ====
 
-((("use cases", "buying coffee")))Let's see how this works in practice, by looking at Alice's coffee purchase again. Alice wants to spend 0.015 bitcoin to pay for coffee. To ensure this transaction is processed promptly, she will want to include a transaction fee, say 0.001. That will mean that the total cost of the transaction will be 0.016. Her wallet must therefore source a set of UTXO that adds up to 0.016 bitcoin or more and, if necessary, create change. Let's say her wallet has a 0.2-bitcoin UTXO available. It will therefore need to consume this UTXO, create one output to Bob's Cafe for 0.015, and a second output with 0.184 bitcoin in change back to her own wallet, leaving 0.001 bitcoin unallocated, as an implicit fee for the transaction.
+((("utilizări", "cumpărare de cafea")))Să vedem cum funcționează în practică, analizând din nou achiziția de cafea a lui Alice. Alice vrea să cheltuiască 0,015 bitcoin pentru a plăti cafeaua. Pentru a se asigura că această tranzacție este procesată prompt, va dori să includă o taxă de tranzacție, să zicem 0.001. Asta înseamnă că costul total al tranzacției va fi de 0,016. Prin urmare, portofelul ei trebuie să creeze un set de UTXO-uri care adaugă 0,016 bitcoin sau mai mult și, dacă este necesar, să creeze rest. Să spunem că portofelul ei are o UTXO de 0,2-bitcoin disponibil. Prin urmare, va trebui să consume această UTXO, să creeze o ieșire la Cafeneaua lui Bob pentru 0,015 și o a doua ieșire cu 0,184 bitcoin ca rest propriului portofel, lăsând 0,001 bitcoin nealocat, ca un comision implicit pentru tranzacție.
 
-((("use cases", "charitable donations")))((("charitable donations")))Now let's look at a different scenario. Eugenia, our children's charity director in the Philippines, has completed a fundraiser to purchase schoolbooks for the children. She received several thousand small donations from people all around the world, totaling 50 bitcoin, so her wallet is full of very small payments (UTXO). Now she wants to purchase hundreds of schoolbooks from a local publisher, paying in bitcoin.
+((("utilizări", "donații caritabile")))((("donații caritabile")))Acum, să analizăm un scenariu diferit. Eugenia, directorul nostru de organizație de caritate pentru copii din Filipine, a finalizat o strângere de fonduri pentru achiziționarea de cărți școlare pentru copii. A primit câteva mii de donații mici de la oameni din întreaga lume, în valoare totală de 50 de bitcoin, astfel că portofelul ei este plin de plăți foarte mici (UTXO). Acum vrea să cumpere sute de cărți școlare de la o editură locală, plătind în bitcoin.
 
-As Eugenia's wallet application tries to construct a single larger payment transaction, it must source from the available UTXO set, which is composed of many smaller amounts. That means that the resulting transaction will source from more than a hundred small-value UTXO as inputs and only one output, paying the book publisher. A transaction with that many inputs will be larger than one kilobyte, perhaps several kilobytes in size. As a result, it will require a much higher fee than the median-sized transaction.
+Deoarece aplicația portofel a Eugeniei încearcă să construiască o singură tranzacție de plată mai mare, ea trebuie să aleagă din setul UTXO disponibil, care este compus din mai multe sume mai mici. Aceasta înseamnă că tranzacția rezultată va alege din mai mult de o sută de UTXO cu valoare mică ca intrări și o singură ieșire, plătind editorul de carte. O tranzacție cu multe intrări va fi mai mare decât un kilobyte, poate ca mai mulți kilobytes. În consecință, va necesita un comision mult mai mare decât o tranzacția de dimensiune medie.
 
-Eugenia's wallet application will calculate the appropriate fee by measuring the size of the transaction and multiplying that by the per-kilobyte fee. Many wallets will overpay fees for larger transactions to ensure the transaction is processed promptly. The higher fee is not because Eugenia is spending more money, but because her transaction is more complex and larger in size--the fee is independent of the transaction's bitcoin value.((("", startref="Tout06")))
+Aplicația portofel a Eugeniei va calcula comisionul corespunzător, măsurând dimensiunea tranzacției și înmulțind-o cu comisionul per kilobyte. Multe portofele vor plăti comisioane pentru tranzacții mai mari, pentru a se asigura că tranzacția este procesată prompt. Comisionul mai mare nu se datorează faptului că Eugenia cheltuiește mai mulți bani, ci pentru că tranzacția ei este mai complexă și are dimensiuni mai mari - comisionul este independent de valoarea bitcoin a tranzacției.((("", startref="Tout06")))
 
 [[tx_script]]
 [role="pagebreak-before less_space_h1"]
-=== Transaction Scripts and Script Language
+=== Scripturi de Tranzacție și Limbaj de Scriptare
 
-((("transactions", "scripts and Script language", id="Tsript06")))((("scripting", "transactions and", id="Stransact06")))The bitcoin transaction script language, called _Script_, is a Forth-like reverse-polish notation stack-based execution language. If that sounds like gibberish, you probably haven't studied 1960s programming languages, but that's ok&#x2014;we will explain it all in this chapter. Both the locking script placed on an UTXO and the unlocking script are written in this scripting language. When a transaction is validated, the unlocking script in each input is executed alongside the corresponding locking script to see if it satisfies the spending condition.
+((("tranzacții", "scripturi și limbaj script", id="Tsript06")))((("scriptare", "tranzacții și", id="Stransact06")))Limbajul de scriptare pentru tranzacțiii bitcoin, numit _Script_ , este un limbaj în notare poloneză inversă, asemănător cu Forth, bazat pe stivă de execuție. Dacă asta vi se pare o bolboroseală, probabil că nu ați studiat limbajele de programare din anii 1960, dar este în regulă - vom explica totul în acest capitol. Atât scriptul de blocare plasat pe o UTXO, cât și scriptul de deblocare sunt scrise în acest limbaj de scriptare. Când o tranzacție este validată, scriptul de deblocare din fiecare intrare este executat alături de scriptul de blocare corespunzător, pentru a vedea dacă satisface condiția de cheltuire.
 
-Script is a very simple language that was designed to be limited in scope and executable on a range of hardware, perhaps as simple as an embedded device. It requires minimal processing and cannot do many of the fancy things modern programming languages can do. For its use in validating programmable money, this is a deliberate security feature.
+Script este un limbaj foarte simplu, care a fost conceput pentru a avea un domeniu limitat și să fie executabil pe o gamă largă de hardware, chiar la fel de simplu ca un dispozitiv încorporat. Necesită o prelucrare minimă și nu poate face multe dintre lucrurile extravagante pe care le pot face limbajele de programare moderne. Pentru utilizarea sa în validarea banilor programabili, aceasta este o caracteristică de securitate deliberată.
 
-((("Pay-to-Public-Key-Hash (P2PKH)")))Today, most transactions processed through the bitcoin network have the form "Payment to Bob's bitcoin address" and are based on a script called a Pay-to-Public-Key-Hash script.  However, bitcoin transactions are not limited to the "Payment to Bob's bitcoin address" script. In fact, locking scripts can be written to express a vast variety of complex conditions. In order to understand these more complex scripts, we must first understand the basics of transaction scripts and script language.
+((("Plată-Către-Rezumat-Cheie-Publică (P2PKH)")))Astăzi, cele mai multe tranzacții procesate prin rețeaua bitcoin au forma ”Plată către adresa bitcoin a lui Bob” și se bazează pe un script numit Plată-Către-Rezumat-Cheie-Publică (Pay-to-Public-Key-Hash).  Cu toate acestea, tranzacțiile bitcoin nu sunt limitate la scripturi de forma ”Plată către adresa de bitcoin a lui Bob”. De fapt, scripturile de blocare pot fi scrise pentru a exprima o mare varietate de condiții complexe. Pentru a înțelege aceste scripturi mai complexe, trebuie mai întâi să înțelegem elementele de bază ale scripturilor de tranzacții și ale limbajului de scriptare.
 
-In this section, we will demonstrate the basic components of the bitcoin transaction scripting language and show how it can be used to express simple conditions for spending and how those conditions can be satisfied by unlocking scripts.
+În această secțiune, vom demonstra componentele de bază ale limbajului de scriptare folosit pentru tranzacții bitcoin și vom arăta cum poate fi utilizat pentru a exprima condiții simple de cheltuire și cum pot fi îndeplinite aceste condiții prin deblocarea scripturilor.
 
-[TIP]
+[SFAT]
 ====
-((("programmable money")))Bitcoin transaction validation is not based on a static pattern, but instead is achieved through the execution of a scripting language. This language allows for a nearly infinite variety of conditions to be expressed. This is how bitcoin gets the power of "programmable money."
+(((”bani programabili”)))Validarea tranzacțiilor Bitcoin nu se bazează pe un model static, ci se realizează prin executarea unui limbaj de scriptare. Acest limbaj permite exprimarea unei varietăți aproape infinite de condiții. Astfel, bitcoin capătă puterea de ”bani programabili”.
 ====
 
 
-==== Turing Incompleteness
+==== Turing Incomplet
 
-((("Turing incompleteness")))The bitcoin transaction script language contains many operators, but is deliberately limited in one important way--there are no loops or complex flow control capabilities other than conditional flow control. This ensures that the language is not _Turing Complete_, meaning that scripts have limited complexity and predictable execution times. Script is not a general-purpose language. ((("denial-of-service attacks")))((("denial-of-service attacks", see="also security")))((("security", "denial-of-service attacks")))These limitations ensure that the language cannot be used to create an infinite loop or other form of "logic bomb" that could be embedded in a transaction in a way that causes a denial-of-service attack against the bitcoin network. Remember, every transaction is validated by every full node on the bitcoin network. A limited language prevents the transaction validation mechanism from being used as a vulnerability.
+(((”Turing Incomplet”)))Limbajul de scriptare pentru tranzacții bitcoin conține mulți operatori, dar este limitat în mod deliberat într-un mod important - nu există bucle sau capabilități complexe de control al fluxului, altele decât controlul condițional al fluxului. Acest lucru asigură că limbajul nu este _Turing Complet_, ceea ce înseamnă că scripturile au o complexitate limitată și timpi de execuție previzibili. Scriptul nu este un limbaj cu scop general. ((("atacuri denial-of-service")))((("atacuri denial-of-service", see="also security")))((("securitate", "atacuri denial-of-service")))Aceste limitări asigură faptul că limbajul nu poate fi folosit pentru a crea o buclă infinită sau o altă formă de ”bombă logică” care ar putea fi încorporată într-o tranzacție într-un mod care provoacă un atac de de tipul denial-of-service împotriva rețelei bitcoin. Nu uitați, fiecare tranzacție este validată de fiecare nod complet din rețeaua bitcoin. Un limbaj limitat împiedică utilizarea mecanismului de validare a tranzacțiilor ca o vulnerabilitate.
 
-==== Stateless Verification
+==== Verificare fără Stare
 
-((("stateless verification")))The bitcoin transaction script language is stateless, in that there is no state prior to execution of the script, or state saved after execution of the script. Therefore, all the information needed to execute a script is contained within the script. A script will predictably execute the same way on any system. If your system verifies a script, you can be sure that every other system in the bitcoin network will also verify the script, meaning that a valid transaction is valid for everyone and everyone knows this. This predictability of outcomes is an essential benefit of the bitcoin system.
+(((”verificare fără stare”)))Limbajul de scriptare pentru tranzacții bitcoin este fără stare (stateless), prin faptul că nu există nicio stare înainte de executarea scriptului sau stare salvată după executarea scriptului. Prin urmare, toate informațiile necesare pentru a executa un script sunt conținute în script. Un script va fi executat în mod previzibil în același mod pe orice sistem. Dacă sistemul dumneavoastră verifică un script, puteți fi sigur că orice alt sistem din rețeaua bitcoin va verifica și el scriptul, în sensul că o tranzacție valabilă este valabilă pentru toată lumea și toată lumea știe acest lucru. Această predictibilitate a rezultatelor este un beneficiu esențial al sistemului bitcoin.
 
 [[tx_lock_unlock]]
-==== Script Construction (Lock + Unlock)
+==== Construcția Scriptului (Blocare + Deblocare)
 
-Bitcoin's transaction validation engine relies on two types of scripts to validate transactions: a locking script and an unlocking script.
+Motorul de validare a tranzacțiilor bitcoin se bazează pe două tipuri de scripturi pentru validarea tranzacțiilor: un script de blocare și un script de deblocare.
 
-((("locking scripts")))((("unlocking scripts")))((("scripting", "locking scripts")))A locking script is a spending condition placed on an output: it specifies the conditions that must be met to spend the output in the future. ((("scriptPubKey")))Historically, the locking script was called a _scriptPubKey_, because it usually contained a public key or bitcoin address (public key hash). In this book we refer to it as a "locking script" to acknowledge the much broader range of possibilities of this scripting technology. In most bitcoin applications, what we refer to as a locking script will appear in the source code as +scriptPubKey+. ((("witnesses")))((("cryptographic puzzles")))You will also see the locking script referred to as a _witness script_ (see <<segwit>>) or more generally as a _cryptographic puzzle_. These terms all mean the same thing, at different levels of abstraction.
+((("scripturi de blocare")))((("scripturi de deblocare")))((("scriptare", "scripturi de blocare)))Un script de blocare este o condiție de cheltuire plasată pe o ieșire: specifică condițiile care trebuie îndeplinite pentru a cheltui ieșirea în viitor. ((("scriptPubKey")))Istoric, scriptul de blocare a fost numit _scriptPubKey_, deoarece de obicei conținea o cheie publică sau o adresă bitcoin (rezumat al cheii publice). În această carte ne referim la acesta ca la un ”script de blocare” pentru a cuprinde gama mult mai largă de posibilități ale acestei tehnologii de scriptare. În majoritatea aplicațiilor bitcoin, la ceea ce ne referim ca un script de blocare va apărea în codul sursă ca +scriptPubKey+. ((("martori")))((("puzzle-uri criptografice")))Veți vedea, de asemenea, scriptul de blocare menționat drept _script martor_ (vezi <<segwit>> ) sau mai general ca un _puzzle criptografic_. Acești termeni înseamnă același lucru, la diferite niveluri de abstractizare.
 
-An unlocking script is a script that "solves," or satisfies, the conditions placed on an output by a locking script and allows the output to be spent. Unlocking scripts are part of every transaction input. Most of the time they contain a digital signature produced by the user's wallet from his or her private key. ((("scriptSig")))Historically, the unlocking script was called _scriptSig_, because it usually contained a digital signature. In most bitcoin applications, the source code refers to the unlocking script as +scriptSig+. You will also see the unlocking script referred to as a _witness_ (see <<segwit>>). In this book, we refer to it as an "unlocking script" to acknowledge the much broader range of locking script requirements, because not all unlocking scripts must contain signatures.
+Un script de deblocare este un script care ”rezolvă” sau îndeplinește condițiile plasate pe o ieșire de un script de blocare și permite cheltuirea ieșirii. Scripturile de deblocare fac parte din fiecare intrare a tranzacției. De cele mai multe ori, acestea conțin o semnătură digitală produsă de portofelul utilizatorului folosind cheia sa privată. ((("scriptSig")))Istoric, scriptul de deblocare a fost numit _scriptSig_, deoarece de obicei conținea o semnătură digitală. În majoritatea aplicațiilor bitcoin, codul sursă se referă la scriptul de deblocare ca +scriptSig+. Veți vedea, de asemenea, scriptul de deblocare menționat drept _martor_ (vezi <<segwit>>). În această carte, ne referim la acesta ca la un ”script de deblocare” pentru a cuprinde gama mult mai largă de cerințe pentru scripturile de blocare, deoarece nu toate scripturile de deblocare trebuie să conțină semnături.
 
-Every bitcoin validating node will validate transactions by executing the locking and unlocking scripts together. Each input contains an unlocking script and refers to a previously existing UTXO. The validation software will copy the unlocking script, retrieve the UTXO referenced by the input, and copy the locking script from that UTXO. The unlocking and locking script are then executed in sequence. The input is valid if the unlocking script satisfies the locking script conditions (see <<script_exec>>). All the inputs are validated independently, as part of the overall validation of the transaction.
+Fiecare nod de validare bitcoin va valida tranzacțiile executând scripturile de blocare și deblocare împreună. Fiecare intrare conține un script de deblocare și referă la o UTXO existentă anterior. Programul de validare va copia scriptul de deblocare, va prelua UTXO-ul la care face referire intrarea și va copia scriptul de blocare din UTXO. Scripturile de deblocare și blocare sunt apoi executate în succesiune. Intrarea este validă dacă scriptul de deblocare satisface condițiile scriptului de blocare (vezi <<script_exec>>). Toate intrările sunt validate independent, ca parte a validării generale a tranzacției.
 
-Note that the UTXO is permanently recorded in the blockchain, and therefore is invariable and is unaffected by failed attempts to spend it by reference in a new transaction. Only a valid transaction that correctly satisfies the conditions of the output results in the output being considered as "spent" and removed from the set of unspent transaction outputs (UTXO set).
+Rețineți că UTXO-ul este permanent înregistrat în lanțul-de-blocuri (blockchain) și, prin urmare, este invariabil și nu este afectat de încercările eșuate de a-l cheltui atunci când este referențiat într-o nouă tranzacție. Doar o tranzacție valabilă care îndeplinește corect condițiile ieșirii va face ca ieșirea să fie considerată ”cheltuită” și eliminată din setul de ieșiri de tranzacție necheltuite (setul UTXO).
 
-<<scriptSig_and_scriptPubKey>> is an example of the unlocking and locking scripts for the most common type of bitcoin transaction (a payment to a public key hash), showing the combined script resulting from the concatenation of the unlocking and locking scripts prior to script validation.
+<<scriptSig_and_scriptPubKey>> este un exemplu de scripturi de deblocare și de blocare pentru cel mai obișnuit tip de tranzacție bitcoin (o plată către un rezumat de cheie publică), care arată scriptul combinat rezultat din concatenarea scripturilor de deblocare și de blocare înainte de validarea scriptului.
 
 [[scriptSig_and_scriptPubKey]]
-.Combining scriptSig and scriptPubKey to evaluate a transaction script
+.Combinarea scriptSig și scriptPubKey pentru a evalua un script de tranzacție
 image::images/mbc2_0603.png["scriptSig_and_scriptPubKey"]
 
-===== The script execution stack
+===== Stiva de execuție a scriptului
 
-Bitcoin's scripting language is called a stack-based language because it uses a data structure called a _stack_. A stack is a very simple data structure that can be visualized as a stack of cards. A stack allows two operations: push and pop. Push adds an item on top of the stack. Pop removes the top item from the stack. Operations on a stack can only act on the topmost item on the stack. A stack data structure is also called a Last-In-First-Out, or "LIFO" queue.
+Limbajul de scriptare al bitcoin este un limbaj bazat pe stivă, deoarece folosește o structură de date numită _stivă_ (stack). O stivă este o structură de date foarte simplă care poate fi vizualizată ca o stivă de carduri. O stivă permite două operații: push și pop. Push adaugă un element deasupra stivei. Pop elimină elementul superior din stivă. Operațiunile pe o stivă pot acționa numai asupra elementului cel mai de sus al stivei. O structură de date de tip stivă este de asemenea numită coadă Ultimul-Intrat-Primul-Ieșit (Last-In-First-Out) sau ”LIFO”.
 
-The scripting language executes the script by processing each item from left to right. Numbers (data constants) are pushed onto the stack. Operators push or pop one or more parameters from the stack, act on them, and might push a result onto the stack. For example, +OP_ADD+ will pop two items from the stack, add them, and push the resulting sum onto the stack.
+Limbajul de scriptare execută scriptul procesând fiecare element de la stânga la dreapta. Numere (constante) sunt împinse pe stivă. Operatorii împing (push) sau scot (pop) unul sau mai mulți parametri din stivă, acționează asupra lor și pot împinge (push) un rezultat înapoi pe stivă. De exemplu, +OP_ADD+ va scoate (pop) două elemente din stivă, le va aduna și va împinge (push) suma rezultată pe stivă.
 
-Conditional operators evaluate a condition, producing a boolean result of TRUE or FALSE. For example, +OP_EQUAL+ pops two items from the stack and pushes TRUE (TRUE is represented by the number 1) if they are equal or FALSE (represented by zero) if they are not equal. Bitcoin transaction scripts usually contain a conditional operator, so that they can produce the TRUE result that signifies a valid transaction.
+Operatorii condiționali evaluează o condiție, producând un rezultat boolean de TRUE (adevărat) sau FALS (fals). De exemplu, +OP_EQUAL+ scoate două elemente din stivă și împinge TRUE (este reprezentat de numărul 1) dacă sunt egale sau FALSE (reprezentat de zero) dacă nu sunt egale. Scripturile de tranzacții bitcoin conțin de obicei un operator condițional, astfel încât acestea pot produce rezultatul TRUE care semnifică o tranzacție validă.
 
-===== A simple script
+===== Un script simplu
 
-Now let's apply what we've learned about scripts and stacks to some simple examples.
+Acum să aplicăm ceea ce am învățat despre scripturi și stive în câteva exemple simple.
 
-In <<simplemath_script>>, the script +2 3 OP_ADD 5 OP_EQUAL+ demonstrates the arithmetic addition operator +OP_ADD+, adding two numbers and putting the result on the stack, followed by the conditional operator +OP_EQUAL+, which checks that the resulting sum is equal to +5+. For brevity, the +OP_+ prefix is omitted in the step-by-step example. For more details on the available script operators and functions, see <<tx_script_ops>>.
+În <<simplemath_script>>, scriptul +2 3 OP_ADD 5 OP_EQUAL+ demonstrează operatorul de adăugare aritmetică +OP_ADD+, adăugând două numere și punând rezultatul pe stivă, urmat de operatorul condițional +OP_EQUAL+, care verifică dacă suma rezultată este egală cu +5+. Pentru concizie, prefixul +OP_+ este omis în exemplul pas cu pas. Pentru mai multe detalii despre operatorii și funcțiile de script disponibile, consultați <<tx_script_ops>>.
 
-Although most locking scripts refer to a public key hash (essentially, a bitcoin address), thereby requiring proof of ownership to spend the funds, the script does not have to be that complex. Any combination of locking and unlocking scripts that results in a TRUE value is valid. The simple arithmetic we used as an example of the scripting language is also a valid locking script that can be used to lock a transaction output.
+Deși majoritatea scripturilor de blocare se referă la un rezumat (hash) de cheie publică (în esență, o adresă bitcoin), necesitând astfel o dovadă de proprietate pentru a cheltui fondurile, scriptul nu trebuie să fie atât de complex. Orice combinație de scripturi de blocare și deblocare care rezultă într-o valoare TRUE este valabilă. Aritmetica simplă pe care am folosit-o ca exemplu de limbaj de scriptare este, de asemenea, un script de blocare valid care poate fi folosit pentru a bloca o ieșire a tranzacției.
 
-Use part of the arithmetic example script as the locking script:
+Utilizați o parte din scriptul de exemplu aritmetic ca script de blocare:
 
 ----
 3 OP_ADD 5 OP_EQUAL
 ----
 
-which can be satisfied by a transaction containing an input with the unlocking script:
+care poate fi satisfăcut de o tranzacție care conține o intrare cu scriptul de deblocare:
 
 ----
 2
 ----
 
-The validation software combines the locking and unlocking scripts and the resulting script is:
+Programul de validare combină scripturile de blocare și deblocare, iar scriptul rezultat este:
 
 ----
 2 3 OP_ADD 5 OP_EQUAL
 ----
 
-As we saw in the step-by-step example in <<simplemath_script>>, when this script is executed, the result is +OP_TRUE+, making the transaction valid. Not only is this a valid transaction output locking script, but the resulting UTXO could be spent by anyone with the arithmetic skills to know that the number 2 satisfies the script.
+După cum am văzut în exemplul pas cu pas din <<simplemath_script>>, când acest script este executat, rezultatul este +OP_TRUE+, ceea ce face tranzacția validă. Nu numai că este un script valid de blocare a ieșirii tranzacțiilor, dar UTXO-ul rezultat ar putea fi cheltuit de către oricine are abilități aritmetice pentru a ști că numărul 2 satisface scriptul.
 
-[TIP]
+[SFAT]
 ====
-((("transactions", "valid and invalid")))Transactions are valid if the top result on the stack is +TRUE+ (noted as ++&#x7b;0x01&#x7d;++), any other nonzero value, or if the stack is empty after script execution. Transactions are invalid if the top value on the stack is +FALSE+ (a zero-length empty value, noted as ++&#x7b;&#x7d;++) or if script execution is halted explicitly by an operator, such as +OP_VERIFY+, +OP_RETURN+, or a conditional terminator such as +OP_ENDIF+. See <<tx_script_ops>> for details.
+((("tranzacții", "valid și invalid"))Tranzacțiile sunt valide dacă rezultatul stivei este +TRUE+ (notat ca ++{0x01}++), orice altă valoare diferită de zero sau dacă stiva este goală după executarea scriptului. Tranzacțiile sunt invalide dacă valoarea stivei este +FALSE+ (o valoare goală de lungime zero, notată ca ++{}++) sau dacă execuția scriptului este oprită explicit de către un operator, cum ar fi +OP_VERIFY+, +OP_RETURN+ sau un terminator condițional, cum ar fi +OP_ENDIF+. Vezi <<tx_script_ops>> pentru detalii.
 ====
 
 [[simplemath_script]]
-.Bitcoin's script validation doing simple math
+.Sciptul de validare bitcoin facând calcule simple
 image::images/mbc2_0604.png["TxScriptSimpleMathExample"]
 
 [role="pagebreak-before"]
-The following is a slightly more complex script, which calculates ++2 + 7 - 3 + 1++. Notice that when the script contains several operators in a row, the stack allows the results of one operator to be acted upon by the next operator:
+Următorul este un script ceva mai complex, care calculează ++2 + 7 - 3 + 1++. Observați că atunci când scriptul conține mai mulți operatori la rând, stiva permite ca rezultatele unui operator să fie folosite de următorul operator:
 
 ----
 2 7 OP_ADD 3 OP_SUB 1 OP_ADD 7 OP_EQUAL
 ----
 
-Try validating the preceding script yourself using pencil and paper. When the script execution ends, you should be left with the value +TRUE+ on the stack.
+Încercați să validați singur scriptul precedent folosind un creion și hârtie. Când execuția scriptului se încheie, ar trebui să rămâneți cu valoarea +TRUE+ pe stivă.
 
 [[script_exec]]
-===== Separate execution of unlocking and locking scripts
+===== Executarea separată a scripturilor de deblocare și blocare
 
-((("security", "locking and unlocking scripts")))In the original bitcoin client, the unlocking and locking scripts were concatenated and executed in sequence. For security reasons, this was changed in 2010, because of a vulnerability that allowed a malformed unlocking script to push data onto the stack and corrupt the locking script. In the current implementation, the scripts are executed separately with the stack transferred between the two executions, as described next.
+((("securitate", "scripturi de blocare și deblocare")))În clientul original bitcoin, scripturile de deblocare și de blocare erau concatenate și executate în succesiune. Din motive de securitate, acest lucru a fost schimbat în 2010, din cauza unei vulnerabilități care permitea unui script de deblocare malformat să împingă datele pe stivă și să corupă scriptul de blocare. În implementarea curentă, scripturile sunt executate separat iar stiva este transferată între cele două execuții, așa cum este descris în continuare.
 
-First, the unlocking script is executed, using the stack execution engine. If the unlocking script is executed without errors (e.g., it has no "dangling" operators left over), the main stack is copied and the locking script is executed. If the result of executing the locking script with the stack data copied from the unlocking script is "TRUE," the unlocking script has succeeded in resolving the conditions imposed by the locking script and, therefore, the input is a valid authorization to spend the UTXO. If any result other than "TRUE" remains after execution of the combined script, the input is invalid because it has failed to satisfy the spending conditions placed on the UTXO.
+Întâi, scriptul de deblocare este executat, folosind motorul de execuție al stivei. Dacă scriptul de deblocare este executat fără erori (de ex., nu au rămas operatori ”suspendați”), stiva principală este copiată și scriptul de blocare este executat. Dacă rezultatul executării scriptului de blocare cu datele de stivă copiate din scriptul de deblocare este ”TRUE”, scriptul de deblocare a reușit să rezolve condițiile impuse de scriptul de blocare și, prin urmare, intrarea este o autorizație validă pentru a cheltui UTXO-ul. Dacă orice rezultat, în afară de ”TRUE”, rămâne după executarea scriptului combinat, intrarea nu este validă, deoarece nu a reușit să satisfacă condițiile de cheltuire prezente pe UTXO.
 
 
 [[p2pkh]]
-==== Pay-to-Public-Key-Hash (P2PKH)
+==== Plată-către-Rezumat-Cheie-Publică (P2PKH)
 
-((("Pay-to-Public-Key-Hash (P2PKH)")))The vast majority of transactions processed on the bitcoin network spend outputs locked with a Pay-to-Public-Key-Hash or "P2PKH" script. These outputs contain a locking script that locks the output to a public key hash, more commonly known as a bitcoin address. An output locked by a P2PKH script can be unlocked (spent) by presenting a public key and a digital signature created by the corresponding private key (see <<digital_sigs>>).
+(((Plată-către-Rezumat-Cheie-Publică (P2PKH))))Marea majoritate a tranzacțiilor procesate în rețeaua bitcoin cheltuiește ieșiri blocate cu un script Plată-către-Rezumat-Cheie-Publică (Pay-to-Public-Key-Hash) sau ”P2PKH”. Aceste ieșiri conțin un script de blocare care blochează ieșirea unui rezumat (hash) de cheie publică, cunoscut și ca adresă bitcoin. O ieșire blocată de un script P2PKH poate fi deblocată (cheltuită) prin prezentarea unei chei publice și a unei semnături digitale create de cheia privată corespunzătoare (vezi <<digital_sigs>>).
 
-((("use cases", "buying coffee")))For example, let's look at Alice's payment to Bob's Cafe again. Alice made a payment of 0.015 bitcoin to the cafe's bitcoin address. That transaction output would have a locking script of the form:
+((("utilizări", "cumpărare cafea")))De exemplu, să ne uităm din nou la plata lui Alice către Cafeneaua lui Bob. Alice a efectuat o plată de 0,015 bitcoin la adresa bitcoin a cafenelei. Această ieșire a tranzacției ar avea un script de blocare de forma:
 
 ----
 OP_DUP OP_HASH160 <Cafe Public Key Hash> OP_EQUALVERIFY OP_CHECKSIG
 ----
 
-The +Cafe Public Key Hash+ is equivalent to the bitcoin address of the cafe, without the Base58Check encoding. Most applications would show the _public key hash_ in hexadecimal encoding and not the familiar bitcoin address Base58Check format that begins with a "1."
++Cafe Public Key Hash+ (Rezumatul Cheii Publice a Cafenelei) este echivalent cu adresa bitcoin a cafenelei, fără codificarea Base58Check. Majoritatea aplicațiilor vor afișa _rezumatul cheii publice_ în codificare hexazecimală și nu adresa familiară bitcoin în formatul Base58Check care începe cu un ”1”;
 
-The preceding locking script can be satisfied with an unlocking script of the form:
+Scriptul de blocare precedent poate fi rezolvat cu un script de deblocare de forma:
 
 ----
 <Cafe Signature> <Cafe Public Key>
 ----
 
-The two scripts together would form the following combined validation script:
+Cele două scripturi împreună vor forma următorul script de validare combinat:
 
 ----
 <Cafe Signature> <Cafe Public Key> OP_DUP OP_HASH160
 <Cafe Public Key Hash> OP_EQUALVERIFY OP_CHECKSIG
 ----
 
-When executed, this combined script will evaluate to TRUE if, and only if, the unlocking script matches the conditions set by the locking script. In other words, the result will be TRUE if the unlocking script has a valid signature from the cafe's private key that corresponds to the public key hash set as an encumbrance.
+Când este executat, acest script combinat va fi evaluar la TRUE dacă și numai dacă, scriptul de deblocare se potrivește cu condițiile stabilite de scriptul de blocare. Cu alte cuvinte, rezultatul va fi TRUE dacă scriptul de deblocare are o semnătură validă din cheia privată a cafenelei, care corespunde cu rezumatul (hash-ul) cheii publice setat ca sarcină.
 
-Figures pass:[<a data-type="xref" href="#P2PubKHash1" data-xrefstyle="select: labelnumber">#P2PubKHash1</a>] and pass:[<a data-type="xref" href="#P2PubKHash2" data-xrefstyle="select: labelnumber">#P2PubKHash2</a>] show (in two parts) a step-by-step execution of the combined script, which will prove this is a valid transaction.((("", startref="Tsript06")))((("", startref="Stransact06")))
+Imaginile trec: pass:[<a data-type="xref" href="#P2PubKHash1" data-xrefstyle="select: labelnumber">#P2PubKHash1</a>] și pass:[<a data-type="xref" href="#P2PubKHash2" data-xrefstyle="select: labelnumber">#P2PubKHash2</a>] arată (în două părți) o execuție pas cu pas a scriptului combinat, ccare va demonstra că este o tranzacție validă.((("", startref="Tsript06")))((("", startref="Stransact06")))
 
 [[P2PubKHash1]]
-.Evaluating a script for a P2PKH transaction (part 1 of 2)
+.Evaluarea unui script pentru o tranzacție P2PKH (partea 1 din 2)
 image::images/mbc2_0605.png["Tx_Script_P2PubKeyHash_1"]
 
 [[P2PubKHash2]]
-.Evaluating a script for a P2PKH transaction (part 2 of 2)
+.Evaluarea unui script pentru o tranzacție P2PKH (partea 2 din 2)
 image::images/mbc2_0606.png["Tx_Script_P2PubKeyHash_2"]
 
 [[digital_sigs]]
-=== Digital Signatures (ECDSA)
+=== Semnături Digitale (ECDSA)
 
-((("transactions", "digital signatures and", id="Tdigsig06")))So far, we have not delved into any detail about "digital signatures." In this section we look at how digital signatures work and how they can present proof of ownership of a private key without revealing that private key.
+((("tranzacții", "semnături digitale și", id="Tdigsig06")))Până în prezent, nu am aprofundat niciun detaliu legat de ”semnături digitale”. În această secțiune analizăm modul în care funcționează semnăturile digitale și cum pot prezenta dovada dreptului de proprietate asupra unei chei private, fără să dezvăluie acea cheie privată.
 
-((("digital signatures", "algorithm used")))((("Elliptic Curve Digital Signature Algorithm (ECDSA)")))The digital signature algorithm used in bitcoin is the _Elliptic Curve Digital Signature Algorithm_, or _ECDSA_. ECDSA is the algorithm used for digital signatures based on elliptic curve private/public key pairs, as described in <<elliptic_curve>>. ECDSA is used by the script functions +OP_CHECKSIG+, +OP_CHECKSIGVERIFY+, +OP_CHECKMULTISIG+, and +OP_CHECKMULTISIGVERIFY+. Any time you see those in a locking script, the unlocking script must contain an ECDSA signature.
+((("semnături digitale", "algoritmi folosiți")))((("Algoritmul cu Semnătură Digitală Curbă Eliptică(ECDSA)")))Algoritmul pentru semnătură digitală utilizat în bitcoin este Algoritmul cu Semnătură Digitală Curbă Eliptică (Eliptic Curve Digital Signature Algorithm), sau _ECDSA_. ECDSA este algoritmul utilizat pentru semnăturile digitale bazate pe perechi de cheie privată/publică ale curbei eliptice, așa cum este descris în <<elliptic_curve>>. ECDSA este folosit de funcțiile de scriptare +OP_CHECKSIG+, +OP_CHECKSIGVERIFY+, +OP_CHECKMULTISIG+ și +OP_CHECKMULTISIGVERIFY+. De fiecare dată când vedeți una din funcțiile precedente într-un script de blocare, scriptul de deblocare trebuie să conțină o semnătură ECDSA.
 
-((("digital signatures", "purposes of")))A digital signature serves three purposes in bitcoin (see the following sidebar). First, the signature proves that the owner of the private key, who is by implication the owner of the funds, has _authorized_ the spending of those funds. Secondly, the proof of authorization is _undeniable_ (nonrepudiation). Thirdly, the signature proves that the transaction (or specific parts of the transaction) have not and _cannot be modified_ by anyone after it has been signed.
+((("semnături digitale", "scopuri ale")))Semnătura digitală îndeplinește trei scopuri în bitcoin. În primul rând, semnătura dovedește că proprietarul cheii private, care este implicit proprietarul fondurilor, a autorizat cheltuirea fondurilor respective. În al doilea rând, dovada autorizării este _incontestabilă_ (non-repudiere). În al treilea rând, semnătura dovedește că tranzacția (sau anumite părți ale tranzacției) nu au fost modificate și nu pot fi modificate de nimeni după ce a fost semnată.
 
-Note that each transaction input is signed independently. This is critical, as neither the signatures nor the inputs have to belong to or be applied by the same "owners." In fact, a specific transaction scheme called "CoinJoin" uses this fact to create multi-party transactions for privacy.
+Rețineți că fiecare intrare a tranzacției este semnată independent. Acest lucru este esențial, întrucât nici semnăturile, nici intrările nu trebuie să aparțină sau să fie aplicate de aceiași ”proprietari”. De fapt, o schemă de tranzacții specifică numită ”CoinJoin” folosește acest fapt pentru a crea tranzacții multilaterale pentru confidențialitate.
 
-[NOTE]
+[NOTĂ]
 ====
-Each transaction input and any signature it may contain is _completely_ independent of any other input or signature. Multiple parties can collaborate to construct transactions and sign only one input each.
+Fiecare intrare a tranzacției și orice semnătură pe care o poate conține este _complet_ independentă față de orice altă intrare sau semnătură. Mai multe entități pot colabora pentru construirea tranzacțiilor prin semnarea unei singure intrări fiecare.
 ====
 
 [[digital_signature_definition]]
-.Wikipedia's Definition of a "Digital Signature"
+.Definiția Wikipedia pentru ”Semnătură digitală”
 ****
-((("digital signatures", "defined")))A digital signature is a mathematical scheme for demonstrating the authenticity of a digital message or documents. A valid digital signature gives a recipient reason to believe that the message was created by a known sender (authentication), that the sender cannot deny having sent the message (nonrepudiation), and that the message was not altered in transit (integrity).
+((("semnături digitale", "definite")))Semnătura digitală este o schemă matematică pentru a demonstra autenticitatea unui mesaj sau document digital. O semnătură digitală validă oferă unui destinatar motive să creadă că mesajul a fost creat de un expeditor cunoscut (autentificare), că expeditorul nu poate nega că a trimis mesajul (non-repudiere) și că mesajul nu a fost modificat în tranzit (integritate).
 
-_Source: https://en.wikipedia.org/wiki/Digital_signature_
+_Sursă: https://en.wikipedia.org/wiki/Digital_signature_
 ****
 
-==== How Digital Signatures Work
+==== Cum Funcționează Semnăturile Digitale
 
-((("digital signatures", "how they work")))A digital signature is a _mathematical scheme_ that consists of two parts. The first part is an algorithm for creating a signature, using a private key (the signing key), from a message (the transaction). The second part is an algorithm that allows anyone to verify the signature, given also the message and a public key.
+((("semnături digitale", "cum funcționează")))Semnătura digitală este o _schemă matematică_ care constă din două părți. Prima parte este un algoritm pentru crearea unei semnături, folosind o cheie privată (cheia de semnare), dintr-un mesaj (tranzacția). A doua parte este un algoritm care permite oricui să verifice semnătura, având mesajul și o cheie publică.
 
-===== Creating a digital signature
+===== Crearea unei semnături digitale
 
-In bitcoin's implementation of the ECDSA algorithm, the "message" being signed is the transaction, or more accurately a hash of a specific subset of the data in the transaction (see <<sighash_types>>). The signing key is the user's private key. The result is the signature:
+În implementarea bitcoin a algoritmului ECDSA, ”mesajul” semnat este tranzacția sau, mai exact, un rezumat (hash) al unui subset specific de date din tranzacție (vezi <<sighash_types>>). Cheia de semnare este cheia privată a utilizatorului. Rezultatul este semnătura:
 
 latexmath:[\(Sig = F_{sig}(F_{hash}(m), dA)\)]
 
-where:
+unde:
 
-* _dA_ is the signing private key
-* _m_ is the transaction (or parts of it)
-* _F_~_hash_~ is the hashing function
-* _F_~_sig_~ is the signing algorithm
-* _Sig_ is the resulting signature
+* _dA_ este cheia privată de semnare
+* _m_ este tranzacția (sau părți ale acesteia)
+* _F_ ~ _hash_ ~ este funcția de rezumat (hashing)
+* _F_~_sig_~ este algoritmul de semnare
+* _Sig_ este semnătura rezultată
 
-More details on the mathematics of ECDSA can be found in <<ecdsa_math>>.
+Mai multe detalii despre calculul ECDSA găsiți în <<ecdsa_math>>.
 
-The function _F_~_sig_~ produces a signature +Sig+ that is composed of two values, commonly referred to as +R+ and +S+:
+Funcția _F_~_sig_~ produce o semnătură +Sig+ care este compusă din două valori, denumite în mod obișnuit +R+ și +S+:
 
 ----
 Sig = (R, S)
 ----
 
-((("Distinguished Encoding Rules (DER)")))Now that the two values +R+ and +S+ have been calculated, they are serialized into a byte-stream using an international standard encoding scheme called the _Distinguished Encoding Rules_, or _DER_.
+((("Reguli de Codificare Distincte (DER)")))Acum că au fost calculate cele două valori +R+ și +S+, acestea sunt serializate într-un flux de octeți folosind o schemă de codificare standard internațională numită _Reguli de Codificare Distincte_ (Distinguished Encoding Rules), sau _DER_ .
 
 [[seralization_of_signatures_der]]
-===== Serialization of signatures (DER)
+===== Serializarea semnăturilor (DER)
 
-Let's look at the transaction Alice ((("use cases", "buying coffee", id="alicesixtwo")))created again. In the transaction input there is an unlocking script that contains the following DER-encoded signature from Alice's wallet:
+Să ne uităm din nou la tranzacția pe care Alice ((("cazuri de utilizare", "cumpărea de cafea", id="alicesixtwo"))) a creat-o. În intrarea tranzacției există un script de deblocare care conține următoarea semnătură codată DER creată de portofelul lui Alice:
 
 ----
 3045022100884d142d86652a3f47ba4746ec719bbfbd040a570b1deccbb6498c75c4ae24cb02204b9f039ff08df09cbe9f6addac960298cad530a863ea8f53982c09db8f6e381301
 ----
 
-That signature is a serialized byte-stream of the +R+ and +S+ values produced by Alice's wallet to prove she owns the private key authorized to spend that output. The serialization format consists of nine elements as follows:
+Semnătura respectivă este un flux de octeți serializat al valorilor +R+ și +S+ produs de portofelul lui Alice pentru a dovedi că deține cheia privată autorizată să cheltuiască acea ieșire. Formatul de serializare constă din nouă elemente, după cum urmează:
 
-* +0x30+&#x2014;indicating the start of a DER sequence
-* +0x45+&#x2014;the length of the sequence (69 bytes)
-  * +0x02+&#x2014;an integer value follows
-  * +0x21+&#x2014;the length of the integer (33 bytes)
-  * +R+&#x2014;++00884d142d86652a3f47ba4746ec719bbfbd040a570b1deccbb6498c75c4ae24cb++
-  * +0x02+&#x2014;another integer follows
-  * +0x20+&#x2014;the length of the integer (32 bytes)
-  * +S+&#x2014;++4b9f039ff08df09cbe9f6addac960298cad530a863ea8f53982c09db8f6e3813++
-* A suffix (+0x01+) indicating the type of hash used (+SIGHASH_ALL+)
+* +0x30+ - indicând începutul unei secvențe DER
+* +0x45+ - lungimea secvenței (69 octeți)
+  * +0x02+ - urmează o valoare întreagă
+  * +0x21+ - lungimea numărului întreg (33 octeți)
+  * +R+ - ++00884d142d86652a3f47ba4746ec719bbfbd040a570b1deccbb6498c75c4ae24cb++
+  * +0x02+ - urmează un alt număr întreg
+  * +0x20+ - lungimea numărului întreg (32 octeți)
+  * +S+ - ++4b9f039ff08df09cbe9f6addac960298cad530a863ea8f53982c09db8f6e3813++
+* Un sufix (+0x01+) care indică tipul de rezumat (hash) utilizat (+SIGHASH_ALL+)
 
-See if you can decode Alice's serialized (DER-encoded) signature using this list. The important numbers are +R+ and +S+; the rest of the data is part of the DER encoding scheme.
+Vedeți dacă puteți decoda semnătura serializată (codată DER) a lui Alice folosind această listă. Numerele importante sunt +R+ și +S+; restul datelor face parte din schema de codare DER.
 
-==== Verifying the Signature
+==== Verificarea Semnăturii
 
-((("digital signatures", "verifying")))To verify the signature, one must have the signature (+R+ and +S+), the serialized transaction, and the public key (that corresponds to the private key used to create the signature). Essentially, verification of a signature means "Only the owner of the private key that generated this public key could have produced this signature on this transaction."
+((("semnături digitale", "verificare")))Pentru a verifica semnătura, trebuie să aveți semnătura (+R+ și +S+), tranzacția serializată și cheia publică (care corespunde cheii private utilizate pentru a crea semnatura). În esență, verificarea unei semnături înseamnă ”Doar proprietarul cheii private care a generat această cheie publică ar fi putut produce această semnătură pentru această tranzacție.”
 
-The signature verification algorithm takes the message (a hash of the transaction or parts of it), the signer's public key and the signature (+R+ and +S+ values), and returns TRUE if the signature is valid for this message and public key.
+Algoritmul de verificare a semnăturii primește mesajul (un rezumat al tranzacției sau părți ale acesteia), cheia publică a semnatarului și semnătura (valorile +R+ și +S+) și returnează TRUE dacă semnătura este validă pentru acest mesaj și cheie publică.
 
 [[sighash_types]]
-==== Signature Hash Types (SIGHASH)
+==== Tipuri de Rezumat (Hash) pentru Semnătură (SIGHASH)
 
-((("digital signatures", "signature hash types")))((("commitment")))Digital signatures are applied to messages, which in the case of bitcoin, are the transactions themselves. The signature implies a _commitment_ by the signer to specific transaction data. In the simplest form, the signature applies to the entire transaction, thereby committing all the inputs, outputs, and other transaction fields. However, a signature can commit to only a subset of the data in a transaction, which is useful for a number of scenarios as we will see in this section.
+((("semnături digitale", "tipuri de rezumat pentru semnături")))((("angajament")))Semnăturile digitale sunt aplicate mesajelor, care în cazul bitcoin sunt tranzacțiile în sine. Semnătura implică un _angajament_ din partea semnatarului asupra datelor specifice ale tranzacție. În cea mai simplă formă, semnătura se aplică întregii tranzacții, implicând astfel toate intrările, ieșirile și celelalte câmpuri ale tranzacției. Cu toate acestea, o semnătură poate să se aplice doar la un subset de date dintr-o tranzacție, ceea ce este util pentru o serie de scenarii așa cum vom vedea în această secțiune.
 
-((("SIGHASH flags")))Bitcoin signatures have a way of indicating which part of a transaction's data is included in the hash signed by the private key using a +SIGHASH+ flag. The +SIGHASH+ flag is a single byte that is appended to the signature. Every signature has a +SIGHASH+ flag and the flag can be different from input to input. A transaction with three signed inputs may have three signatures with different +SIGHASH+ flags, each signature signing (committing) different parts of the transaction.
+((”indicatori SIGHASH”))Semnăturile Bitcoin au o modalitate de a indica ce parte a datelor unei tranzacții este inclusă în rezumatul (hash-ul) semnat de cheia privată folosind un indicator +SIGHASH+. Indicatorul +SIGHASH+ este un singur octet care este anexat la semnătură. Fiecare semnătură are un indicator +SIGHASH+, iar indicatorul poate fi diferit de la intrare la intrare. O tranzacție cu trei intrări semnate poate avea trei semnături cu indicatori diferiți +SIGHASH+, fiecare semnătură semnând părți diferite ale tranzacției.
 
-Remember, each input may contain a signature in its unlocking script. As a result, a transaction that contains several inputs may have signatures with different +SIGHASH+ flags that commit different parts of the transaction in each of the inputs. Note also that bitcoin transactions may contain inputs from different "owners," who may sign only one input in a partially constructed (and invalid) transaction, collaborating with others to gather all the necessary signatures to make a valid transaction. Many of the +SIGHASH+ flag types only make sense if you think of multiple participants collaborating outside the bitcoin network and updating a partially signed transaction.
+Nu uitați, fiecare intrare poate conține o semnătură în scriptul său de deblocare. Drept urmare, o tranzacție care conține mai multe intrări poate avea semnături cu diferiți indicatori +SIGHASH+ care includ diferite părți ale tranzacției în fiecare dintre intrări. Rețineți, de asemenea, că tranzacțiile bitcoin pot conține intrări de la diferiți ”proprietari”, care pot semna o singură intrare într-o tranzacție parțial construită (și invalidă), colaborând cu alții pentru a aduna toate semnăturile necesare pentru a realiza o tranzacție validă. Multe dintre tipurile de indicatori +SIGHASH+ au sens numai dacă vă gândiți la mai mulți participanți care colaborează în afara rețelei bitcoin și actualizează o tranzacție parțial semnată.
 
 [role="pagebreak-before"]
-There are three +SIGHASH+ flags: +ALL+, +NONE+, and +SINGLE+, as shown in <<sighash_types_and_their>>.
+Există trei indicatori +SIGHASH+: +ALL+, +NONE+ și +SINGLE+, așa cum se vede în <<sighash_types_and_their>>.
 
 [[sighash_types_and_their]]
-.SIGHASH types and their meanings
+.Tipuri de SIGHASH și semnificațiile lor
 [options="header"]
 |=======================
-|+SIGHASH+ flag| Value | Description
-| +ALL+ | 0x01 | Signature applies to all inputs and outputs
-| +NONE+ | 0x02 | Signature applies to all inputs, none of the outputs
-| +SINGLE+ | 0x03 | Signature applies to all inputs but only the one output with the same index number as the signed input
+| Indicator +SIGHASH+ | Valoare | Descriere
+| +ALL+ | 0x01 | Semnatura se aplică tuturor intrărilor și ieșirilor
+| +NONE+ | 0x02 | Semnatura se aplică tuturor intrărilor, nici unei dintre ieșiri
+| +SINGLE+ | 0x03 | Semnatura se aplică tuturor intrărilor, dar numai o singură ieșire cu același număr de index cu intrarea semnată
 |=======================
 
-In addition, there is a modifier flag +SIGHASH_ANYONECANPAY+, which can be combined with each of the preceding flags. When +ANYONECANPAY+ is set, only one input is signed, leaving the rest (and their sequence numbers) open for modification. The +ANYONECANPAY+ has the value +0x80+ and is applied by bitwise OR, resulting in the combined flags as shown in <<sighash_types_with_modifiers>>.
+În plus, există un indicator modificator +SIGHASH_ANYONECANPAY+, care poate fi combinat cu fiecare din indicatorii precedenți. Când +ANYONECANPAY+ este setat, o singură intrare este semnată, lăsând restul (și numărul lor de secvență) deschise pentru modificare. +ANYONECANPAY+ are valoarea +0x80+ și se aplică folosind operatorul OR pe biți, rezultând indicatoarele combinate, așa cum se vede în <<sighash_types_with_modifiers>>.
 
 [[sighash_types_with_modifiers]]
-.SIGHASH types with modifiers and their meanings
+.Tipurile SIGHASH cu modificatori și semnificațiile acestora
 [options="header"]
 |=======================
-|SIGHASH flag| Value | Description
-| ALL\|ANYONECANPAY | 0x81 | Signature applies to one input and all outputs
-| NONE\|ANYONECANPAY | 0x82 | Signature applies to one input, none of the outputs
-| SINGLE\|ANYONECANPAY | 0x83 | Signature applies to one input and the output with the same index number
+| Indicator SIGHASH | Valoare | Descriere
+| ALL\|ANYONECANPAY | 0x81 | Semnatura se aplică unei intrări și tuturor ieșirilor
+| NONE\|ANYONECANPAY | 0x82 | Semnatura se aplică unei intrări, nici uneia dintre ieșiri
+| SINGLE\|ANYONECANPAY | 0x83 | Semnatura se aplică unei intrări și ieșirii cu același număr de index
 |=======================
 
-These flag combinations are summarized in <<sighash_combinations>>.
+Aceste combinații de indicatori sunt rezumate în <<sighash_combinations>>.
 
 [[sighash_combinations]]
-.Summary of different sighash combinations
-image::images/sighash_combinations.png["Summary of different SIGHASH flag combinations"]
+.Rezumatul diferitelor combinații de SIGHASH
+image::images/sighash_combinations.png["Rezumatul diferitelor combinații de indicatori SIGHASH"]
 
-The way +SIGHASH+ flags are applied during signing and verification is that a copy of the transaction is made and certain fields within are truncated (set to zero length and emptied). The resulting transaction is serialized. The +SIGHASH+ flag is added to the end of the serialized transaction and the result is hashed. The hash itself is the "message" that is signed. Depending on which +SIGHASH+ flag is used, different parts of the transaction are truncated. The resulting hash depends on different subsets of the data in the transaction. By including the +SIGHASH+ as the last step before hashing, the signature commits the +SIGHASH+ type as well, so it can't be changed (e.g., by a miner).
+Procedeul prin în care indicatorii +SIGHASH+ sunt aplicați în timpul semnării și verificării este că se face o copie a tranzacției și anumite câmpuri din interior sunt trunchiate (setate la lungimea zero și golite). Tranzacția rezultată este serializată. Indicatorul +SIGHASH+ este adăugat la sfârșitul tranzacției serializate și rezultatul este rezumat (hashed). Rezumatul (hash-ul) în sine este ”mesajul” care este semnat. În funcție de care indicator +SIGHASH+ este folosit, diferite părți ale tranzacției sunt trunchiate. Rezumatul rezultat depinde de diferite subseturi ale datelor din tranzacție. Prin includerea +SIGHASH+ ca ultimul pas înainte de rezumare (hashing), semnătura include și tipul +SIGHASH+, deci nu poate fi modificată (de exemplu, de către un miner).
 
-[NOTE]
+[NOTĂ]
 ====
-All +SIGHASH+ types sign the transaction +nLocktime+ field (see <<transaction_locktime_nlocktime>>). In addition, the +SIGHASH+ type itself is appended to the transaction before it is signed, so that it can't be modified once signed.
+Toate tipurile +SIGHASH+ semnează câmpul +nLocktime+  al tranzacției (vezi <<transaction_locktime_nlocktime>>). În plus, tipul +SIGHASH+ este atașat la tranzacție înainte de a fi semnat, astfel încât nu poate fi modificat o dată semnat.
 ====
 
-In the example of Alice's transaction (see the list in <<seralization_of_signatures_der>>), we saw that the last part of the DER-encoded signature was +01+, which is the +SIGHASH_ALL+ flag. This locks the transaction data, so Alice's signature is committing the state of all inputs and outputs. This is the most common signature form.
+În exemplul tranzacției lui Alice (consultați lista din <<seralization_of_signatures_der>>), am văzut că ultima parte a semnăturii codate DER a fost +01+, care este steagul +SIGHASH_ALL+. Aceasta blochează datele tranzacției, astfel încât semnătura lui Alice include starea tuturor intrărilor și ieșirilor. Aceasta este cea mai comună formă de semnătură.
 
-Let's look at some of the other +SIGHASH+ types and how they can be used in practice:
+Să ne uităm la unele dintre celelalte tipuri +SIGHASH+ și cum pot fi utilizate în practică:
 
-+ALL|ANYONECANPAY+ :: ((("charitable donations")))((("use cases", "charitable donations")))This construction can be used to make a "crowdfunding&#x201d;-style transaction. Someone attempting to raise funds can construct a transaction with a single output. The single output pays the "goal" amount to the fundraiser. Such a transaction is obviously not valid, as it has no inputs. However, others can now amend it by adding an input of their own, as a donation. They sign their own input with +ALL|ANYONECANPAY+. Unless enough inputs are gathered to reach the value of the output, the transaction is invalid. Each donation is a "pledge," which cannot be collected by the fundraiser until the entire goal amount is raised.
++ALL|ANYONECANPAY+ :: ((("donații caritabile")))((("utilizări", "donații caritabile")))Această construcție poate fi folosită pentru a realiza o tranzacție de tip ”crowdfunding”. Cineva care încearcă să strângă fonduri poate construi o tranzacție cu o singură ieșire. Unica ieșire plătește suma ”țintă” către cei care se ocupă de strângerea fondurilor. O astfel de tranzacție nu este în mod evident valabilă, întrucât nu are intrări. Cu toate acestea, alții o pot modifica acum adăugând un aport al lor propriu, ca donație. Ei își semnează propria intrare cu +ALL|ANYONECANPAY+. Dacă nu sunt adunate suficiente intrări pentru a atinge valoarea ieșirii, tranzacția nu este valabilă. Fiecare donație este un ”gaj”, care nu poate fi colectat de către cei care strâng fondurile până când se colecează întreaga sumă țintită.
 
-+NONE+ :: This construction can be used to create a "bearer check" or "blank check" of a specific amount. It commits to the input, but allows the output locking script to be changed. Anyone can write their own bitcoin address into the output locking script and redeem the transaction. However, the output value itself is locked by the signature.
++NONE+ :: Această construcție poate fi utilizată pentru a crea o ”verificare la purtător” sau ”cec în alb” a unei sume specificate. Se creează un angajament pentru intrare, dar permite schimbarea scriptului de blocare a ieșirii. Oricine își poate introduce propria adresă bitcoin în scriptul de blocare a ieșirilor și poate răscumpăra tranzacția. Cu toate acestea, valoarea de ieșire în sine este blocată prin semnătură.
 
-+NONE|ANYONECANPAY+ :: This construction can be used to build a "dust collector." Users who have tiny UTXO in their wallets can't spend these without the cost in fees exceeding the value of the dust. With this type of signature, the dust UTXO can be donated for anyone to aggregate and spend whenever they want.
++NONE|ANYONECANPAY+ :: Această construcție poate fi folosită pentru a construi un ”colector de praf”. Utilizatorii care au UTXO-uri minuscule în portofele nu le pot cheltui fără costuri care depășesc valoarea prafului. Cu acest tip de semnătura, praful UTXO poate fi donat pentru ca oricine dorește să poată agrega și să cheltuiască oricând dorește.
 
-((("Bitmask Sighash Modes")))There are some proposals to modify or expand the +SIGHASH+ system. One such proposal is _Bitmask Sighash Modes_ by Blockstream's Glenn Willen, as part of the Elements project. This aims to create a flexible replacement for +SIGHASH+ types that allows "arbitrary, miner-rewritable bitmasks of inputs and outputs" that can express "more complex contractual precommitment schemes, such as signed offers with change in a distributed asset exchange."
+((("Bitmask Sighash Modes")))Există câteva propuneri de modificare sau extindere a sistemului +SIGHASH+. O astfel de propunere este _Bitmask Sighash Modes_ de Glenn Willen de la Blockstream, ca parte a proiectului Elements. Acest lucru își propune să creeze o înlocuire flexibilă pentru tipurile +SIGHASH+ care să permită o ”mască pe biți pentru intrări și ieșiri redactabilă arbitrar de către mineri” care poate exprima ”scheme contractuale de pre-angajament mai complexe, cum ar fi ofertele semnate cu rest într-o bursă distribuită de active”.
 
-[NOTE]
+[NOTĂ]
 ====
-You will not see +SIGHASH+ flags presented as an option in a user's wallet application. With few exceptions, wallets construct P2PKH scripts and sign with +SIGHASH_ALL+ flags. To use a different +SIGHASH+ flag, you would have to write software to construct and sign transactions. More importantly, +SIGHASH+ flags can be used by special-purpose bitcoin applications that enable novel uses.
+Nu veți vedea indicatoarele +SIGHASH+ prezentate ca opțiune în aplicația portofel a utilizatorului. Cu câteva excepții, portofelele construiesc scripturi P2PKH și semnează cu indicatorul +SIGHASH_ALL+. Pentru a utiliza un alt indicator +SIGHASH+, ar trebui să scrieți software pentru a construi și semna tranzacții. Mai important, indicatoarele +SIGHASH+ pot fi utilizate de aplicațiile-dedicate bitcoin care să permită utilizări noi.
 ====
 
 [[ecdsa_math]]
-==== ECDSA Math
+==== Calculul ECDSA
 
-((("Elliptic Curve Digital Signature Algorithm (ECDSA)")))As mentioned previously, signatures are created by a mathematical function _F_~_sig_~ that produces a signature composed of two values _R_ and _S_. In this section we look at the function _F_~_sig_~ in more detail.
+(((”Algoritmul cu Semnătură Digitală Curbă Eliptică (ECDSA)”)))După cum am menționat anterior, semnăturile sunt create de o funcție matematică _F_~_sig_~ care produce o semnătură compusă din două valori _R_ și _S_. În această secțiune analizăm funcția _F_~_sig_~ mai detaliat.
 
-((("public and private keys", "key pairs", "ephemeral")))The signature algorithm first generates an _ephemeral_ (temporary) private public key pair. This temporary key pair is used in the calculation of the _R_ and _S_ values, after a transformation involving the signing private key and the transaction hash.
+((("chei publice și private, "perechi de chei", "efemere")))Algoritmul de semnătură generează mai întâi o pereche de chei private/publice _efemere_ (temporare). Această pereche de chei temporare este utilizată la calculul valorilor _R_ și _S_, după o transformare care implică semnarea cheii private și rezumatului (hash-ul) tranzacției.
 
-The temporary key pair is based on a random number _k_, which is used as the temporary private key. From _k_, we generate the corresponding temporary public key _P_ (calculated as _P = k*G_, in the same way bitcoin public keys are derived; see <<pubkey>>). The _R_ value of the digital signature is then the x coordinate of the ephemeral public key _P_.
+Perechea de chei temporare se bazează pe un număr aleatoriu _k_, care este utilizat ca și cheie privată temporară. Din _k_, generăm cheia publică temporară corespunzătoare _P_ (calculată ca _P = k*G_, în același mod sunt derivate cheile publice bitcoin; vezi <<pubkey>>). Valoarea _R_ a semnăturii digitale este coordonata x a cheii publice efemere _P_.
 
-From there, the algorithm calculates the _S_ value of the signature, such that:
+De acolo, algoritmul calculează valoarea _S_ a semnăturii, astfel încât:
 
 _S_ = __k__^-1^ (__Hash__(__m__) + __dA__ * __R__) _mod n_
 
-where:
+unde:
 
-* _k_ is the ephemeral private key
-* _R_ is the x coordinate of the ephemeral public key
-* _dA_ is the signing private key
-* _m_ is the transaction data
-* _n_ is the prime order of the elliptic curve
+* _k_ este cheia privată efemeră
+* _R_ este coordonata x a cheii publice efemere
+* _dA_ este cheia privată de semnare
+* _m_ sunt datele tranzacției
+* _n_ este ordinea primă a curbei eliptice
 
-Verification is the inverse of the signature generation function, using the _R_, _S_ values and the public key to calculate a value _P_, which is a point on the elliptic curve (the ephemeral public key used in signature creation):
+Verificarea este inversa funcției de generare a semnăturilor, folosind valorile _R_, _S_ și cheia publică pentru a calcula o valoare _P_, care este un punct de pe curba eliptică (cheia publică efemeră folosită la crearea semnăturilor):
 
 _P_ = __S__^-1^ * __Hash__(__m__) * _G_ + __S__^-1^ * _R_ * _Qa_
 
-where:
+unde:
 
-* _R_ and _S_ are the signature values
-* _Qa_ is Alice's public key
-* _m_ is the transaction data that was signed
-* _G_ is the elliptic curve generator point
+* _R_ și _S_ sunt valorile semnăturii
+* _Qa_ este cheia publică a lui Alice
+* _m_ sunt datele tranzacției care a fost semnată
+* _G_ este punctul generator de curbă eliptică
 
-If the x coordinate of the calculated point _P_ is equal to _R_, then the verifier can conclude that the signature is valid.
+Dacă coordonata x a punctului calculat _P_ este egală cu _R_, atunci verificatorul poate concluziona că semnătura este validă.
 
-Note that in verifying the signature, the private key is neither known nor revealed.
+Rețineți că la verificarea semnăturii, cheia privată nu este nici cunoscută, nici dezvăluită.
 
-[TIP]
+[SFAT]
 ====
-ECDSA is necessarily a fairly complicated piece of math; a full explanation is beyond the scope of this book. A number of great guides online take you through it step by step: search for "ECDSA explained" or try this one: http://bit.ly/2r0HhGB[].
-====
-
-==== The Importance of Randomness in Signatures
-
-((("digital signatures", "randomness in")))As we saw in <<ecdsa_math>>, the signature generation algorithm uses a random key _k_, as the basis for an ephemeral private/public key pair. The value of _k_ is not important, _as long as it is random_. If the same value _k_ is used to produce two signatures on different messages (transactions), then the signing _private key_ can be calculated by anyone. Reuse of the same value for _k_ in a signature algorithm leads to exposure of the private key!
-
-[WARNING]
-====
-((("warnings and cautions", "digital signatures")))If the same value _k_ is used in the signing algorithm on two different transactions, the private key can be calculated and exposed to the world!
+ECDSA este în mod necesar o piesă de matematică destul de complicată; o explicație completă este dincolo de scopul acestei cărți. Câteva ghiduri excelente online vă parcurg pas cu pas: căutați „"ECDSA explained" sau încercați acesta: http://bit.ly/2r0HhGB[].
 ====
 
-This is not just a theoretical possibility. We have seen this issue lead to exposure of private keys in a few different implementations of transaction-signing algorithms in bitcoin. People have had funds stolen because of inadvertent reuse of a _k_ value. The most common reason for reuse of a _k_ value is an improperly initialized random-number generator.
+==== Importanța Aleatorului în Semnături
 
-((("random numbers", "random number generation")))((("entropy", "random number generation")))((("deterministic initialization")))To avoid this vulnerability, the industry best practice is to not generate _k_ with a random-number generator seeded with entropy, but instead to use a deterministic-random process seeded with the transaction data itself. This ensures that each transaction produces a different _k_. The industry-standard algorithm for deterministic initialization of _k_ is defined in https://tools.ietf.org/html/rfc6979[RFC 6979], published by the Internet Engineering Task Force.
+((("semnături digitale", "aleatoriu în")))După cum am văzut în <<ecdsa_math>>, algoritmul de generare a semnăturii folosește o cheie aleatorie _k_, ca bază pentru o pereche de chei private/publice efemere. Valoarea lui _k_ nu este importantă, atât timp cât este aleatorie. Dacă aceeași valoare _k_ este utilizată pentru a produce două semnături pe mesaje diferite (tranzacții), atunci _cheia privată_ folosită pentru sepmnat poate fi calculată de oricine. Reutilizarea aceleiași valori pentru _k_ într-un algoritm de semnătură duce la expunerea cheii private!
 
-If you are implementing an algorithm to sign transactions in bitcoin, you _must_ use RFC 6979 or a similarly deterministic-random algorithm to ensure you generate a different _k_ for each transaction.((("", startref="Tdigsig06")))
+[ATENȚIE]
+====
+((("avertismente și precauții", "semnături digitale")))IDacă aceeași valoare _k_ este folosită în algoritmul de semnare pentru două tranzacții diferite, cheia privată poate fi calculată și expusă lumii!
+====
 
-=== Bitcoin Addresses, Balances, and Other Abstractions
+Aceasta nu este doar o posibilitate teoretică. Am văzut că această problemă duce la expunerea cheilor private în câteva implementări diferite ale algoritmilor de semnare a tranzacțiilor în bitcoin. Oamenii au avut fonduri furate din cauza reutilizării inadvertente a unei valori _k_. Cel mai frecvent motiv pentru refolosirea unei valori _k_ este un generator de numere aleatoare inițializat necorespunzător.
 
-((("transactions", "higher-level abstractions", id="Thigher06")))We began this chapter with the discovery that transactions look very different "behind the scenes" than how they are presented in wallets, blockchain explorers, and other user-facing applications. Many of the simplistic and familiar concepts from the earlier chapters, such as bitcoin addresses and balances, seem to be absent from the transaction structure. We saw that transactions don't contain bitcoin addresses, per se, but instead operate through scripts that lock and unlock discrete values of bitcoin. Balances are not present anywhere in this system and yet every wallet application prominently displays the balance of the user's wallet.
+((("numere aleatorii", "generare aleatoare de numere")))((("entropie", "generare aleatoare de numere")))((("inițializare deterministă")))Pentru a evita această vulnerabilitate, cele mai bune practici din industrie recomandă să nu se genereze _k_ cu un generator cu număr aleator care folosește ca sămâță (seed) entropie, ci să folosească în schimb un proces determinist-aleator care folosește ca sămâță (seed) datele tranzacției în sine. Acest lucru asigură că fiecare tranzacție produce un _k_ diferit. Algoritmul standard al industriei pentru inițializarea deterministă a _k_ este definit în https://tools.ietf.org/html/rfc6979[RFC 6979], publicat de Internet Engineering Task Force.
 
-Now that we have explored what is actually included in a bitcoin transaction, we can examine how the higher-level abstractions are derived from the seemingly primitive components of the transaction.
+Dacă implementați un algoritm pentru a semna tranzacții în bitcoin,  _trebuie_ să utilizați RFC 6979 sau un algoritm similar-deterministic aleatoriu pentru a vă asigura că generați un _k_ diferit pentru fiecare tranzacție.((("", startref="Tdigsig06")))
 
-Let's look again at how Alice's transaction was presented on a popular block explorer (<<alice_transaction_to_bobs_cafe>>).
+=== Adrese Bitcoin, Solduri și alte Abstractizări
+
+((("tranzacții", "abstractizări la nivel înalt", id="Thigher06")))Am început acest capitol cu descoperirea că tranzacțiile arată foarte diferit ”în culise” decât modul în care sunt prezentate în portofele, de exploratorii de lanț-de-blocuri (blockchain), și alte aplicații orientate către utilizator. Multe dintre conceptele simpliste și familiare din capitolele anterioare, cum ar fi adresele și soldurile bitcoin, par să fie absente din structura tranzacției. Am văzut că tranzacțiile nu conțin adrese bitcoin, în sine, ci operează prin scripturi care blochează și deblochează valori discrete ale bitcoin. Soldurile nu sunt prezente nicăieri în acest sistem și, cu toate acestea, fiecare aplicație portofel afișează în mod evident soldul portofelului utilizatorului.
+
+Acum că am explorat ceea ce este de fapt inclus într-o tranzacție bitcoin, putem examina modul în care abstracțiile de nivel înalt sunt derivate din componentele aparent primitive ale tranzacției.
+
+Să ne uităm din nou la modul în care tranzacția lui Alice a fost prezentată pe un explorator de blocuri popular (<<alice_transaction_to_bobs_cafe>>).
 
 [[alice_transaction_to_bobs_cafe]]
-.Alice's transaction to Bob's Cafe
-image::images/mbc2_0208.png["Alice Coffee Transaction"]
+.Tranzacția lui Alice către Cafeneaua lui Bob
+image::images/mbc2_0208.png["Tranzacția cu cafea a lui Alice"]
 
-On the left side of the transaction, the blockchain explorer shows Alice's bitcoin address as the "sender." In fact, this information is not in the transaction itself. When the blockchain explorer references the transaction it also references the previous transaction associated with the input and extracted the first output from that older transaction. Within that output is a locking script that locks the UTXO to Alice's public key hash (a P2PKH script). The blockchain explorer extracted the public key hash and encoded it using Base58Check encoding to produce and display the bitcoin address that represents that public key.
+În partea stângă a tranzacției, exploratorul lanțului-de-blocuri arată adresa bitcoin a lui Alice ca ”expeditor”. De fapt, aceste informații nu se regăsesc în tranzacția în sine. Când exploratorul  lanțului-de-blocuri face referire la tranzacție, acesta face referire și la tranzacția anterioară asociată cu intrarea și a extras prima ieșire din tranzacția mai veche. În cadrul acestei ieșiri este un script de blocare care blochează UTXO-ul la rezumatul (hash-ul) cheii publice a lui Alice (un script P2PKH). Exploratorul lanțului-de-blocuri a extras rezumatul cheii publice și l-a codat folosind codificarea Base58Check pentru a produce și afișa adresa bitcoin care reprezintă acea cheie publică.
 
-Similarly, on the right side, the blockchain explorer shows the two outputs; the first to Bob's bitcoin address and the second to Alice's bitcoin address (as change). Once again, to create these bitcoin addresses, the blockchain explorer extracted the locking script from each output, recognized it as a P2PKH script, and extracted the public-key-hash from within. Finally, the blockchain explorer reencoded that public key hash with Base58Check to produce and display the bitcoin addresses.
+În mod similar, în partea dreaptă, exploratorul lanțului-de-blocuri arată cele două ieșiri; prima la adresa bitcoin a lui Bob și a doua la adresa bitcoin a lui Alice (ca rest). Încă o dată, pentru a crea aceste adrese bitcoin, exploratorul lanțului-de-blocuri a extras scriptul de blocare din fiecare ieșire, l-a recunoscut ca un script P2PKH și a extras rezumatul cheii publice din interior. În cele din urmă, exploratorul lanțului-de-blocuri a codificat acel rezumat al cheii publice cu Base58Check pentru a produce și afișa adresele bitcoin.
 
-If you were to click on Bob's bitcoin address, the blockchain explorer would show you the view in <<the_balance_of_bobs_bitcoin_address>>.
+Dacă ar fi să dați clic pe adresa bitcoin a lui Bob, exploratorul lanțului-de-blocuri vă arăta imaginea din <<the_balance_of_bobs_bitcoin_address>>.
 
 [[the_balance_of_bobs_bitcoin_address]]
-.The balance of Bob's bitcoin address
-image::images/mbc2_0608.png["The balance of Bob's bitcoin address"]
+.Balanța adresei bitcoin a lui Bob
+image::images/mbc2_0608.png["Balanța adresei bitcoin a lui Bob"]
 
-The blockchain explorer displays the balance of Bob's bitcoin address. But nowhere in the bitcoin system is there a concept of a "balance." Rather, the values displayed here are constructed by the blockchain explorer as follows.
+Exploratorul lanțului-de-blocuri afișează balanța adresei bitcoin a lui Bob. Dar nicăieri în sistemul bitcoin nu există un concept de ”balanță”. Mai degrabă, valorile afișate aici sunt construite de exploratorul lanțului-de-blocuri după cum urmează.
 
-To construct the "Total Received" amount, the blockchain explorer first will decode the Base58Check encoding of the bitcoin address to retrieve the 160-bit hash of Bob's public key that is encoded within the address. Then, the blockchain explorer will search through the database of transactions, looking for outputs with P2PKH locking scripts that contain Bob's public key hash. By summing up the value of all the outputs, the blockchain explorer can produce the total value received.
+Pentru a construi suma ”Total primit” (Total Received), exploratorul lanțului-de-blocuri va decoda mai întâi codificarea Base58Check a adresei bitcoin pentru a prelua rezumatul (hash-ul) de 160 de biți a cheii publice a lui Bob. Apoi, exploratorul lanțului-de-blocuri va inspecta baza de date a tranzacțiilor, căutând ieșiri cu scripturi de blocare P2PKH care conțin rezumatul (hash-ul) cheii publice a lui Bob. Prin însumarea valorii tuturor rezultatelor, exploratorul lanțului-de-blocuri poate produce valoarea totală primită.
 
-Constructing the current balance (displayed as "Final Balance") requires a bit more work. The blockchain explorer keeps a separate database of the outputs that are currently unspent, the UTXO set. To maintain this database, the blockchain explorer must monitor the bitcoin network, add newly created UTXO, and remove spent UTXO, in real time, as they appear in unconfirmed transactions. This is a complicated process that depends on keeping track of transactions as they propagate, as well as maintaining consensus with the bitcoin network to ensure that the correct chain is followed. Sometimes, the blockchain explorer goes out of sync and its perspective of the UTXO set is incomplete or incorrect.
+Construirea balanței curente (Final Balance) necesită ceva mai multă muncă. Exploratorul lanțului-de-blocuri păstrează o bază de date separată a ieșirilor care nu sunt cheltuite în prezent, setul UTXO. Pentru a menține această bază de date, exploratorul blockchain trebuie să monitorizeze rețeaua bitcoin, să adauge UTXO-uri nou create și să elimine UTXO-uri cheltuite, în timp real, în timp ce apar în tranzacții neconfirmate. Acesta este un proces complicat, care depinde de ținerea evidenței tranzacțiilor pe măsură ce acestea se propagă, precum și de a menține un consens cu rețeaua bitcoin pentru a se asigura că urmează lanțul corect. Uneori, exploratorul lanțului-de-blocuri iese din sincronizare și perspectiva sa asupra setului UTXO este incompletă sau incorectă.
 
-From the UTXO set, the blockchain explorer sums up the value of all unspent outputs referencing Bob's public key hash and produces the "Final Balance" number shown to the user.
+Din setul UTXO, exploratorul lanțului-de-blocuri însumează valoarea tuturor ieșirilor necheltuite care fac referire la rezumatul (hash-ul) cheii publice a lui Bob și produce numărul ”Balanță Finală” (Final Balance) afișat utilizatorului.
 
-In order to produce this one image, with these two "balances," the blockchain explorer has to index and search through dozens, hundreds, or even hundreds of thousands of transactions.
+Pentru a produce această imagine, cu aceste două ”balanțe”, exploratorul lanțului-de-blocuri trebuie să indexeze și să caute prin zeci, sute sau chiar sute de mii de tranzacții.
 
-In summary, the information presented to users through wallet applications, blockchain explorers, and other bitcoin user interfaces is often composed of higher-level abstractions that are derived by searching many different transactions, inspecting their content, and manipulating the data contained within them. By presenting this simplistic view of bitcoin transactions that resemble bank checks from one sender to one recipient, these applications have to abstract a lot of underlying details. They mostly focus on the common types of transactions: P2PKH with SIGHASH_ALL signatures on every input. Thus, while bitcoin applications can present more than 80% of all transactions in an easy-to-read manner, they are sometimes stumped by transactions that deviate from the norm. Transactions that contain more complex locking scripts, or different SIGHASH flags, or many inputs and outputs, demonstrate the simplicity and weakness of these abstractions.
+În rezumat, informațiile prezentate utilizatorilor prin intermediul aplicațiilor portofel, exploratorilor lanțului-de-blocuri și alte interfețe cu utilizatorul sunt adesea compuse din abstractizări la nivel înalt care sunt obținute prin căutarea multor tranzacții diferite, inspecția conținutului lor și manipularea datelor conținute în acestea. Prin prezentarea acestei concepții simpliste asupra tranzacțiilor bitcoin care seamănă cu cecuri bancare de la un expeditor la un destinatar, aceste aplicații trebuie să rezume o mulțime de detalii adiacente. Ele se concentrează mai ales pe tipurile comune de tranzacții: P2PKH cu semnături SIGHASH_ALL pe fiecare intrare. Astfel, în timp ce aplicațiile bitcoin pot prezenta mai mult de 80% din toate tranzacțiile într-o manieră ușor de citit, ele se împiedică uneori de tranzacții care se abat de la normă. Tranzacțiile care conțin scripturi de blocare mai complexe sau diferite indicatoare SIGHASH, sau multe intrări și ieșiri, demonstrează simplitatea și slăbiciunea acestor abstractizări.
 
-Every day, hundreds of transactions that do not contain P2PKH outputs are confirmed on the blockchain. The blockchain explorers often present these with red warning messages saying they cannot decode an address. The following link contains the most recent "strange transactions" that were not fully decoded: https://blockchain.info/strange-transactions[].
+În fiecare zi, sute de tranzacții care nu conțin ieșiri P2PKH sunt confirmate pe lanțul-de-blocuri. Exploratorii lantului-de-blocuri le prezintă adesea cu mesaje de avertizare roșie spunând că nu pot decoda o adresă. Următorul link conține cele mai recente ”tranzacții ciudate” care nu au fost complet decodate: https://blockchain.info/strange-transactions [].
 
-As we will see in the next chapter, these are not necessarily strange transactions. They are transactions that contain more complex locking scripts than the common P2PKH. We will learn how to decode and understand more complex scripts and the applications they support next.((("", startref="Thigher06")))((("", startref="alicesixtwo")))
+După cum vom vedea în capitolul următor, acestea nu sunt neapărat tranzacții ciudate. Sunt tranzacții care conțin scripturi de blocare mai complexe decât P2PKH-ul obișnuit. Vom învăța cum să decodăm și să înțelegem scripturi mai complexe și aplicațiile pe care le susțin.((("", startref="Thigher06")))((("", startref="alicesixtwo")))
