@@ -1,14 +1,14 @@
 [[ch03_bitcoin_client]]
 == Bitcoin Core: Implementarea Referință
 
-((("licențe open source")))((("Nakamoto, Satoshi")))Bitcoin core este un proiect _open source_, iar codul sursă este disponibil sub o licență open source MIT, poate fi descărcat gratis și folosit pentru orice scop. Open source înseamnă mai mult decât că este gratis. Înseamnă de asemenea că bitcoin este dezvoltat de o comunitate de voluntari deschisă. La început acea comunitate era formată doar din Satoshi Nakamoto. Pânâ în 2016, codul sursă bitcoin a avut mai mult de 400 de contributori cu aproximativ o duzină de programatori lucând aproape full-time, iar alte câteva duzini lucrând part-time. Aproape oricine poate contribui la cod&#x2014;inclusiv duneavoastră!
+((("licențe open source")))((("Nakamoto, Satoshi")))Bitcoin core este un proiect _open source_, iar codul sursă este disponibil sub o licență open source MIT. El poate fi descărcat gratis și folosit pentru orice scop. Conceptul "open source" înseamnă mai mult decât simpla gratuitate a proiectului. Înseamnă de asemenea că bitcoin este dezvoltat de o comunitate deschisă de voluntari. La început acea comunitate era formată doar din Satoshi Nakamoto. Pânâ în 2016, codul sursă bitcoin a avut mai mult de 400 de contribuitori cu aproximativ o duzină de programatori lucrând aproape full-time, iar alte câteva duzini lucrând part-time. Aproape oricine poate contribui la cod&#x2014;inclusiv dumneavoastră!
 
 
-((("referat bitcoin")))((("client Satoshi")))((("implementare referință", see="Bitcoin Core")))((("Bitcoin Core", "implementare referință")))Când bitcoin a fost creeat de Statoshi Nakamoto, software-ul a fost de fapt finalizat înainte ca referatul reprodus în <<satoshi_whitepaper>> să fi fost scris. Satoshi a vrut să se asigure că funcționează înainte să scrie despre asta. Acea primă implementare, atunci cunoscută simplu ca ”Bitcoin” sau ”clientul Satoshi,” a fost puternic modificată și imbunătățită. A evoluat în ceea ce este cunoscut ca _Bitcoin Core_, pentru a o diferenția de alte implementări compatibile. Bitcoin Core este _implementarea referință_ a sistemului bitcoin, însemnând că este referința autoritativă a modului în care fiecare parte a tehnologiei ar trebui implementată. Bitcoin Core implementează toate aspectele bitcoin, incluzând portofele, un motor de validare a tranzacțiilor si a blocurilor, și un nod-complet în rețeaua de la egal la egal bitcoin.
+((("referat bitcoin")))((("client Satoshi")))((("implementare referință", see="Bitcoin Core")))((("Bitcoin Core", "implementare referință")))Când bitcoin a fost creat de Satoshi Nakamoto, software-ul a fost de fapt finalizat înainte ca referatul reprodus în <<satoshi_whitepaper>> să fi fost scris. Satoshi a vrut să se asigure că funcționează înainte de a scrie despre asta. Acea primă implementare, atunci cunoscută simplu ca ”Bitcoin” sau ”clientul Satoshi,” a fost puternic modificată și imbunătățită. A evoluat în ceea ce este cunoscut ca _Bitcoin Core_, pentru a o diferenția de alte implementări compatibile. Bitcoin Core este _implementarea referință_ a sistemului bitcoin, însemnând că este referința autoritativă a modului în care fiecare parte a tehnologiei ar trebui implementată. Bitcoin Core implementează toate aspectele bitcoin, incluzând portofele, un motor de validare a tranzacțiilor si a blocurilor, și un nod-complet în rețeaua de la egal la egal bitcoin.
 
 [ATENȚIE]
 ====
-((("portofele", "cele mai bune practici pentru")))((("propuneri de îmbunătățire bitcoin", "Cuvinte Cod Mnemonic (BIP-39)")))((("propuneri de îmbunătățire bitcoin", "Portofele Deterministic Ierarhic (BIP-32/BIP-44)")))Chiar dacă Bitcoin Core include o implementare referință a unui portofel, acesta nu este intenționat să fie folosit ca portofel de producție pentru utilizatori sau pentru aplicații. Dezvoltatorii de aplicații sunt sfătuiți să construiască portofele folosind standarde moderne cum ar fi BIP-39 și BIP-32 (vezi  <<mnemonic_code_words>> și <<hd_wallets>>). BIP vine de la _Bitcoin Improvement Proposal_ (Propuneri de Îmbunătățire Bitcoin).
+((("portofele", "cele mai bune practici pentru")))((("propuneri de îmbunătățire bitcoin", "Cuvinte Cod Mnemonic (BIP-39)")))((("propuneri de îmbunătățire bitcoin", "Portofele Deterministic Ierarhic (BIP-32/BIP-44)")))Chiar dacă Bitcoin Core include o implementare referință a unui portofel, acesta nu este intenționat să fie folosit ca portofel de producție pentru utilizatori sau pentru aplicații. Dezvoltatorii de aplicații sunt sfătuiți să construiască portofele folosind standarde moderne cum ar fi BIP-39 și BIP-32 (vezi  <<mnemonic_code_words>> și <<hd_wallets>>). BIP vine de la _Bitcoin Improvement Proposal_ (Propunere de Îmbunătățire Bitcoin).
 ====
 
 <<bitcoin_core_architecture>> arată arhitectura Bitcoin Core.((("Bitcoin Core", "arhitectură")))
@@ -20,16 +20,16 @@ image::images/mbc2_0301.png["Arhitectura Bitcoin Core"]
 
 === Mediul de Dezvoltare Bitcoin
 
-((("mediul de dezvoltare", "setup", see="Bitcoin Core")))Dacă sunteți un programator, o să doriți să vă configurați un mediu de dezvoltare cu toate instrumentele, bibliotecile, și software-ul de suport pentru scrierea aplicațiilor bitcoin. În acest capitol foarte tehnic, vom parcurge acest proces pas cu pas. Dacă materia devine prea încărcată (și de fapt  nu creeați un mediu de dezvoltare) nu ezitați să treceți la capitolul următor, care e mai puțin tehnic.
+((("mediul de dezvoltare", "setup", see="Bitcoin Core")))Dacă sunteți un programator, o să doriți să vă configurați un mediu de dezvoltare cu toate instrumentele, bibliotecile, și software-ul de suport pentru scrierea aplicațiilor bitcoin. În acest capitol foarte tehnic, vom parcurge acest proces pas cu pas. Dacă materia devine prea încărcată (și de fapt nu doriți să creați un mediu de dezvoltare) nu ezitați să treceți la capitolul următor, care e mai puțin tehnic.
 
 [[compiling_core]]
 === Compilarea Bitcoin Core din Codul Sursă
 
-((("Bitcoin Core", "compilare din cod sursă", id="BCsource03")))((("Bitcoin Core", "compilare din cod sursă", "descărcare")))((("exemple de cod,obțierea și folosirea")))Codul sursă Bitcoin Core poate fi descărcat ca arhivă sau clondând repozitoriul GitHub.  ((("descărcari Bitcoin Core")))La https://bitcoincore.org/bin/[pagina de descărcare Bitcoin Core], selectați cea mai recentă versiune și descărcați arhiva comprimată a codului sursă, de exemplu, +bitcoin-0.15.0.2.tar.gz+. ((("pagina GitHub a bitcoin")))Alternativ, puteți folosi git din linia de comandă pentru a creea o copie locală a codului sursă de la https://github.com/bitcoin/bitcoin[pagina GitHub a bitcoin].
+((("Bitcoin Core", "compilare din cod sursă", id="BCsource03")))((("Bitcoin Core", "compilare din cod sursă", "descărcare")))((("exemple de cod,obținerea și folosirea")))Codul sursă Bitcoin Core poate fi descărcat ca arhivă sau clondând repozitoriul GitHub.  ((("descărcari Bitcoin Core")))La https://bitcoincore.org/bin/[pagina de descărcare Bitcoin Core], selectați cea mai recentă versiune și descărcați arhiva comprimată a codului sursă, de exemplu, +bitcoin-0.15.0.2.tar.gz+. ((("pagina GitHub a bitcoin")))Alternativ, puteți folosi git din linia de comandă pentru a crea o copie locală a codului sursă de la https://github.com/bitcoin/bitcoin[pagina GitHub a bitcoin].
 
 [Sfat]
 ====
-((("simbolul $")))((("comenzi shell")))((("aplicații terminal")))În multe dintre exemplele din acest capitol vom folosi linia de comandă a sistemului de operare (cunoscută ca ”shell”), accesată printr-o aplicație terminal. Acest shell va afișa un prompt; dumneavoastră introduceți o comanda; iar shell-ul răspunde cu niște text și cu un nou prompt pentru utmătoarea comandă. Prompt-ul s-ar putea să arate diferit pe calculatorul dumneavoastră, dar în exemplele următoare este notat cu simbolul +$+. În exemple, când vedeți text după simbolul +$+, nu introduceți simbolul +$+, ci doar comanda care urmeaza imediat după el, apoi apăsați Enter pentru a executa comanda. În exemple, liniile de sub fiecare comandă sunt răspunsul sistemului de operare la acea comandă. Când vedeți următorul prefix +$+, veți ști că este o comanda și ar trebui să repetați procesul.
+((("simbolul $")))((("comenzi shell")))((("aplicații terminal")))În multe dintre exemplele din acest capitol vom folosi linia de comandă a sistemului de operare (cunoscută ca ”shell”), accesată printr-o aplicație terminal. Acest shell va afișa un prompt; dumneavoastră introduceți o comanda; iar shell-ul răspunde cu niște text și cu un nou prompt pentru următoarea comandă. Prompt-ul s-ar putea să arate diferit pe calculatorul dumneavoastră, dar în exemplele următoare este notat cu simbolul +$+. În exemple, când vedeți text după simbolul +$+, nu introduceți simbolul +$+, ci doar comanda care urmeaza imediat după el, apoi apăsați Enter pentru a executa comanda. În exemple, liniile de sub fiecare comandă sunt răspunsul sistemului de operare la acea comandă. Când vedeți următorul prefix +$+, veți ști că este o comanda și ar trebui să repetați procesul.
 ====
 
 ((("clonarea codului sursă")))((("cod sursă, clonare", seealso="Bitcoin Core")))În acest exemplu, folosim comanda +git+ pentru a creea o copie locală (”clona”) a codului sursă:
@@ -48,7 +48,7 @@ $
 
 [Sfat]
 ====
-((("sisteme distribuite de control a versiunii")))Git este cel mai folosit sistem distribuit de control al versiunilor, o parte esențială a setului de instrumente al oricărui programator. Este posibil să fie nevoie să instalați comanda  +git+, sau o interfață grafică pentru git pe sistemul dumneavoastră de operare dacă nu îl aveți deja.
+((("sisteme distribuite de control a versiunii")))Git este cel mai folosit sistem distribuit de control al versiunilor, o parte esențială a setului de instrumente al oricărui programator. Este posibil să fie nevoie să instalați comanda  +git+, sau o interfață grafică pentru git pe sistemul dumneavoastră de operare dacă nu o aveți deja.
 ====
 
 Când operația git de clonare a fost finalizată, veți avea o copie locală completă a codului sursă în directorul _bitcoin_. Accesați acest direcor introducând  ++**cd bitcoin**++ la prompt:
@@ -58,7 +58,7 @@ $ cd bitcoin
 ----
 
 ==== Selectarea unei Versiuni Bitcoin Core
-((("Bitcoin Core", "compilarea din codul sursă", "selectarea versiunii")))Implicit, copia locală va fi sincronizată cu cea mai recentă versiune a codului, care ar putea fi o versiune instabilă sau beta. Înainte de a compila codul, selectați o versiune specifică alegând o _etichetă_. Aceasta va sincroniza copia locală cu un instantaneu specific al codului identificat printr-o etichetă. Etichetele sunt folosite de programatori pentru a marca versiuni specifice ale codului cu un număr de versiune. În primul rând, petru a găsi etichetele disponibile vom folosim comanda +git tag+:
+((("Bitcoin Core", "compilarea din codul sursă", "selectarea versiunii")))Implicit, copia locală va fi sincronizată cu cea mai recentă versiune a codului, care ar putea fi o versiune instabilă sau beta. Înainte de a compila codul, selectați o versiune specifică alegând o _etichetă_. Aceasta va sincroniza copia locală cu un instantaneu specific al codului identificat printr-o etichetă. Etichetele sunt folosite de programatori pentru a marca versiuni specifice ale codului cu un număr de versiune. În primul rând, pentru a găsi etichetele disponibile vom folosim comanda +git tag+:
 
 ----
 $ git tag
@@ -80,7 +80,7 @@ $ git checkout v0.15.0
 HEAD is now at 3751912... Merge #11295: doc: Old fee_estimates.dat are discarded by 0.15.0
 ----
 
-Puteți verifica că aveți versiunea dorita executând comanda +git status+:
+Puteți verifica că aveți versiunea dorită executând comanda +git status+:
 
 ----
 $ git status
@@ -90,7 +90,7 @@ nothing to commit, working directory clean
 
 ==== Configurarea Build-ului Bitcoin Core
 
-((("Bitcoin Core", "compilarea din cod sursă", "configurarea build-ului")))((("documentare")))((("documentarea build-ului", seealso="Bitcoin Core")))Codul sursă include documentația, care poate fi găsită în câteva fișere. Examinați documentația localizată în _README.md_ în directorul _bitcoin_, tastând la prompt ++**more README.md**++ și folosind bara de spațiu pentru a progresa la pagina următoare. În acest capitol, vom creea build-ul pentru clientul bitcoin pentru linia de comandă pentru Linux, cunoscut ca +bitcoind+. Examinați instrucțiunile pentru compilarea clientului bitcoin pentru linia de comandă tastând  ++**more doc/build-unix.md**++. Instrucțiuni pentru macOS si Windows pot fi găsite in directorul _doc_, cu numele de  _build-osx.md_ sau respectiv  _build-windows.md_.
+((("Bitcoin Core", "compilarea din cod sursă", "configurarea build-ului")))((("documentare")))((("documentarea build-ului", seealso="Bitcoin Core")))Codul sursă include documentația, care poate fi găsită în câteva fișiere. Examinați documentația localizată în _README.md_ în directorul _bitcoin_, tastând la prompt ++**more README.md**++ și folosind bara de spațiu pentru a progresa la pagina următoare. În acest capitol, vom crea build-ul pentru clientul bitcoin Linux pentru linia de comandă, cunoscut ca +bitcoind+. Examinați instrucțiunile pentru compilarea clientului bitcoin pentru linia de comandă tastând  ++**more doc/build-unix.md**++. Instrucțiuni pentru macOS si Windows pot fi găsite in directorul _doc_, cu numele de  _build-osx.md_ sau respectiv _build-windows.md_.
 
 Examinați cu atenție precondițiile pentru build, care sunt localizate în prima parte a documentației. Acestea sunt biblioteci ce trebuie să fie prezente pe sistemul dumneavoastră înainte să puteți începe compilarea bitcoin. Dacă aceste biblioteci lipsesc, procesul de build va eșua cu o eroare. Dacă aceasta se întâmplă pentru că ați omis o bibliotecă, o puteți instala, iar apoi să reluați procesul din punctul în care a rămas. Presupunând că dependințele sunt instalate, puteți porni procesul de build prin generarea unor scripturi folosind scriptul _autogen.sh_.
 
@@ -111,7 +111,7 @@ Makefile.am: installing 'build-aux/depcomp'
 ...
 ----
 
-Scriptul _autogen.sh_ creează un set de scripturi automate de configurare care vor interoga sistemul dumneavoastră pentru a descoperi setările corecte și a se asigura că aveți toate bibliotecile necesare pentru a compila codul. Cel mai importate dintre toate este scriptul +configure+ care oferă o serie de opțiuni pentru a personaliza procesul de build. Tastați ++**./configure --help**++ pentru a vedea diversele optiuni:
+Scriptul _autogen.sh_ creează un set de scripturi automate de configurare care vor interoga sistemul dumneavoastră pentru a descoperi setările corecte și a se asigura că aveți toate bibliotecile necesare pentru a compila codul. Cel mai important dintre toate este scriptul +configure+ care oferă o serie de opțiuni pentru a personaliza procesul de build. Tastați ++**./configure --help**++ pentru a vedea diversele optiuni:
 
 ----
 $ ./configure --help
@@ -131,7 +131,7 @@ Optional Features:
 ...
 ----
 
-Scriptul +configure+ vă permite să activați sau să dezactivați anumite funcționalități ale +bitcoind+ cu ajutorul indicatoarelor (flags) +--enable-FEATURE+ și +--disable-FEATURE+, unde pass:[<span class="keep-together"><code>FEATURE</code></span>] este înlocuit de numele funcționalității, după cum este descris în documentul de ajutor. În acest capitol vom construi clientul +bitcoind+ cu toate funcționalitățile implicite. Nu vom folosi indicatorii de configurare, dar ar trebui să îi examinăm pentru a înțelege ce funcționalități opționale fac parte din client. Daca sunteți un cadru didactic, restricțiile de pe calculatoarele din laborator s-ar putea să vă solicite să înstalați aplicația în directorul utilizatorului (home directory, de exemplu, folsind +--prefix=$HOME+).
+Scriptul +configure+ vă permite să activați sau să dezactivați anumite funcționalități ale +bitcoind+ cu ajutorul indicatoarelor (flags) +--enable-FEATURE+ și +--disable-FEATURE+, unde pass:[<span class="keep-together"><code>FEATURE</code></span>] este înlocuit de numele funcționalității, după cum este descris în documentul de ajutor. În acest capitol vom construi clientul +bitcoind+ cu toate funcționalitățile implicite. Nu vom folosi indicatorii de configurare, dar ar trebui să îi examinăm pentru a înțelege ce funcționalități opționale fac parte din client. Dacă sunteți un cadru didactic, restricțiile de pe calculatoarele din laborator s-ar putea să vă solicite să instalați aplicația în directorul utilizatorului (home directory, de exemplu, folosind +--prefix=$HOME+).
 
 Acestea sunt unele opțiuni utile care înlocuiesc comportamentul implicit al scriptului de configurare.
 
@@ -147,7 +147,7 @@ Acestea sunt unele opțiuni utile care înlocuiesc comportamentul implicit al sc
 <dd><p>Daca faceți build la un portofel, permiteți folosirea unei versiuni incompatibile a bibliotecii Berkeley DB.</p></dd>
 
 <dt><code>--with-gui=no</code></dt>
-<dd><p>Nu face build la interfața grafică cu utilizatorul, care necesită biblioteca QT. Aceasta face build doar la server si la linia de comandă bitcoin </p></dd>
+<dd><p>Nu va face build la interfața grafică cu utilizatorul, care necesită biblioteca QT. Aceasta face build doar la server și la linia de comandă bitcoin. </p></dd>
 </dl>
 ++++
 
@@ -169,11 +169,11 @@ $
 ----
 
 
-Dacă totul a decurs bine, execuția comenzii +configure+ va crea scripturile de build personalizate care ne vor permite să compilăm +bitcoind+. Dacă sunt biblioteci care lipsesc sau daca există erori, comanda +configure+ va finaliza cu o eroare în loc să creeze scripturile de build. Dacă apare o eroare, cel mai probabil se datorează unei biblioteci care lipsește sau care este incompatibilă. Examinați documentația de build din nou și asigurați-vă că instalați bibliotecile lipsă. Apoi rulați  +configure+ din nou și vedeți dacă asta rezolvă eroarea.
+Dacă totul a decurs bine, execuția comenzii +configure+ va crea scripturile de build personalizate care ne vor permite să compilăm +bitcoind+. Dacă sunt biblioteci care lipsesc sau daca există erori, comanda +configure+ se va termina cu o eroare în loc să creeze scripturile de build. Dacă apare o eroare, cel mai probabil se datorează unei biblioteci care lipsește sau care este incompatibilă. Examinați documentația de build din nou și asigurați-vă că instalați bibliotecile lipsă. Apoi rulați  +configure+ din nou și vedeți dacă asta rezolvă eroarea.
 
 ==== Build-uirea Executabilelor Bitcoin Core
 
-((("Bitcoin Core", "compilarea din cod sursă", "executabile core")))((("executabile core", seealso="Bitcoin Core")))În continuare, veți compila codul sursă, un proces care poate dura până la o oră, depinzând de viteza CPU-ului si a memoriei disponibile. În timpul procesului de compilare ar trebui să vedeți ieșiri la consolă la fiecare câteva secunde sau minute, sau o eroare daca ceva nu merge bine. Dacă apare o eroare, sau dacă procesul de compilare este întrerupt, poate fi reluat oricând tastând +make+ din nou. Tastați ++**make**++ pentru a începe compilarea aplicației executabile:
+((("Bitcoin Core", "compilarea din cod sursă", "executabile core")))((("executabile core", seealso="Bitcoin Core")))În continuare, veți compila codul sursă, un proces care poate dura până la o oră, depinzând de viteza CPU-ului si a memoriei disponibile. În timpul procesului de compilare ar trebui să vedeți ieșiri la consolă la fiecare câteva secunde sau minute, sau o eroare dacă ceva nu merge bine. Dacă apare o eroare, sau dacă procesul de compilare este întrerupt, poate fi reluat oricând tastând +make+ din nou. Tastați ++**make**++ pentru a începe compilarea aplicației executabile:
 
 ----
 $ make
@@ -220,32 +220,32 @@ $ which bitcoin-cli
 
 === Rularea unui Nod Bitcoin Core
 
-((("Bitcoin Core", "rulare noduri core", id="BCnode03")))((("bitcoin nodes", "rularea noduri core", id="BNcore03")))Rețeaua de la egal la egal a bitcoin este compusă din ”noduri” de rețea, operate în mare parte de voluntari și de unele afaceri care construiesc aplicații bitcoin. Cei care rulează noduri bitcoin au o vedere directă și autoritară asupra lanțului de blocuri bitcoin, având o copie locală a tuturor tranzacțiilor, validate independent de către sistemele lor. Rulând un nod, nu trebuie să vă bazați pe nici un terț pentru a valida o tranzacție. Mai mult decât atât, rulând un nod bitcoin contribuiți la rețeaua bitcoin facând-o mai robustă.
+((("Bitcoin Core", "rulare noduri core", id="BCnode03")))((("bitcoin nodes", "rularea noduri core", id="BNcore03")))Rețeaua de la egal la egal a bitcoin este compusă din ”noduri” de rețea, operate în mare parte de voluntari și de unele afaceri care construiesc aplicații bitcoin. Cei care rulează noduri bitcoin au o vedere directă și autoritară asupra lanțului de blocuri bitcoin, având o copie locală a tuturor tranzacțiilor, validate independent de către sistemele lor. Rulând un nod, nu trebuie să vă bazați pe nici un terț pentru a valida o tranzacție. Mai mult decât atât, rulând un nod bitcoin contribuiți la rețeaua bitcoin făcând-o mai robustă.
 
-Rularea unui nod necesită, însă, un sistem conectat permanent, cu suficient resurse pentru a procesa toate tranzacțiile bitcoin. Dacă alegeți să indexați toate tranzacțiile și să menținenți o copie locală completă a lanțului de blocuri, este posibil să aveți nevoie de mult spațiu pe disc și de multă memorie RAM. De la începutul anului 2018, un nod index-complet necesită 2 GB de RAM și minimum 160 GB de spațiu pe disc (vezi https://blockchain.info/charts/blocks-size[]). Bitcoin necesită de asemena să transmită și să primească tranzacții și blocuri bitcoin, consumând lațime de bandă. Dacă conexiunea dumneavoastră la internet este limitată, are o capacitate de date scăzută, sau este contorizată (taxată per gigabit), probabil nu ar trebui să rulați un nod bitcoin pe ea, sau să rulați într-un mod care îi restrânge lungimea de bandă (vezi <<constrained_resources>>).
+Rularea unui nod necesită, însă, un sistem conectat permanent, cu suficient resurse pentru a procesa toate tranzacțiile bitcoin. Dacă alegeți să indexați toate tranzacțiile și să menținenți o copie locală completă a lanțului de blocuri, este posibil să aveți nevoie de mult spațiu pe disc și de multă memorie RAM. De la începutul anului 2018, un nod index-complet necesită 2 GB de RAM și minimum 160 GB de spațiu pe disc (vezi https://blockchain.info/charts/blocks-size[]). Bitcoin necesită de asemenea să transmită și să primească tranzacții și blocuri bitcoin, consumând lățime de bandă. Dacă conexiunea dumneavoastră la internet este limitată, are o capacitate de date scăzută, sau este contorizată (taxată per gigabit), probabil nu ar trebui să rulați un nod bitcoin pe ea, sau să rulați într-un mod care îi restrânge lungimea de bandă (vezi <<constrained_resources>>).
 
 [Sfat]
 ====
-((("avertismente și precauții", "resurse necesare pentru un nod core")))((("resurse necesare")))Bitcoin Core menține implicit o copie completă a lanțului de blocuri, cu fiecare tranzacție care a avut loc vreodată în rețeaua bitcoin de la înființare, în 2009. Acest set de date are marimea de zeci de gigabytes și este descărcat incremental pe parcursul câtorva zile sau săptămâni, în funcție de viteza procesorului și a conexiunii la internet. Bitcoin Core nu va putea procesa tranzacții sau actualiza soldurile contului până când întreg setul de date al lanțului de blocuri nu este descărcat. Asigurați-vă că aveți destul spațiu pe disc, lățime de bandă, și timp pentru a finaliza sincronizarea inițială. Puteți configura Bitcoin Core să reducă marimea lanțului de blocuri eliminând blocurile vechi (vezi <<constrained_resources>>), dar tot va descărca întreg setul de date înainte de a elimina blocurile vechi.
+((("avertismente și precauții", "resurse necesare pentru un nod core")))((("resurse necesare")))Bitcoin Core menține implicit o copie completă a lanțului de blocuri, cu fiecare tranzacție care a avut loc vreodată în rețeaua bitcoin de la înființare, în 2009. Acest set de date are mărimea de zeci de gigabytes și este descărcat incremental pe parcursul câtorva zile sau săptămâni, în funcție de viteza procesorului și a conexiunii la internet. Bitcoin Core nu va putea procesa tranzacții sau actualiza soldurile contului până când întreg setul de date al lanțului de blocuri nu este descărcat. Asigurați-vă că aveți destul spațiu pe disc, lățime de bandă, și timp pentru a finaliza sincronizarea inițială. Puteți configura Bitcoin Core să reducă marimea lanțului de blocuri eliminând blocurile vechi (vezi <<constrained_resources>>), dar tot va descărca întreg setul de date înainte de a elimina blocurile vechi.
 ====
 
-În ciuda acestor cerințe de resurse, mii de volunari rulează noduri bitcoin. Unii rulează pe sisteme simple, cun ar fi un Raspberry Pi (un calculator de dimenisunea unui pachet de cărți care costă 35$).  Mulți voluntari rulează de asemenea noduri bitcoin pe servere închiriate, de obicei o variantă de Linux. O instață de _Server Virtual Privat_ (Virtual Private Server - VPS) sau de _Server în Cloud_ (Cloud Computing Server) poate fi folosită pentru a rula un nod bitcoin. Asemenea servere pot fi închiriate pentru sume între 25$ si 50$ pe lună de la o varietate de furnizori.
+În ciuda acestor cerințe de resurse, mii de volunari rulează noduri bitcoin. Unii rulează pe sisteme simple, cum ar fi un Raspberry Pi (un calculator de dimenisunea unui pachet de cărți care costă 35$). Mulți voluntari rulează de asemenea noduri bitcoin pe servere închiriate, de obicei o variantă de Linux. O instanță de _Server Virtual Privat_ (Virtual Private Server - VPS) sau de _Server în Cloud_ (Cloud Computing Server) poate fi folosită pentru a rula un nod bitcoin. Asemenea servere pot fi închiriate pentru sume între 25$ si 50$ pe lună de la o varietate de furnizori.
 
-De ce ați vrea să rulați un nod? Iată câteva din cele mai întâlnite motive:
+De ce ați vrea să rulați un nod? Iată câteva dintre cele mai întâlnite motive:
 
-* Dacă dezvoltați software bitcoin și trebuie să folosiți un nod bitcoin pentru access programabil (API) la rețea și la lanțul de blocuri
+* Dacă dezvoltați software bitcoin și trebuie să folosiți un nod bitcoin pentru access programabil (API) la rețea și la lanțul de blocuri.
 
 * Dacă dezvoltați aplicații care trebuie să valideze tranzacții conform regulilor de consens ale bitcoin. De obicei, companiile de software bitcoin rulează câteva noduri.
 
-* Dacă doriți să sprijiniți bitcoin. Rularea unui nod face rețeaua mai robustă și îi permite să serveacă mai multe portofele, mai mulți utilizatori, și mai multe tranzacții.
+* Dacă doriți să sprijiniți bitcoin. Rularea unui nod face rețeaua mai robustă și îi permite să servească mai multe portofele, mai mulți utilizatori, și mai multe tranzacții.
 
-* Dacă nu vreți să vă bazați pe un terț pentru a procesa sau valida tranzcțiile dumneavoastră.
+* Dacă nu vreți să vă bazați pe un terț pentru a procesa sau valida tranzacțiile dumneavoastră.
 
-Dacă citiți aveastă carte și sunteți interesați să dezvoltați software bitcoin, ar trebui să rulați propriul nod.
+Dacă citiți această carte și sunteți interesați să dezvoltați software bitcoin, ar trebui să rulați propriul nod.
 
 ==== Configurarea Nodului Bitcoin Core
 
-((("Bitcoin Core", "rularea de noduri core", "configurare")))((("avertismente și precauții", "creearea parolei")))((("parole", "creeare")))((("securitate", "parole")))Bitcoin Core va căuta un fișer de configurare în directorul său de date de fiecare dată când pornește. În această secțiune vom examina diferite opțiuni de configurare și vom pregăti un fișer de configurare. Pentru a localiza fișerul de configurare, rulați +bitcoind -printtoconsole+ în terminal și inspectați primele linii.
+((("Bitcoin Core", "rularea de noduri core", "configurare")))((("avertismente și precauții", "creearea parolei")))((("parole", "creeare")))((("securitate", "parole")))Bitcoin Core va căuta un fișier de configurare în directorul său de date de fiecare dată când pornește. În această secțiune vom examina diferite opțiuni de configurare și vom pregăti un fișier de configurare. Pentru a localiza fișierul de configurare, rulați +bitcoind -printtoconsole+ în terminal și inspectați primele linii.
 
 ----
 $ bitcoind -printtoconsole
@@ -258,9 +258,9 @@ Using config file /home/ubuntu/.bitcoin/bitcoin.conf
 ...
 ----
 
-Puteți apăsa Ctrl+C pentru a opri nodul după ce ați determinat locația fișerului de configurări. De obicei fișerul de configurări este în directorul utilizatorului (home directory) în _.bitcoin_, în directorul de date. Nu este creeat automat, dar puteți creea un fișer de configurare de pornire copiind din exemplul <<#full_index_node>>, de mai jos. Puteți creea sau modifica fișerul de configurări în editorul dumneavoastră preferat.
+Puteți apăsa Ctrl+C pentru a opri nodul după ce ați determinat locația fișierului de configurări. De obicei fișierul de configurări este în directorul utilizatorului (home directory) în _.bitcoin_, în directorul de date. Nu este creat automat, dar puteți crea un fișier de configurare de pornire copiind din exemplul <<#full_index_node>>, de mai jos. Puteți crea sau modifica fișierul de configurări în editorul dumneavoastră preferat.
 
-Bitcoin Core oferă mai mult de 100 de opțiuni de configurare care modifcă comportamentul nodului de rețea, stocarea lanțului de blocuri, și multe alte aspecte ale operarării sale. Pentru a vedea o listă a acestor opițiuni, rulați +bitcoind --help+:
+Bitcoin Core oferă mai mult de 100 de opțiuni de configurare care modifcă comportamentul nodului de rețea, stocarea lanțului de blocuri, și multe alte aspecte ale operării sale. Pentru a vedea o listă a acestor opțiuni, rulați +bitcoind --help+:
 
 ----
 $ bitcoind --help
@@ -288,13 +288,13 @@ Options:
        Set the number of threads to service RPC calls (default: 4)
 ----
 
-((("opțiuni de configurare", seealso="Bitcoin Core")))Iată câteva dintre cele mai importante opțiuni pe care le puteți seta în fișerul de configurări, sau ca parametri de la linia de comandă pentru +bitcoind+:
+((("opțiuni de configurare", seealso="Bitcoin Core")))Iată câteva dintre cele mai importante opțiuni pe care le puteți seta în fișierul de configurări, sau ca parametri de la linia de comandă pentru +bitcoind+:
 
-alertnotify:: Rulează o comandă sau un script specificat pentru a trimite alerte de urgeță proprietarului acestui nod, de obicei prin email.
+alertnotify:: Rulează o comandă sau un script specificat pentru a trimite alerte de urgență proprietarului acestui nod, de obicei prin email.
 
-conf:: O locație alternativă pentru fișerul de configurări. Această configurare are sens doar ca un parametru de la lina de comandă pentru +bitcoind+, intrucât nu poate fi în interiorul fișerului de configurare la care face referire.
+conf:: O locație alternativă pentru fișierul de configurări. Această configurare are sens doar ca un parametru de la lina de comandă pentru +bitcoind+, întrucât nu poate fi în interiorul fișierului de configurare la care face referire.
 
-datadir:: Selectează directorul și sistemul de fișere în care să pună toate datele lanțului de blocuri. În mod implicit acesta este subdirectorul _.bitcoin_ în interiorul directorului utilizatorului (home directory). Asigurați-vă că partiția are disponibili câțiva GB.
+datadir:: Selectează directorul și sistemul de fișiere în care să pună toate datele lanțului de blocuri. În mod implicit acesta este subdirectorul _.bitcoin_ în interiorul directorului utilizatorului (home directory). Asigurați-vă că partiția are disponibili câțiva GB.
 
 prune:: Reduce cerințele de spațiu pe disc la acest număr de megabytes, prin ștergerea blocurilor vechi. Folosiți această configurare pe un nod cu resurse limitate care nu poate stoca tot lanțul de blocuri.
 
@@ -302,13 +302,13 @@ txindex:: Menține un index al tuturor tranzacțiilor. Acest lucru înseamnă o 
 
 dbcache:: Dimensiunea cache-ului UTXO. Valoarea implictă este de 300 MiB. Măriți această limită pe hardware-uri performante și reduceți-o pe cele mai puțin performante pentru a economisi memorie în detrimentul operațiilor încete de IO.
 
-maxconnections:: Setează numărul maxim de noduri de la care să accepte conexiuni. Reducerea acestei valori față de valoarea implicită va reduce lungimea de bandă consumată. Folosiți optiunea aceasta dacă aveți o limită la transferul de date sau dacă plătiți per gigabyte.
+maxconnections:: Setează numărul maxim de noduri de la care să accepte conexiuni. Reducerea acestei valori față de valoarea implicită va reduce lățimea de bandă consumată. Folosiți opțiunea aceasta dacă aveți o limită la transferul de date sau dacă plătiți per gigabyte.
 
-maxmempool:: Limitează pool-ul de memorie pentru tranzacții la numărul specificat de megabytes. Folosiți opțiunea pentru a reduce consumul de memorie pe nodurile cu memorile limitată.
+maxmempool:: Limitează pool-ul de memorie pentru tranzacții la numărul specificat de megabytes. Folosiți opțiunea pentru a reduce consumul de memorie pe nodurile cu memorie limitată.
 
 maxreceivebuffer/maxsendbuffer:: Limitați bufferul de memorie per conexiune la acest multiplu de 1000 de bytes. Folosiți pe nodurile cu memorie limitată.
 
-minrelaytxfee:: setați rata minimă de comision pentru tranzacțiile pe care le veți transmite. Sub această valoare, tranzacția este tratată în mod diferit, este respinsă din bazinul de tranzacții și nu este transmisă mai departe.
+minrelaytxfee:: Setați rata minimă de comision pentru tranzacțiile pe care le veți transmite. Sub această valoare, tranzacția este tratată în mod diferit, este respinsă din bazinul de tranzacții și nu este transmisă mai departe.
 
 
 [[txindex]]
@@ -467,7 +467,7 @@ Rezultatul este un rezumat de bloc (block hash), care este descris mai în detal
 
 ((("Bitcoin Core", "Bitcoin Core API", "informații despre status")))Bitcoin Core oferă rapoarte de stare privind diferite module prin interfața JSON-RPC. Cele mai importante comenzi includ +getblockchaininfo+, +getmempoolinfo+, +getnetworkinfo+ și +getwalletinfo+.
 
-Comanda RPC +getblockchaininfo+ a fost prezentată mai devreme. Comanda +getnetworkinfo+ informații de bază despre statusul nodului de rețea bitcoin. Folosiți +bitcoin-cli+ pentru a o rula:
+Comanda RPC +getblockchaininfo+ a fost prezentată mai devreme. Comanda +getnetworkinfo+ afișează informații de bază despre statusul nodului de rețea bitcoin. Folosiți +bitcoin-cli+ pentru a o rula:
 
 ----
 $ bitcoin-cli getnetworkinfo
@@ -496,11 +496,11 @@ $ bitcoin-cli getnetworkinfo
 
 ----
 
-Datele sunt returnate în format JSON (JavaScript Object Notation), un format care poate fi ușor ”consumat” de către toate limbajele de programare, dar care este în același timp detul de ușor de citit de către oameni. Printre aceste date vedem numerele de versiune pentru clientul software bitcoin (150000) și pentru protocolul bitcoin (70015). Vedem numărul curent de conexiuni (8) și diferite informații despre rețeaua bitcoin și despre setările legate de acest client.
+Datele sunt returnate în format JSON (JavaScript Object Notation), un format care poate fi ușor ”consumat” de către toate limbajele de programare, dar care este în același timp destul de ușor de citit de către oameni. Printre aceste date vedem numerele de versiune pentru clientul software bitcoin (150000) și pentru protocolul bitcoin (70015). Vedem numărul curent de conexiuni (8) și diferite informații despre rețeaua bitcoin și despre setările legate de acest client.
 
 [Sfat]
 ====
-Va dura o vreme, probabil mai mult de o zi, pentru ca clientul +bitcoind+ să ”ajungă” la înălțimea curentă a lanțului de blocuri, pe măsură ce descarcă blocuri de la alți clientți bitcoin. Puteți verifica progresul folosind +getblockchaininfo+ pentru a vedea numărul de blocuri cunoscute.
+Va dura o vreme, probabil mai mult de o zi, pentru ca clientul +bitcoind+ să ”ajungă” la înălțimea curentă a lanțului de blocuri, pe măsură ce descarcă blocuri de la alți clienți bitcoin. Puteți verifica progresul folosind +getblockchaininfo+ pentru a vedea numărul de blocuri cunoscute.
 ====
 
 [[exploring_and_decoding_transanctions]]
@@ -530,10 +530,10 @@ ae24cb02204b9f039ff08df09cbe9f6addac960298cad530a863ea8f53982c09db8f6e3813014&#x
 
 [Sfat]
 ====
-((("ID-uri de transacții  (txd)")))((("maleabilitate")))ID-ul unei tranzacții nu este autoritar până când o tranzacție nu a fost confirmată. Absența unui rezumat (hash) al tranzacției în lanțul de blocuri nu înseamnă că tranzacția nu a fost procesată. Aceasta este cunoscută sub numele de ”maleabilitatea tranzacțiilor,” pentru că rezumatul (hash-ul) tranzacției poate fi modificat înainte de confirmarea într-un bloc. După confirmare, +txid+-ul este imuabil și autoritar.
+((("ID-uri de transacții  (txd)")))((("maleabilitate")))ID-ul unei tranzacții nu este autoritar până când o tranzacție nu a fost confirmată. Absența unui rezumat (hash) al tranzacției în lanțul de blocuri nu înseamnă că tranzacția nu a fost procesată. Aceasta este cunoscută sub numele de ”maleabilitatea tranzacțiilor,” pentru că rezumatul (hash-ul) tranzacției poate fi modificat înainte de confirmarea într-un bloc. După confirmare, +txid+-ul este imutabil și autoritar.
 ====
 
-Comanda  +getrawtransaction+ returnează o tranzacție serializată în notare hexazecimală. Pentru a o decoda, vom folosi comanda +decoderawtransaction+, oferind valoarea în hexa ca parametru. Puteți copia valoarea hexa returnată de +getrawtransaction+ și să o oferiți ca parametru pentru +decoderawtransaction+:
+Comanda  +getrawtransaction+ returnează o tranzacție serializată în notație hexazecimală. Pentru a o decoda, vom folosi comanda +decoderawtransaction+, oferind valoarea în hexa ca parametru. Puteți copia valoarea hexa returnată de +getrawtransaction+ și să o oferiți ca parametru pentru +decoderawtransaction+:
 
 ++++
 <pre data-type="programlisting">
@@ -600,7 +600,7 @@ d50f654e788acd0ef8000000000001976a9147f9b1a7fb68d60c536c2fd8aeaa53a8f3cc025a8&#x
 </pre>
 ++++
 
-Valoarea decodată a tranzacției ne arată toate componentele acestei tranzacții, incluzând intrările și ieșirile tranzacției. În acest caz putem să vedem că tranzacția care a creditat noua noastră adresă cu 15 millibits a folosit o intrare și două ieșiri. Intrarea acestei tranzacții a fost ieșirea unei tranzacții confirmate anterior (prezentă la vin +txid+ și începând cu  +7957a35fe+). Cele două ieșiri corespund cheltuirii celor  15 millibit și respectiv cu restul returnat expeditorului.
+Valoarea decodată a tranzacției ne arată toate componentele acestei tranzacții, inclusiv intrările și ieșirile tranzacției. În acest caz putem să vedem că tranzacția care a creditat noua noastră adresă cu 15 millibits a folosit o intrare și două ieșiri. Intrarea acestei tranzacții a fost ieșirea unei tranzacții confirmate anterior (prezentă la vin +txid+ și începând cu  +7957a35fe+). Cele două ieșiri corespund cheltuirii celor  15 millibit și respectiv cu restul returnat expeditorului.
 
 Putem explora în continuare lanțul de blocuri examinând tranzacția anterioară referențiată prin +txid+ ei în tranzacția curentă folosind aceleași comenzi  (e.g., +getrawtransaction+). Sărind de la tranzacție la tranzacție putem urmări un lanț de tranzacții deoarece monedele sunt transmise de la adresa unui proprietar la adresa altui proprietar.
 
@@ -610,7 +610,7 @@ Putem explora în continuare lanțul de blocuri examinând tranzacția anterioar
 
 ((("Bitcoin Core", "API-ul Bitcoin Core", "explorarea blocurilor")))((("blocuri", "explorarea blocurilor cu API-ul Bitcoin Core")))Comenzi: +getblock+, +getblockhash+
 
-((("blocks", "înalțimea blocului")))((("blocuri", "rezumatul blocului")))Explorarea blocurilor este similară cu explorarea tranzacțiilor. Totuși, la blocuri se poate face referire sau prin _înălțimea_ blocului sau prin _rezumatul (hash-ul)_ blocului. În primul rând, să găsim un bloc după înălțimea la care se află. În  <<cup_of_coffee>>, am văzut că tranzația lui Alice a fost inclusă în blocul 277316.
+((("blocks", "înalțimea blocului")))((("blocuri", "rezumatul blocului")))Explorarea blocurilor este similară cu explorarea tranzacțiilor. Totuși, la blocuri se poate face referire sau prin _înălțimea_ blocului sau prin _rezumatul (hash-ul)_ blocului. În primul rând, să găsim un bloc după înălțimea la care se află. În  <<cup_of_coffee>>, am văzut că tranzacția lui Alice a fost inclusă în blocul 277316.
 
 Folosim comanda +getblockhash+, care primește înălțimea blocului ca parametru și returnează rezumatul blocului respectiv:
 
@@ -621,7 +621,7 @@ $ bitcoin-cli getblockhash 277316
 </pre>
 ++++
 
-Acum că stim în ce bloc a fost inclusă tranzacția lui Alice, putem interoga acel bloc. Folosim comanda +getblock+ cu un rezumat (hash) de bloc ca parametru:
+Acum că știm în ce bloc a fost inclusă tranzacția lui Alice, putem interoga acel bloc. Folosim comanda +getblock+ cu un rezumat (hash) de bloc ca parametru:
 
 ++++
 <pre data-type="programlisting">
@@ -668,15 +668,15 @@ $ bitcoin-cli getblock 0000000000000001b6b9a13b095e96db41c4a928b97ef2d944a9b3&#x
 </pre>
 ++++
 
-Blocul conține 419 tranzacții, iar a 64-a tranzacție listată (+0627052b...+) este plata pentru cafea a lui Alice. Valoare câmpului +height+ ne spune că acesta este al 277316-lea bloc din lanțul de blocuri.
+Blocul conține 419 tranzacții, iar a 64-a tranzacție listată (+0627052b...+) este plata pentru cafea a lui Alice. Valoarea câmpului +height+ ne spune că acesta este al 277316-lea bloc din lanțul de blocuri.
 
-==== Folosirea Interfeței Programatice a Bitcoin Code
+==== Folosirea Interfeței Programatice a Bitcoin Core
 
-((("Bitcoin Core", "API-ul Bitcoin Core", "folosirea interfeței programatice")))((("interfață programatică", id="progint03")))Utilitarul +bitcoin-cli+ este foarte folositor pentru a explora API-ul Bitcoin Code și pentru testarea funcțiilor. Dar întregul scop al unei interfețe de programare a aplicației este să acceseze funcțiile programatic. În această secțiune vom demonstra accesarea Bitcoin Core dintr-un alt program.
+((("Bitcoin Core", "API-ul Bitcoin Core", "folosirea interfeței programatice")))((("interfață programatică", id="progint03")))Utilitarul +bitcoin-cli+ este foarte folositor pentru a explora API-ul Bitcoin Core și pentru testarea funcțiilor. Dar întregul scop al unei interfețe de programare a aplicației este să acceseze funcțiile programatic. În această secțiune vom demonstra accesarea Bitcoin Core dintr-un alt program.
 
-API-ul Bitcoin Core este o interfață JSON-RPC. JSON vine de la JavaScript Object Notation și este o modalitate foarte convenabilă de prezentare a datelor pe care o înteleg cu ușurintă și oameni și programele. RPC vine de la Remote Procedure Call, ceea ce înseamnă că apelăm proceduri (funcții) care sunt la distanță (pe nodul Bitcoin Core) folosind un protocol de rețea. În acest caz, protocolul de rețea este HTTP, sau HTTPS (pentru conexiuni criptate).
+API-ul Bitcoin Core este o interfață JSON-RPC. JSON vine de la JavaScript Object Notation și este o modalitate foarte convenabilă de prezentare a datelor pe care o înteleg cu ușurintă și oamenii și programele. RPC vine de la Remote Procedure Call, ceea ce înseamnă că apelăm proceduri (funcții) care sunt la distanță (pe nodul Bitcoin Core) folosind un protocol de rețea. În acest caz, protocolul de rețea este HTTP, sau HTTPS (pentru conexiuni criptate).
 
-Când am folosit comanda +bitcoin-cli+ pentru a vedea pagina de ajutor pentru o comandă, ne-a arătat un exemplu de folosire a +curl+, versatiul client HTTP din linia de comandă, pentru a construi unul din aceste apeluri JSON-RPC:
+Când am folosit comanda +bitcoin-cli+ pentru a vedea pagina de ajutor pentru o comandă, ne-a arătat un exemplu de folosire a +curl+, versatilul client HTTP din linia de comandă, pentru a construi unul din aceste apeluri JSON-RPC:
 
 ----
 $ curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getblockchaininfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8332/
@@ -684,11 +684,11 @@ $ curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "met
 
 Această comandă ne arată că +curl+ trimite o cerere (request) HTTP la gazda locală (127.0.0.1), conectându-se la portul bitcoin implicit (8332), și trimițând o cerere (request) +jsonrpc+ pentru metoda  +getblockchaininfo+ folosind codificarea +text/plain+.
 
-S-ar putea să observați că +curl+ vă va cere trimiterea credențialelor împreună cu cererea (request-ul). Bitcoin Core v-a crea o parolă aleator la fiecare pornire și o va stoca în directorul de date sub numele +.cookie+. Utilitarul  +bitcoin-cli+ poate citi acest fișer de parolă dacă are acces la directorul de date. Similar, puteți copia parola și să o transmiteți cu curl (sau cu orice alt utilitar pentru API-ul Bitcoin Core RPC). În mod alternativ, puteți creea o parolă statică cu scriptul utilitar furnizat în _./share/rpcauth/rpcauth.py_ în directorul sursă al Bitcoin Core.
+S-ar putea să observați că +curl+ vă va cere trimiterea credențialelor împreună cu cererea (request-ul). Bitcoin Core va crea aleator o parolă la fiecare pornire și o va stoca în directorul de date sub numele +.cookie+. Utilitarul  +bitcoin-cli+ poate citi acest fișer de parolă dacă are acces la directorul de date. Similar, puteți copia parola și să o transmiteți cu curl (sau cu orice alt utilitar pentru API-ul Bitcoin Core RPC). În mod alternativ, puteți creea o parolă statică cu scriptul utilitar furnizat în _./share/rpcauth/rpcauth.py_ în directorul sursă al Bitcoin Core.
 
 Dacă implementați un apel JSON-RPC în programul dumeavoastră, puteți folosi o bibliotecă HTTP generică pentru a construi apelul, similar cu ce este prezentat în exemplul +curl+ precedent.
 
-Totuși, există biblioteci în aproape orice limbaj de programare care ”învelelesc” API-ul Bitcoin Core într-un mod care face utilizarea mult mai simplă. Vom folosi biblioteca  +python-bitcoinlib+ pentru a simplifica accesul la API. Rețineți că acest lucru necesită să aveți un nod Bitcoin Core care rulează, care va fi folosit pentru a efectua apelurile JSON-RPC.
+Totuși, există biblioteci în aproape orice limbaj de programare care ”învelesc” API-ul Bitcoin Core într-un mod care face utilizarea mult mai simplă. Vom folosi biblioteca  +python-bitcoinlib+ pentru a simplifica accesul la API. Rețineți că acest lucru necesită să aveți un nod Bitcoin Core care rulează și care va fi folosit pentru a efectua apelurile JSON-RPC.
 
 Scriptul Python de la <<rpc_example>> efectuează un apel simplu la +getblockchaininfo+ și afișează parametrul  +blocks+ din datele returnate de Bitcoin Core.
 
@@ -710,7 +710,7 @@ $ python rpc_example.py
 
 Ne spune că nodul nostru local Bitcoin Core are 394075 de blocuri în lanțul de blocuri. Nu este un rezultat spectaculos, dar demonstrează utilizarea de bază a bibliotecii ca o interfață simplificată la API-ul JSON-RPC al Bitcoin Core.
 
-În continuare, vom folosi apelurile  +getrawtransaction+ și +decodetransaction+ pentru a primi detaliile plății pentru cafeaua lui Alice. În <<rpc_transaction>>, preluăm tranzacția lui Alice și enumerăm ieșirile tranzacției. Pentru fiecare ieșire, afișăm adresa destinatarului și valoarea. Să ne aminitim, tranzacția lui Alice a avut o ieșire pentru plata la Cafeneaua lui Bob și o ieșire pentru restul primit de Alice.
+În continuare, vom folosi apelurile  +getrawtransaction+ și +decodetransaction+ pentru a primi detaliile plății pentru cafeaua lui Alice. În <<rpc_transaction>>, preluăm tranzacția lui Alice și enumerăm ieșirile tranzacției. Pentru fiecare ieșire, afișăm adresa destinatarului și valoarea. Să ne aminitim că tranzacția lui Alice a avut o ieșire pentru plata la Cafeneaua lui Bob și o ieșire pentru restul primit de Alice.
 
 [[rpc_transaction]]
 .Preluarea tranzacției și iterarea peste ieșiri
@@ -721,7 +721,7 @@ include::code/rpc_transaction.py[]
 ----
 ====
 
-Rulând avest cod, vom obține:
+Rulând acest cod, vom obține:
 
 ----
 $ python rpc_transaction.py
@@ -729,9 +729,9 @@ $ python rpc_transaction.py
 ([u'1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK'], Decimal('0.08450000'))
 ----
 
-Ambele exemple precendete sunt destul de simple. Nu aveți cu adevărat nevoie de un program pentru a le rula; la fel de simplu ați fi putut folosi utilitarul +bitcoin-cli+. Următorul exemplu, totuși, necesită câteva sute de apeluri RPC și demonstrează mai clar folosirea unei interfețe programatice.
+Ambele exemple precedente sunt destul de simple. Nu aveți cu adevărat nevoie de un program pentru a le rula; la fel de simplu ați fi putut folosi utilitarul +bitcoin-cli+. Următorul exemplu, totuși, necesită câteva sute de apeluri RPC și demonstrează mai clar folosirea unei interfețe programatice.
 
-În <<rpc_block>>, mai întâi am preluat blocul 277316, apoi am preluat fiecare din cele 419 tranzacții conținute referențiind ID-ul fiecărei tranzacții. Apoi am iterat peste fiecare din ieșirile tranzacției și am însumat valorile.((("", startref="alicethree")))
+În <<rpc_block>>, am preluat mai întâi blocul 277316, apoi am preluat fiecare din cele 419 tranzacții conținute referențiind ID-ul fiecărei tranzacții. Apoi am iterat peste fiecare din ieșirile tranzacției și am însumat valorile.((("", startref="alicethree")))
 
 [[rpc_block]]
 .Preluarea unui bloc și însumarea tuturor ieșirilor tranzacțiilor
@@ -742,7 +742,7 @@ include::code/rpc_block.py[]
 ----
 ====
 
-Rulând avest cod, vom obține:
+Rulând acest cod, vom obține:
 
 ----
 $ python rpc_block.py
@@ -750,12 +750,12 @@ $ python rpc_block.py
 ('Total value in block: ', Decimal('10322.07722534'))
 ----
 
-Codul nostru calculează valoarea totală tranzacționată în acest bloc ca fiind de 10322,07722534 BTC (incluzând recompensa de 25 BTC și 0,0909 BTC în comisioane). Comparați valoarea cu una raportată de un site de explorare a blocurilor cautând după rezumatul blocului sau după înalțimea lui. Unele exploratoare de blocuri raportează valoarea totală excluzând recompensa și excluzând comisioanele. Vedeți dacă puteți observa diferența.((("", startref="BCapi03")))((("", startref="progint03")))
+Codul nostru calculează valoarea totală tranzacționată în acest bloc ca fiind de 10322,07722534 BTC (incluzând recompensa de 25 BTC și 0,0909 BTC în comisioane). Comparați valoarea cu una raportată de un site de explorare a blocurilor căutând după rezumatul blocului sau după înalțimea lui. Unele exploratoare de blocuri raportează valoarea totală excluzând recompensa și comisioanele. Vedeți dacă puteți observa diferența.((("", startref="BCapi03")))((("", startref="progint03")))
 
 [[alt_libraries]]
 === Clienți, Biblioteci și Instrumente Alternative
 
-((("Bitcoin Core", "alternative la", id="BCalt03")))((("clienți, biblioteci, și instrumente", id="clients03")))((("biblioteci, clienți, și instrumente", id="librar03")))((("instrumente, biblioteci, și clienți", id="toolkit03")))((("clienti API terți", id="thirdpart03"))Există mulți clienți biblioteci, instrumente, și chiar implementări nod-complet alternative în ecosistemul bitcoin. Acestea sunt implementate într-o multitudine de limbaje de programare, oferind programatorilor interfețe native în limbajul lor preferat.
+((("Bitcoin Core", "alternative la", id="BCalt03")))((("clienți, biblioteci, și instrumente", id="clients03")))((("biblioteci, clienți, și instrumente", id="librar03")))((("instrumente, biblioteci, și clienți", id="toolkit03")))((("clienți API terți", id="thirdpart03"))Există mulți clienți, biblioteci, instrumente, și chiar implementări nod-complet alternative în ecosistemul bitcoin. Acestea sunt implementate într-o multitudine de limbaje de programare, oferind programatorilor interfețe native în limbajul lor preferat.
 
 Următoarele secțiuni enumeră câteva din cele mai bune biblioteci, clienți, și instrumente, organizate în funcție de limbajul de programare.
 
@@ -797,4 +797,4 @@ https://github.com/MetacoSA/NBitcoin[NBitcoin]:: Bibliotecă bitcoin cuprinzăto
 ==== Objective-C
 https://github.com/oleganza/CoreBitcoin[CoreBitcoin]:: Toolkit bitcoin pentru ObjC și Swift
 
-Și mai multe biblioteci există intr-o multitudine de alte limbaje de programare, iar multe sunt creeate tot timpul.((("", startref="BCalt03")))((("", startref="clients03")))((("", startref="thirdpart03")))((("", startref="toolkit03")))((("", startref="librar03")))
+Și mai multe biblioteci există într-o multitudine de alte limbaje de programare, iar multe sunt create tot timpul.((("", startref="BCalt03")))((("", startref="clients03")))((("", startref="thirdpart03")))((("", startref="toolkit03")))((("", startref="librar03")))
