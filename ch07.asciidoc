@@ -1,137 +1,137 @@
 [[ch07]]
 [[adv_transactions]]
-== Advanced Transactions and Scripting
+== Tranzacții Avansate și Scripturi
 
 [[ch07_intro]]
-=== Introduction
+== Introducere
 
-In the previous chapter, we introduced the basic elements of bitcoin transactions and looked at the most common type of transaction script, the P2PKH script. In this chapter we will look at more advanced scripting and how we can use it to build transactions with complex conditions.
+În capitolul anterior, am introdus elementele de bază ale tranzacțiilor bitcoin și am analizat cel mai comun tip de script de tranzacții, scriptul P2PKH. În acest capitol vom analiza scripturile mai avansate și cum le putem folosi pentru a construi tranzacții cu condiții complexe.
 
-First, we will look at _multisignature_ scripts. Next, we will examine the second most common transaction script, _Pay-to-Script-Hash_, which opens up a whole world of complex scripts. Then, we will examine new script operators that add a time dimension to bitcoin, through _timelocks_. Finally, we will look at _Segregated Witness_, an architectural change to the structure of transactions.
+În primul rând, vom analiza scripturile _multisemnătură_ (multisignature). În continuare, vom examina al doilea cel mai întâlnit script de tranzacție, Plată-către-Rezumat-Script (Pay-to-Script-Hash), care deschide un întreg univers de scripturi complexe. Apoi, vom examina noi operatori de script care adaugă o dimensiune legată de timp la bitcoin, prin _timpi de bocare_ (timelocks). În cele din urmă, vom analiza _Martor Segregat_ (Segregated Witness), o schimbare arhitecturală a structurii tranzacțiilor.
 
 [[multisig]]
-=== Multisignature
+=== Multisemnătură
 
-((("transactions", "advanced", "multisignature scripts")))((("transactions", "advanced", id="Tadv07")))((("scripting", "multisignature scripts", id="Smulti07")))((("multisignature scripts")))Multisignature scripts set a condition where N public keys are recorded in the script and at least M of those must provide signatures to unlock the funds. This is also known as an M-of-N scheme, where N is the total number of keys and M is the threshold of signatures required for validation. For example, a 2-of-3 multisignature is one where three public keys are listed as potential signers and at least two of those must be used to create signatures for a valid transaction to spend the funds.
+((("tranzacții", "avansat", "scripturi multisemnătură")))((("tranzacții", "avansat", id="Tadv07")))((("scriptare", "scripturi multisemnătură", id="Smulti07")))((("scripturi multisemnătură")))Scripturile cu mai multe semnături stabilesc o condiție în care N chei publice sunt înregistrate în script și cel puțin M dintre acestea trebuie să furnizeze semnături pentru deblocarea fondurilor. Aceasta este cunoscută și sub denumirea de schemă M-din-N, unde N este numărul total de chei și M este pragul de semnături necesar pentru validare. De exemplu, o multisemnatură 2 din 3 este una în care sunt identificate trei chei publice ca potențiali semnatari și cel puțin două dintre acestea trebuie utilizate pentru a crea semnături pentru o tranzacție validă pentru a cheltui fondurile.
 
-At this time, _standard_ multisignature scripts are limited to at most 3 listed public keys, meaning you can do anything from a 1-of-1 to a 3-of-3 multisignature or any combination within that range. The limitation to 3 listed keys might be lifted by the time this book is published, so check the +IsStandard()+ function to see what is currently accepted by the network. Note that the limit of 3 keys applies only to standard (also known as "bare") multisignature scripts, not to multisignature scripts wrapped in a Pay-to-Script-Hash (P2SH) script. P2SH multisignature scripts are limited to 15 keys, allowing for up to 15-of-15 multisignature. We will learn about P2SH in <<p2sh>>.
+În acest moment, scripturile multisemnătură _standard_ sunt limitate la cel mult 3 chei publice, ceea ce înseamnă că puteți face orice, de la 1-din-1 la 3-din-3 multisemnături sau orice combinație din acel interval. Limitarea la 3 chei ar putea fi ridicată la momentul publicării acestei cărți, așa că verificați funcția +IsStandard()+ pentru a vedea ce este acceptat în prezent de rețea. Rețineți că limita a 3 chei se aplică numai scripturilor multisemnătură standard (cunoscute și sub denumirea de ”simple”), nu și scripturilor multisemnătură ”învelite” (wrapped) într-un script Plată-către-Rezumat-Script (P2SH). Scripturile multisemnătură P2SH sunt limitate la 15 chei, permițând o multisemnătură de până la 15 din 15. Vom învăța despre P2SH în <<p2sh>>.
 
-The general form of a locking script setting an M-of-N multisignature condition is:
+Forma generală a unui script de blocare care setează o condiție multisemnatură M-din-N este:
 
 ----
 M <Public Key 1> <Public Key 2> ... <Public Key N> N CHECKMULTISIG
 ----
 
-where N is the total number of listed public keys and M is the threshold of required signatures to spend the output.
+unde N este numărul total de chei publice listate și M este pragul semnăturilor necesare pentru a cheltui ieșirile.
 
-A locking script setting a 2-of-3 multisignature condition looks like this:
+Un script de blocare care setează o condiție multisemnătură 2-din-3 arată astfel:
 
 ----
 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG
 ----
 
-The preceding locking script can be satisfied with an unlocking script containing pairs of signatures and public keys:
+Scriptul de blocare precedent poate fi satisfăcut cu un script de deblocare care conține perechi de semnături și chei publice:
 
 ----
 <Signature B> <Signature C>
 ----
-or any combination of two signatures from the private keys corresponding to the three listed public keys.
+sau orice combinație de două semnături create de cheile private corespunzătoare celor trei chei publice enumerate.
 
-The two scripts together would form the combined validation script:
+Cele două scripturi împreună ar forma un script de validare combinat:
 
 ----
 <Signature B> <Signature C> 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG
 ----
 
-When executed, this combined script will evaluate to TRUE if, and only if, the unlocking script matches the conditions set by the locking script. In this case, the condition is whether the unlocking script has a valid signature from the two private keys that correspond to two of the three public keys set as an encumbrance.
+Când este executat, acest script combinat va fi evaluat la TRUE (adevaărat) dacă și numai dacă, scriptul de deblocare corespunde condițiilor stabilite de scriptul de blocare. În acest caz, condiția este dacă scriptul de deblocare are o semnătură validă de la cele două chei private care corespund la două dintre cele trei chei publice setate ca restricții.
 
 [[multisig_bug]]
-===== A bug in CHECKMULTISIG execution
+===== Un defect în execuția CHECKMULTISIG
 
-((("scripting", "multisignature scripts", "CHECKMULTISIG bug")))((("CHECKMULTISIG bug workaround")))There is a bug in ++CHECKMULTISIG++'s execution that requires a slight workaround. When +CHECKMULTISIG+ executes, it should consume M+N+2 items on the stack as parameters. However, due to the bug, +CHECKMULTISIG+ will pop an extra value or one value more than expected.
+((("scriptare", "scripturi multisemnătură", "defect CHECKMULTISIG")))((("soluție la defectul CHECKMULTISIG")))Există un defect în execuția ++CHECKMULTISIG++ care necesită o soluție ușoară. Când +CHECKMULTISIG+ se execută, ar trebui să consume M+N+2 elemente de pe stivă ca parametri. Cu toate acestea, din cauza erorii, +CHECKMULTISIG+ va scoate o valoare suplimentară sau o valoare mai mult decât se aștepta.
 
-Let's look at this in greater detail using the previous validation example:
+Să analizăm mai în detaliu acest lucru folosind exemplul de validare anterior:
 
 ----
 <Signature B> <Signature C> 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG
 ----
 
-First, +CHECKMULTISIG+ pops the top item, which is +N+ (in this example "3"). Then it pops +N+ items, which are the public keys that can sign. In this example, public keys A, B, and C. Then, it pops one item, which is +M+, the quorum (how many signatures are needed). Here M = 2. At this point, +CHECKMULTISIG+ should pop the final +M+ items, which are the signatures, and see if they are valid. However, unfortunately, a bug in the implementation causes +CHECKMULTISIG+ to pop one more item (M+1 total) than it should. The extra item is disregarded when checking the signatures so it has no direct effect on +CHECKMULTISIG+ itself. However, an extra value must be present because if it is not present, when +CHECKMULTISIG+ attempts to pop on an empty stack, it will cause a stack error and script failure (marking the transaction as invalid). Because the extra item is disregarded it can be anything, but customarily +0+ is used.
+În primul rând, +CHECKMULTISIG+ scoate elementul din vârf, care este +N+ (în acest exemplu ”3”). Apoi scoate +N+ elemente, care sunt cheile publice care pot fi semnate. În acest exemplu, cheile publice A, B și C. Apoi, scoate un element, care este +M+, cvorumul (câte semnături sunt necesare). Aici M = 2. În acest moment, +CHECKMULTISIG+ ar trebui să scoată ultimele +M+ elemente, care sunt semnăturile și să vadă dacă sunt valide. Cu toate acestea, din păcate, o eroare de implementare face ca +CHECKMULTISIG+ să scoată mai mult cu un element (în total M+1) decât ar trebui. Elementul suplimentar nu este luat în considerare atunci când sunt verificate semnăturile, astfel încât nu are efect direct asupra +CHECKMULTISIG+. Cu toate acestea, o valoare suplimentară trebuie să fie prezentă deoarece, dacă nu este prezentă, când +CHECKMULTISIG+ încearcă să scoată de pe o stivă goală, va provoca o eroare de stivă și o eroare a scriptului (marcarea tranzacției ca fiind invalidă). Deoarece elementul suplimentar este ignorat, acesta poate fi orice, dar se folosește în mod obișnuit +0+.
 
-Because this bug became part of the consensus rules, it must now be replicated forever. Therefore the correct script validation would look like this:
+Deoarece această eroare a devenit parte a regulilor de consens, acum ea trebuie replicată pentru totdeauna. Prin urmare, validarea corectă a scriptului ar arăta astfel:
 
 ----
 0 <Signature B> <Signature C> 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG
 ----
 
-Thus the unlocking script actually used in multisig is not:
+Astfel, scriptul de deblocare folosit de fapt de multisemnătură nu este:
 
 ----
 <Signature B> <Signature C>
 ----
 
-but instead it is:
+dar în schimb este:
 
 ----
 0 <Signature B> <Signature C>
 ----
 
-From now on, if you see a multisig unlocking script, you should expect to see an extra +0+ in the beginning, whose only purpose is as a workaround to a bug that accidentally became a consensus rule.((("", startref="Smulti07")))
+De acum înainte, dacă vedeți un script de deblocare multisemnătură, trebuie să vă așteptați să vedeți un +0+ suplimentar la început, al cărui singur scop este să repare o eroare care a devenit accidental o regulă de consens.((("", startref="Smulti07")))
 
 [[p2sh]]
-=== Pay-to-Script-Hash (P2SH)
+=== Plată-către-Rezumat-Script (Pay-to-Script-Hash - P2SH)
 
-((("transactions", "advanced", "Pay-to-Script-Hash")))((("scripting", "Pay-to-Script-Hash", id="Spay07")))Pay-to-Script-Hash (P2SH) was introduced in 2012 as a powerful new type of transaction that greatly simplifies the use of complex transaction scripts. To explain the need for P2SH, let's look at a practical example.
+((("tranzacții", "avansat", "Plata-către-Rezumat-Script")))((("scriptare", "Plata-către-Rezumat-Scrip", id="Spay07")))Plata-către-Rezumat-Scrip (P2SH) a fost introdus în 2012 ca un nou tip puternic de tranzacție care simplifică mult utilizarea scripturilor de tranzacții complexe. Pentru a explica nevoia de P2SH, să analizăm un exemplu practic.
 
-((("use cases", "import/export", id="mohamseven")))((("scripting", "Pay-to-Script-Hash", "import/export example")))((("Pay-to-Script-Hash (P2SH)", "import/export example")))In <<ch01_intro_what_is_bitcoin>> we introduced Mohammed, an electronics importer based in Dubai. Mohammed's company uses bitcoin's multisignature feature extensively for its corporate accounts. Multisignature scripts are one of the most common uses of bitcoin's advanced scripting capabilities and are a very powerful feature. ((("accounts receivable (AR)")))Mohammed's company uses a multisignature script for all customer payments, known in accounting terms as "accounts receivable," or AR. With the multisignature scheme, any payments made by customers are locked in such a way that they require at least two signatures to release, from Mohammed and one of his partners or from his attorney who has a backup key. A multisignature scheme like that offers corporate governance controls and protects against theft, embezzlement, or loss.
+((("utilizări", "import/export", id="mohamseven")))((("scriptare", "Plată-către-Rezumat-Script", "exemplu import/export")))((("PLată-către-Rezumat-Script (P2SH)", "exemplu import/export")))În <<ch01_intro_what_is_bitcoin>> l-am prezentat pe Mohammed, un importator de produse electronice cu sediul în Dubai. Compania lui Mohammed folosește intens funcționalitatea multisemnătură bitcoin pentru conturile sale corporative. Scripturile multisemnătură sunt una dintre cele mai frecvente utilizări ale capacităților avansate de scriptare bitcoin și sunt o funcționalitate foarte puternică. ((("conturi de încasări")))Compania lui Mohammed folosește un script multisemnatură pentru toate plățile clienților, cunoscute în termeni contabili drept ”conturi de încasări”. Cu schema multisemnătură, orice plăți efectuate de clienți sunt blocate astfel încât să necesite cel puțin două semnături pentru deblocare, de la Mohammed și unul dintre partenerii săi sau de la avocatul său care are o cheie de rezervă. O schemă multisemnătură de genul acesta oferă control de guvernanță corporativă și protejează împotriva furtului, delapidării sau pierderilor.
 
-The resulting script is quite long and looks like this:
+Scriptul rezultat este destul de lung și arată astfel:
 
 ----
 2 <Mohammed's Public Key> <Partner1 Public Key> <Partner2 Public Key> <Partner3 Public Key> <Attorney Public Key> 5 CHECKMULTISIG
 ----
 
-Although multisignature scripts are a powerful feature, they are cumbersome to use. Given the preceding script, Mohammed would have to communicate this script to every customer prior to payment. Each customer would have to use special bitcoin wallet software with the ability to create custom transaction scripts, and each customer would have to understand how to create a transaction using custom scripts. Furthermore, the resulting transaction would be about five times larger than a simple payment transaction, because this script contains very long public keys. The burden of that extra-large transaction would be borne by the customer in the form of fees. Finally, a large transaction script like this would be carried in the UTXO set in RAM in every full node, until it was spent. All of these issues make using complex locking scripts difficult in practice.
+Deși scripturile cu mai multe semnături reprezintă o funcționalitate puternică, ele sunt greoi de utilizat. Având în vedere scriptul precedent, Mohammed ar trebui să comunice acest script fiecărui client înainte de plată. Fiecare client ar trebui să utilizeze un portofel special bitcoin cu posibilitatea de a crea scripturi de tranzacții personalizate, iar fiecare client ar trebui să înțeleagă cum să creeze o tranzacție folosind scripturi personalizate. Mai mult, tranzacția rezultată ar fi de aproximativ cinci ori mai mare decât o simplă tranzacție de plată, deoarece acest script conține chei publice foarte lungi. Încărcătura acestei tranzacții foarte mari ar fi suportată de client sub formă de comisioane. În cele din urmă, un script de tranzacție mare ca acesta va fi transportat în setul UTXO în memoria RAM din fiecare nod complet, până când va fi cheltuit. Toate aceste probleme fac dificilă utilizarea scripturilor complexe de blocare în practică.
 
-P2SH was developed to resolve these practical difficulties and to make the use of complex scripts as easy as a payment to a bitcoin address. With P2SH payments, the complex locking script is replaced with its digital fingerprint, a cryptographic hash. When a transaction attempting to spend the UTXO is presented later, it must contain the script that matches the hash, in addition to the unlocking script. In simple terms, P2SH means "pay to a script matching this hash, a script that will be presented later when this output is spent."
+P2SH a fost dezvoltat pentru a rezolva aceste dificultăți practice și pentru a face utilizarea unor scripturi complexe la fel de ușor ca plata către o adresă bitcoin. Cu plățile P2SH, scriptul de blocare complex este înlocuit cu amprenta sa digitală, un rezumat (hash) criptografic. Când o tranzacție care încearcă să cheltuiască UTXO-ul este prezentată mai târziu, trebuie să conțină scriptul care se potrivește cu rezumatul (hash-ul), pe lângă scriptul de deblocare. În termeni simpli, P2SH înseamnă ”plată către un script care se potrivește cu acest rezumat (hash), un script care va fi prezentat ulterior, atunci când va fi cheltuită această ieșire”.
 
-((("redeem scripts")))((("scripting", "redeem scripts")))In P2SH transactions, the locking script that is replaced by a hash is referred to as the _redeem script_ because it is presented to the system at redemption time rather than as a locking script. <<without_p2sh>> shows the script without P2SH and <<with_p2sh>> shows the same script encoded with P2SH.
+((("scripturi de răscumpărare")))((("scriptare", "scripturi de răscumpărare")))În tranzacțiile P2SH, scriptul de blocare care este înlocuit cu un rezumat (hash) este denumit _script de răscumpărare_ deoarece este prezentat sistemului la momentul răscumpărarii și nu ca un script de blocare. <<without_p2sh>> arată scriptul fără P2SH și <<with_p2sh>> arata acelasi script codat cu P2SH.
 
 [[without_p2sh]]
-.Complex script without P2SH
+.Script complex fără P2SH
 |=======
-| Locking Script | 2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 CHECKMULTISIG
-| Unlocking Script | Sig1 Sig2
+| Script de Blocare | 2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 CHECKMULTISIG
+| Scriptul de Deblocare | Sig1 Sig2
 |=======
 
 [[with_p2sh]]
-.Complex script as P2SH
+.Script complex ca P2SH
 |=======
-| Redeem Script | 2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 CHECKMULTISIG
-| Locking Script | HASH160 <20-byte hash of redeem script> EQUAL
-| Unlocking Script | Sig1 Sig2 <redeem script>
+| Script de Răscumpărare | 2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 CHECKMULTISIG
+| Script de Blocare | HASH160 <20-byte hash of redeem script> EQUAL
+| Scriptul de Deblocare | Sig1 Sig2 <redeem script>
 |=======
 
-As you can see from the tables, with P2SH the complex script that details the conditions for spending the output (redeem script) is not presented in the locking script. Instead, only a hash of it is in the locking script and the redeem script itself is presented later, as part of the unlocking script when the output is spent. This shifts the burden in fees and complexity from the sender to the recipient (spender) of the transaction.
+După cum puteți vedea din tabele, cu P2SH scriptul complex care detaliază condițiile pentru cheltuirea ieșirii (scriptul de răscumpărare) nu este prezentat în scriptul de blocare. În schimb, doar un rezumat (hash) al acestuia este în scriptul de blocare iar scriptul de răscumpărare în sine este prezentat mai târziu, ca parte a scriptului de deblocare atunci când ieșirea este cheltuită. Aceasta schimbă povara comisioanelor și complexității de la expeditor la destinatarul (cel care celtuiește) tranzacției.
 
-Let's look at Mohammed's company, the complex multisignature script, and the resulting P2SH scripts.
+Să ne uităm la compania lui Mohammed, scriptul multisemnătură complex și scripturile P2SH rezultate.
 
-First, the multisignature script that Mohammed's company uses for all incoming payments from customers:
+În primul rând, scriptul multisemnătură pe care compania lui Mohammed îl folosește pentru toate plățile primite de la clienți:
 
 ----
 2 <Mohammed's Public Key> <Partner1 Public Key> <Partner2 Public Key> <Partner3 Public Key> <Attorney Public Key> 5 CHECKMULTISIG
 ----
 
-If the placeholders are replaced by actual public keys (shown here as 520-bit numbers starting with 04) you can see that this script becomes very long:
+Dacă locațiile de înlocuire sunt substituite cu chei publice reale (afișate aici ca numere pe 520 biți începând cu 04), puteți vedea că acest script devine foarte lung:
 
 ----
 2
 04C16B8698A9ABF84250A7C3EA7EEDEF9897D1C8C6ADF47F06CF73370D74DCCA01CDCA79DCC5C395D7EEC6984D83F1F50C900A24DD47F569FD4193AF5DE762C58704A2192968D8655D6A935BEAF2CA23E3FB87A3495E7AF308EDF08DAC3C1FCBFC2C75B4B0F4D0B1B70CD2423657738C0C2B1D5CE65C97D78D0E34224858008E8B49047E63248B75DB7379BE9CDA8CE5751D16485F431E46117B9D0C1837C9D5737812F393DA7D4420D7E1A9162F0279CFC10F1E8E8F3020DECDBC3C0DD389D99779650421D65CBD7149B255382ED7F78E946580657EE6FDA162A187543A9D85BAAA93A4AB3A8F044DADA618D087227440645ABE8A35DA8C5B73997AD343BE5C2AFD94A5043752580AFA1ECED3C68D446BCAB69AC0BA7DF50D56231BE0AABF1FDEEC78A6A45E394BA29A1EDF518C022DD618DA774D207D137AAB59E0B000EB7ED238F4D800 5 CHECKMULTISIG
 ----
 
-This entire script can instead be represented by a 20-byte cryptographic hash, by first applying the SHA256 hashing algorithm and then applying the RIPEMD160 algorithm on the result.
+Întregul script poate fi reprezentat în schimb de un rezumat criptografic pe 20 de biți, aplicând mai întâi algoritmul de rezumare SHA256 și apoi aplicând algoritmul RIPEMD160 pe rezultat.
 
-We use +libbitcoin-explorer+ (+bx+) on the command-line to produce the script hash, as follows:
+Folosim +libbitcoin-explorer+ (+bx+) de la linia de comandă pentru a produce rezumatul scriptului, după cum urmează:
 
 ----
 echo \
@@ -146,44 +146,44 @@ echo \
 54c557e07dde5bb6cb791c7a540e0a4796f5e97e
 ----
 
-The series of commands above first encodes Mohammed's multisig redeem script as a serialized hex-encoded bitcoin Script. The next +bx+ command calculates the SHA256 hash of that. The next +bx+ command hashes again with RIPEMD160, producing the final script-hash:
+Seria de comenzi de mai sus mai întâi codifică scriptul de răscumpărare multisemnătură a lui Mohammed ca script bitcoin codificat hexa. Următoarea comandă +bx+ calculează rezumatul SHA256. Următoarea comandă +bx+ rezumă din nou cu RIPEMD160, producând rezumatul final al scriptului:
 
-The 20-byte hash of Mohammed's redeem script is:
+Rezumatul de 20 de octeți al scriptului de răscumpărare al lui Mohammed este:
 
 ----
 54c557e07dde5bb6cb791c7a540e0a4796f5e97e
 ----
 
-A P2SH transaction locks the output to this hash instead of the longer redeem script, using the locking script:
+O tranzacție P2SH blochează ieșirea la acest rezumat în loc de scriptul de răscumpărare mai lung, folosind scriptul de blocare:
 
 ----
 HASH160 54c557e07dde5bb6cb791c7a540e0a4796f5e97e EQUAL
 ----
 
-which, as you can see, is much shorter. Instead of "pay to this 5-key multisignature script," the P2SH equivalent transaction is "pay to a script with this hash." A customer making a payment to Mohammed's company need only include this much shorter locking script in his payment. When Mohammed and his partners want to spend this UTXO, they must present the original redeem script (the one whose hash locked the UTXO) and the signatures necessary to unlock it, like this:
+care, după cum vedeți, este mult mai scurt. În loc de ”plătiți către acest script cu 5 chei multisemîtură”, tranzacția echivalentă P2SH este ”plătiți unui script cu acest rezumat”. Un client care efectuează o plată către compania lui Mohammed trebuie să includă doar scriptul de blocare mult mai scurt în plata sa. Când Mohammed și partenerii săi vor să cheltuiască acest UTXO, trebuie să prezinte scriptul original de răscumpărare (cel al cărui rezumat a blocat UTXO-ul) și semnăturile necesare pentru deblocarea acestuia, astfel:
 
 ----
 <Sig1> <Sig2> <2 PK1 PK2 PK3 PK4 PK5 5 CHECKMULTISIG>
 ----
 
-The two scripts are combined in two stages. First, the redeem script is checked against the locking script to make sure the hash matches:
+Cele două scripturi sunt combinate în două etape. În primul rând, scriptul de răscumpărare este verificat cu scriptul de blocare pentru a se asigura că rezumatul se potrivește:
 
 ----
 <2 PK1 PK2 PK3 PK4 PK5 5 CHECKMULTISIG> HASH160 <redeem scriptHash> EQUAL
 ----
-If the redeem script hash matches, the unlocking script is executed on its own, to unlock the redeem script:
+Dacă rezumatul scriptului de răscumpărare se potrivește, scriptul de deblocare este executat de unul singur, pentru a debloca scriptul de răscumpărare:
 
 ----
 <Sig1> <Sig2> 2 PK1 PK2 PK3 PK4 PK5 5 CHECKMULTISIG
 ----
 
-Almost all the scripts described in this chapter can only be implemented as P2SH scripts. They cannot be used directly in the locking script of an UTXO.((("", startref="mohamseven")))
+Aproape toate scripturile descrise în acest capitol pot fi implementate doar ca scripturi P2SH. Acestea nu pot fi utilizate direct în scriptul de blocare al unui UTXO.((("", startref="mohamseven")))
 
-==== P2SH Addresses
+==== Adrese P2SH
 
-((("scripting", "Pay-to-Script-Hash", "addresses")))((("Pay-to-Script-Hash (P2SH)", "addresses")))((("bitcoin improvement proposals", "Address Format for P2SH (BIP-13)")))Another important part of the P2SH feature is the ability to encode a script hash as an address, as defined in BIP-13. P2SH addresses are Base58Check encodings of the 20-byte hash of a script, just like bitcoin addresses are Base58Check encodings of the 20-byte hash of a public key. P2SH addresses use the version prefix "5," which results in Base58Check-encoded addresses that start with a "3."
+((("scriptare", "Plata-către-Rezumat-Script", "adrese")))((("Plata-către-Rezumat-Script (P2SH)", "adrese")))((("propuneri de îmbunătățire bitcoin", "Formatul adresei pentru P2SH (BIP-13)")))O altă parte importantă a funcționalității P2SH este capacitatea de a codifica un rezumat de script ca adresă, așa cum este definit în BIP-13. Adresele P2SH sunt codificări Base58Check ale rezumatului pe 20 de octeți a unui script, la fel cum adresele bitcoin sunt codificările Base58Check ale rezumatului pe 20 de octeți ale unei chei publice. Adresele P2SH folosesc prefixul de versiune ”5”, care are ca rezultat adrese codificate Base58Check care încep cu un ”3”.
 
-For example, Mohammed's complex script, hashed and Base58Check-encoded as a P2SH address, becomes +39RF6JqABiHdYHkfChV6USGMe6Nsr66Gzw+. We can confirm that with the +bx+ command:
+De exemplu, scriptul complex al lui Mohammed, rezumat și codificat Base58Check ca adresă P2SH, devine +39RF6JqABiHdYHkfChV6USGMe6Nsr66Gzw+. Putem confirma asta folosind comanda +bx+:
 
 ----
 echo \
@@ -193,248 +193,248 @@ echo \
 ----
 
 
-Now, Mohammed can give this "address" to his customers and they can use almost any bitcoin wallet to make a simple payment, as if it were a bitcoin address. The 3 prefix gives them a hint that this is a special type of address, one corresponding to a script instead of a public key, but otherwise it works in exactly the same way as a payment to a bitcoin address.
+Acum, Mohammed poate oferi această ”adresă” clienților săi și ei pot utiliza aproape orice portofel bitcoin pentru a face o plată simplă, ca și cum ar fi o adresă bitcoin. Prefixul 3 le oferă un indiciu că acesta este un tip special de adresă, una corespunzătoare unui script în loc de o cheie publică, dar altfel funcționează exact în același mod ca o plată către o adresă bitcoin.
 
-P2SH addresses hide all of the complexity, so that the person making a payment does not see the script.
+Adresele P2SH ascund toată complexitatea, astfel încât persoana care efectuează o plată să nu vadă scriptul.
 
-==== Benefits of P2SH
+==== Beneficiile P2SH
 
-((("scripting", "Pay-to-Script-Hash", "benefits of")))((("Pay-to-Script-Hash (P2SH)", "benefits of")))The P2SH feature offers the following benefits compared to the direct use of complex scripts in locking outputs:
+((("scriptate", "Plata-către-Rezumat-Script", "beneficiile")))((("Plata-către-Rezumat-Script (P2SH)", "beneficiile")))Funcția P2SH oferă următoarele avantaje în comparație cu utilizarea directă a scripturilor complexe în blocarea ieșirilor:
 
-* Complex scripts are replaced by shorter fingerprints in the transaction output, making the transaction smaller.
-* Scripts can be coded as an address, so the sender and the sender's wallet don't need complex engineering to implement P2SH.
-* P2SH shifts the burden of constructing the script to the recipient, not the sender.
-* P2SH shifts the burden in data storage for the long script from the output (which additionally to being stored on the blockchain is in the UTXO set) to the input (only stored on the blockchain).
-* P2SH shifts the burden in data storage for the long script from the present time (payment) to a future time (when it is spent).
-* P2SH shifts the transaction fee cost of a long script from the sender to the recipient, who has to include the long redeem script to spend it.
+* Scripturile complexe sunt înlocuite cu amprente mai scurte în ieșirea tranzacției, ceea ce face ca tranzacția să fie mai mică.
+* Scripturile pot fi codificate ca adresă, astfel că expeditorul și portofelul expeditorului nu au nevoie de cunoștințe complexe pentru a implementa P2SH.
+* P2SH transferă sarcina construirii scriptului către destinatar, nu expeditor.
+* P2SH mută sarcina în stocarea datelor pentru scriptul lung de la ieșire (care, pe lângă că este stocat în lanțul de blocuri este ținut și în setul UTXO) la intrare (stocat doar în lanțul-de-blocuri).
+* P2SH mută sarcina în stocarea datelor pentru scriptul lung de la momentul curent (plata) la o perioadă viitoare (când este cheltuită ieșirea).
+* P2SH transferă costul de tranzacție pentru un script lung de la expeditor la destinatar, care trebuie să includă scriptul lung de răscumpărare pentru a cheltui ieșirea.
 
-==== Redeem Script and Validation
+==== Script de Răscumpărare și Validare Lui
 
-((("scripting", "Pay-to-Script-Hash", "redeem scripts and validation")))((("Pay-to-Script-Hash (P2SH)", "redeem scripts and validation")))((("redeem scripts")))((("validation")))Prior to version 0.9.2 of the Bitcoin Core client, Pay-to-Script-Hash was limited to the standard types of bitcoin transaction scripts, by the +IsStandard()+ function. That means that the redeem script presented in the spending transaction could only be one of the standard types: P2PK, P2PKH, or multisig.
+((("scriptare", "Plata-către-Rezumat-Script", "scripturi de răscumpărare și validarea lor")))((("Plata-către-Rezumat-Script (P2SH)", "scripturi de răscumpărare și validarea lor")))((("scripturi de recuperare")))((("validare")))Înainte de versiunea 0.9.2 a clientului Bitcoin Core, Plata-către-Rezumat-Script (Pay-to-Script-Hash) era limitată la tipurile standard de scripturi de tranzacții bitcoin, prin funcția +IsStandard()+. Aceasta înseamnă că scriptul de răscumpărare prezentat în tranzacția de cheltuire nu poate fi decât unul dintre tipurile standard: P2PK, P2PKH sau multisemnătură.
 
-As of version 0.9.2 of the Bitcoin Core client, P2SH transactions can contain any valid script, making the P2SH standard much more flexible and allowing for experimentation with many novel and complex types of transactions.
+Începând cu versiunea 0.9.2 a clientului Bitcoin Core, tranzacțiile P2SH pot conține orice script valid, făcând standardul P2SH mult mai flexibil și permițând experimentarea cu multe tipuri de tranzacții noi și complexe.
 
-You are not able to put a P2SH inside a P2SH redeem script, because the P2SH specification is not recursive. Also, while it is technically possible to include +RETURN+ (see <<op_return>>) in a redeem script, as nothing in the rules prevents you from doing so, it is of no practical use because executing +RETURN+ during validation will cause the transaction to be marked invalid.
+Nu puteți pune un P2SH în interiorul unui script de răscumpărare P2SH, deoarece specificația P2SH nu este recursivă. De asemenea, deși este posibil din punct de vedere tehnic să includeți +RETURN+ (vezi <<op_return>>) într-un script de răscumpărare, deoarece nimic din reguli nu vă împiedică să faceți acest lucru, nu are niciun folos practic, deoarece executarea +RETURN+ în timpul validării va face ca tranzacția să fie marcată ca invalidă.
 
-Note that because the redeem script is not presented to the network until you attempt to spend a P2SH output, if you lock an output with the hash of an invalid redeem script it will be processed regardless. The UTXO will be successfully locked. However, you will not be able to spend it because the spending transaction, which includes the redeem script, will not be accepted because it is an invalid script. This creates a risk, because you can lock bitcoin in a P2SH that cannot be spent later. The network will accept the P2SH locking script even if it corresponds to an invalid redeem script, because the script hash gives no indication of the script it represents.((("", startref="Spay07")))
+Rețineți că, deoarece scriptul de răscumpărare nu este prezentat rețelei până când nu încercați să cheltuiți o ieșire P2SH, dacă blocați o ieșire cu rezumatul unui script de răscumpărare invalid, acesta va fi procesat oricum. UTXO-ul va fi blocat cu succes. Cu toate acestea, nu îl veți putea cheltui, deoarece tranzacția de cheltuire, care include scriptul de răscumpărare, nu va fi acceptată, deoarece este un script invalid. Acest lucru creează un risc, deoarece puteți bloca bitcoin într-un P2SH care nu poate fi cheltuit ulterior. Rețeaua va accepta scriptul de blocare P2SH chiar dacă corespunde unui script de răscumpărare invalid, deoarece rezumatul scriptului nu oferă nicio indicație despre scriptul pe care îl reprezintă.((("", startref="Spay07")))
 
-[WARNING]
+[ATENȚIE]
 ====
-((("warnings and cautions", "accidental bitcoin locking")))P2SH locking scripts contain the hash of a redeem script, which gives no clues as to the content of the redeem script itself. The P2SH transaction will be considered valid and accepted even if the redeem script is invalid. You might accidentally lock bitcoin in such a way that it cannot later be spent.
+((("avertismente și precauții", "blocarea accidentală bitcoin")))Scripturile de blocare P2SH conțin rezumatul unui script de răscumpărare, care nu oferă indicii cu privire la conținutul scriptului de răscumpărare. Tranzacția P2SH va fi considerată validă și acceptată chiar dacă scriptul de răscumpărare nu este valid. S-ar putea să blocați accidental bitcoin în așa fel încât să nu poată fi cheltuit ulterior.
 ====
 
 
 
 [[op_return]]
-=== Data Recording Output (RETURN)
+=== Ieșire de Înregistrare a Datelor (RETURN)
 
-((("transactions", "advanced", "data recording output")))((("scripting", "data recording output")))((("RETURN operator")))((("data recording (nonpayment data)")))((("nonpayment data")))((("blockchain (the)", "nonpayment data recording")))((("digital notary services")))Bitcoin's distributed and timestamped ledger, the blockchain, has potential uses far beyond payments. Many developers have tried to use the transaction scripting language to take advantage of the security and resilience of the system for applications such as digital notary services, stock certificates, and smart contracts. Early attempts to use bitcoin's script language for these purposes involved creating transaction outputs that recorded data on the blockchain; for example, to record a digital fingerprint of a file in such a way that anyone could establish proof-of-existence of that file on a specific date by reference to that transaction.
+((("tranzacții", "avansat", "ieșire de înregistrare a datelor")))((("scriptare", "ieșire de înregistrare a datelor")))((("operatorul RETURN")))((("inregistrarea datelor (date de neplată)")))((("date de neplată")))((("lanț-de-blocuri", "înregistrarea datelor de neplată")))((("servicii notariale digitale")))Registrul bitcoin distribuit și de marcare a timpului, lanțul-de-blocuri, are potențiale utilizări care depășesc plățile. Mulți programatori au încercat să utilizeze limbajul de scriptare pentru tranzacții pentru a profita de securitatea și rezistența sistemului în scopul creării de aplicații precum servicii notariale digitale, certificate de stoc și contracte inteligente (smart contracts). Încercările timpurii de a utiliza limbajul de scriptare bitcoin în aceste scopuri au implicat crearea de ieșiri de tranzacții care au înregistrat date pe blockchain; de exemplu, să înregistreze o amprentă digitală a unui fișier în așa fel încât oricine să poată stabili dovada existenței acelui fișier la o dată specifică prin referire la tranzacția respectivă.
 
-((("blockchain bloat")))((("bloat")))((("unspent transaction outputs (UTXO)")))((("UTXO sets")))The use of bitcoin's blockchain to store data unrelated to bitcoin payments is a controversial subject. Many developers consider such use abusive and want to discourage it. Others view it as a demonstration of the powerful capabilities of blockchain technology and want to encourage such experimentation. Those who object to the inclusion of nonpayment data argue that it causes "blockchain bloat," burdening those running full bitcoin nodes with carrying the cost of disk storage for data that the blockchain was not intended to carry. Moreover, such transactions create UTXO that cannot be spent, using the destination bitcoin address as a freeform 20-byte field. Because the address is used for data, it doesn't correspond to a private key and the resulting UTXO can _never_ be spent; it's a fake payment. These transactions that can never be spent are therefore never removed from the UTXO set and cause the size of the UTXO database to forever increase, or "bloat."
+((("congestionare lanț-de-blocuri")))((("cnogestionare")))((("ieșiri de tranzacție necheltuite(UTXO)")))((("seturi UTXO")))Utilizarea lanțului-de-blocuri bitcoin pentru a stoca datele care nu au legătură cu plățile bitcoin este un subiect controversat. Mulți programatori consideră că o astfel de utilizare este abuzivă și vor să o descurajeze. Alții o privesc ca o demonstrație a capacităților puternice ale tehnologiei blockchain și vor să încurajeze o astfel de experimentare. Cei care se opun includerii datelor care nu țin de plăți susțin că aceastea provoacă ”congestionarea lanțului-de-blocuri”, care îi încarcă pe cei care rulează noduri bitcoin complete cu costurile de stocare pe disc a datelor pe care lanțul-de-blocuri nu a fost intenționat să le susțină. Mai mult, astfel de tranzacții creează UTXO-uri care nu pot fi cheltuite, folosind adresa bitcoin de destinație ca un câmp de 20 de octeți care poate avea orice valoare. Deoarece adresa este folosită pentru date, aceasta nu corespunde unei chei private, iar UTXO-ul rezultată nu poate fi cheltuită; este o plată falsă. Prin urmare, aceste tranzacții care nu pot fi cheltuite niciodată nu sunt eliminate niciodată din setul UTXO și determină creșterea permanentă a dimensiunii bazei de date UTXO, sau ”congestionarea”.
 
-In version 0.9 of the Bitcoin Core client, a compromise was reached with the introduction of the +RETURN+ operator. +RETURN+ allows developers to add 80 bytes of nonpayment data to a transaction output. However, unlike the use of "fake" UTXO, the +RETURN+ operator creates an explicitly _provably unspendable_ output, which does not need to be stored in the UTXO set. +RETURN+ outputs are recorded on the blockchain, so they consume disk space and contribute to the increase in the blockchain's size, but they are not stored in the UTXO set and therefore do not bloat the UTXO memory pool and burden full nodes with the cost of more expensive RAM.
+În versiunea 0.9 a clientului Bitcoin Core, s-a ajuns la un compromis odată cu introducerea operatorului +RETURN+. +RETURN+ permite programatorilor să adauge 80 de octeți de date care nu sunt asociați unei plăți la o ieșire a tranzacției. Cu toate acestea, spre deosebire de utilizarea de UTXO-uri ”false”, operatorul +RETURN+ creează o ieșire _demonstrabil necheltuibilă_ în mod explicit , care nu trebuie să fie stocată în setul UTXO. Ieșirile +RETURN+ sunt înregistrate în lanțul-de-blocuri, astfel încât consumă spațiu pe disc și contribuie la creșterea dimensiunii lanțului-de-blocuri, dar nu sunt stocate în setul UTXO și, prin urmare, nu crește memoria necesară pentru setul de UTXO și nu încărcă nodurile complete cu costuri de RAM mai mari.
 
-+RETURN+ scripts look like this:
+Scripturile +RETURN+ arată astfel:
 
 ----
 RETURN <data>
 ----
 
-((("Proof of Existence")))((("DOCPROOF prefix")))The data portion is limited to 80 bytes and most often represents a hash, such as the output from the SHA256 algorithm (32 bytes). Many applications put a prefix in front of the data to help identify the application. For example, the http://proofofexistence.com[Proof of Existence] digital notarization service uses the 8-byte prefix +DOCPROOF+, which is ASCII encoded as +44 4f 43 50 52 4f 4f 46+ in hexadecimal.
+((("Dovada Existenței")))((("prefixul DOCPROOF")))Porțiunea de date este limitată la 80 de octeți și cel mai adesea reprezintă un rezumat, cum ar fi cel produs de algoritmul SHA256 (32 octeți). Multe aplicații pun un prefix în fața datelor pentru a ajuta la identificarea aplicației. De exemplu, serviciul de notarizare digitală http://proofofexistence.com[Proof of Existence] folosește prefixul pe 8 biți +DOCPROOF+, care este codat ASCII în hexazecimal ca +44 4f 43 50 52 4f 4f 46+.
 
-Keep in mind that there is no "unlocking script" that corresponds to +RETURN+ that could possibly be used to "spend" a +RETURN+ output. The whole point of +RETURN+ is that you can't spend the money locked in that output, and therefore it does not need to be held in the UTXO set as potentially spendable—+RETURN+ is _provably unspendable_. +RETURN+ is usually an output with a zero bitcoin amount, because any bitcoin assigned to such an output is effectively lost forever. If a +RETURN+ is referenced as an input in a transaction, the script validation engine will halt the execution of the validation script and mark the transaction as invalid. The execution of +RETURN+ essentially causes the script to "RETURN" with a +FALSE+ and halt. Thus, if you accidentally reference a +RETURN+ output as an input in a transaction, that transaction is invalid.
+Rețineți că nu există niciun ”script de deblocare” care să corespundă unui +RETURN+ care ar putea fi folosit pentru ”cheltuirea” unei ieșiri +RETURN+. Întregul scop al +RETURN+ este că nu puteți cheltui banii blocați în acea ieșire și, prin urmare, nu este necesar să fie reținută în setul UTXO ca potențial cheltuibilă - +RETURN+ este _demonstrabil necheltuibilă_. +RETURN+ este de obicei o ieșire cu o sumă de bitcoin zero, deoarece orice bitcoin atribuit unei astfel de ieșiri se pierde efectiv pentru totdeauna. Dacă un +RETURN+ este referit ca o intrare într-o tranzacție, motorul de validare a scripturilor va opri execuția scriptului de validare și va marca tranzacția ca invalidă. Execuția lui +RETURN+ determină, în esență, ca scriptul să returneze un +FALSE+ și să se oprească. Astfel, dacă faceți o referință accidentală la o ieșire +RETURN+ ca o intrare într-o tranzacție, acea tranzacție este invalidă.
 
-A standard transaction (one that conforms to the +IsStandard()+ checks) can have only one +RETURN+ output. However, a single +RETURN+ output can be combined in a transaction with outputs of any other type.
+O tranzacție standard (una conformă cu verificarea +IsStandard()+) poate avea doar o ieșire +RETURN+. Cu toate acestea, o singură ieșire +RETURN+ poate fi combinată într-o tranzacție cu ieșiri de orice alt tip.
 
-Two new command-line options have been added in Bitcoin Core as of version 0.10. The option +datacarrier+ controls relay and mining of +RETURN+ transactions, with the default set to "1" to allow them. The option +datacarriersize+ takes a numeric argument specifying the maximum size in bytes of the +RETURN+ script, 83 bytes by default, which, allows for a maximum of 80 bytes of +RETURN+ data plus one byte of +RETURN+ opcode and two bytes of +PUSHDATA+ opcode.
+Două opțiuni pentru linia de comandă au fost adăugate în Bitcoin Core începând cu versiunea 0.10. Opțiunea +datacarrier+ controlează difuzarea și mineritul tranzacțiilor +RETURN+, cu setarea implicită pe ”1” pentru a le permite. Opțiunea +datacarriersize+ primește un argument numeric specificând dimensiunea maximă în octeți a scriptului +RETURN+, în mod implicit 83 de octeți, ceea ce permite maxim 80 de octeți pentru valoarea +RETURN+ plus un octet pentru codul operatorului +RETURN+ și doi octeți pentru codul operatorului +PUSHDATA+ .
 
-[NOTE]
+[NOTĂ]
 ====
-+RETURN+ was initially proposed with a limit of 80 bytes, but the limit was reduced to 40 bytes when the feature was released. In February 2015, in version 0.10 of Bitcoin Core, the limit was raised back to 80 bytes. Nodes may choose not to relay or mine +RETURN+, or only relay and mine +RETURN+ containing less than 80 bytes of data.
++RETURN+ a fost propus inițial cu o limită de 80 de octeți, dar limita a fost redusă la 40 de octeți când a fost lansată funcționalitatea. În februarie 2015, în versiunea 0.10 a Bitcoin Core, limita a fost ridicată din nou la 80 de octeți. Nodurile pot alege să nu difuzeze sau să mineze scripturi +RETURN+, sau doar să difuzeze și să mineze scripturi +RETURN+ care conțin mai puțin de 80 de octeți de date.
 ====
 
-=== Timelocks
+=== Timpi de Blocare (Timelocks)
 
-((("transactions", "advanced", "timelocks")))((("scripting", "timelocks", id="Stimelock07")))((("nLocktime field")))((("scripting", "timelocks", "uses for")))((("timelocks", "uses for")))Timelocks are restrictions on transactions or outputs that only allow spending after a point in time. Bitcoin has had a transaction-level timelock feature from the beginning. It is implemented by the +nLocktime+ field in a transaction. Two new timelock features were introduced in late 2015 and mid-2016 that offer UTXO-level timelocks. These are +CHECKLOCKTIMEVERIFY+ and +CHECKSEQUENCEVERIFY+.
+((("tranzacții", "avansat", "timp de blocare")))((("scriptare", "timp de blocare", id="Stimelock07")))((("câmplul nLocktime")))((("scriptare", "timp de blocare", "utilizări pentru")))((("timp de blocare", "utilizări pentru")))Timpii de blocare (timelocks) sunt restricții pentru tranzacții sau pentru ieșiri care permit cheltuirea numai după un moment în timp. Bitcoin a avut de la început o fucționalitate temporală la nivel de tranzacție. Este implementată de câmpul +nLocktime+ într-o tranzacție. Două noi funcții pentru timpi de blocare au fost introduse la sfârșitul anului 2015 și la jumătatea anului 2016, care oferă timpi de blocare (timelock-uri) la nivel de UTXO. Acestea sunt +CHECKLOCKTIMEVERIFY+ și +CHECKSEQUENCEVERIFY+.
 
-Timelocks are useful for postdating transactions and locking funds to a date in the future. More importantly, timelocks extend bitcoin scripting into the dimension of time, opening the door for complex multistep smart contracts.
+Timpii de blocare (timelocks) sunt utili pentru postdatarea tranzacțiilor și blocarea fondurilor la o anumită dată în viitor. Și mai important, timpii de blocare extind scripturile bitcoin în dimensiunea timpului, deschizând ușa pentru contracte inteligente complexe multistep.
 
 [[transaction_locktime_nlocktime]]
-==== Transaction Locktime (nLocktime)
+==== Timp de Blocare a Tranzacției (nLocktime)
 
-((("scripting", "timelocks", "nLocktime")))((("timelocks", "nLocktime")))From the beginning, bitcoin has had a transaction-level timelock feature. Transaction locktime is a transaction-level setting (a field in the transaction data structure) that defines the earliest time that a transaction is valid and can be relayed on the network or added to the blockchain. Locktime is also known as +nLocktime+ from the variable name used in the Bitcoin Core codebase. It is set to zero in most transactions to indicate immediate propagation and execution. If +nLocktime+ is nonzero and below 500 million, it is interpreted as a block height, meaning the transaction is not valid and is not relayed or included in the blockchain prior to the specified block height. If it is greater than or equal to 500 million, it is interpreted as a Unix Epoch timestamp (seconds since Jan-1-1970) and the transaction is not valid prior to the specified time. Transactions with +nLocktime+ specifying a future block or time must be held by the originating system and transmitted to the bitcoin network only after they become valid. If a transaction is transmitted to the network before the specified +nLocktime+, the transaction will be rejected by the first node as invalid and will not be relayed to other nodes. The use of +nLocktime+ is equivalent to postdating a paper check.
+((("scriptare", "timpi de blocare", "nLocktime")))((("timpi de blocare", "nLocktime")))De la început, bitcoin a avut o funcționalitate de timp la nivel de tranzacție. Timpul de blocare (timelock) al tranzacției este o setare la nivel de tranzacție (un câmp din structura datelor de tranzacție) care definește cel mai devreme moment în care o tranzacție este validă și poate fi transmisă în rețea sau adăugată la lanțul-de-blocuri. Timpul de blocare este cunoscut și sub denumirea de +nLocktime+ de la numele variabilei utilizate în codul Bitcoin Core. Este setat la zero în majoritatea tranzacțiilor pentru a indica propagarea și execuția imediată. Dacă valoarea +nLocktime+ este între zero și sub 500 de milioane, aceasta este interpretată ca înălțimea blocului (block height), ceea ce înseamnă că tranzacția nu este validă și nu este transmisă sau inclusă în lannțul-de-blocuri înainte de înălțimea specificată a blocului. Dacă este mai mare sau egală cu 500 de milioane, se interpretează ca o marcă de timp Unix Epoch (secunde de la 1 ianuarie 1970), iar tranzacția nu este valabilă înainte de data specificată. Tranzacțiile cu +nLocktime+ care specifică un bloc sau dată în viitor trebuie să fie păstrate de sistemul inițiator și transmise rețelei bitcoin numai după ce devin valide. Dacă o tranzacție este transmisă în rețea înainte de valoarea specificată pentru +nLocktime+, tranzacția va fi respinsă de primul nod ca fiind invalidă și nu va fi transmisă către alte noduri. Utilizarea +nLocktime+ este echivalentă cu postdatarea unui cec de hârtie.
 
 [[locktime_limitations]]
-===== Transaction locktime limitations
+===== Limitări timpilor de blocare pentru tranzacții
 
-+nLocktime+ has the limitation that while it makes it possible to spend some outputs in the future, it does not make it impossible to spend them until that time. Let's explain that with the following example.
++nLocktime+ are limitarea că, deși face posibilă cheltuirea unor ieșiri în viitor, nu face imposibilă cheltuirea lor până la acel moment. Să explicăm asta cu următorul exemplu.
 
-((("use cases", "buying coffee", id="alicesseven")))Alice signs a transaction spending one of her outputs to Bob's address, and sets the transaction +nLocktime+ to 3 months in the future. Alice sends that transaction to Bob to hold. With this transaction Alice and Bob know that:
+((("utilizări", "cumpărarea de cafea", id="alicesseven")))Alice semnează o tranzacție care cheltuiește una dintre ieșirile ei la adresa lui Bob și stabilește valoarea +nLocktime+ pentru tranzacție la 3 luni în viitor. Alice trimite acea tranzacție lui Bob să o păstreze. Cu această tranzacție, Alice și Bob știu că:
 
-* Bob cannot transmit the transaction to redeem the funds until 3 months have elapsed.
-* Bob may transmit the transaction after 3 months.
+* Bob nu poate transmite tranzacția pentru a răscumpăra fondurile decât după ce au trecut 3 luni.
+* Bob poate transmite tranzacția după 3 luni.
 
-However:
+Totuși:
 
-* Alice can create another transaction, double-spending the same inputs without a locktime. Thus, Alice can spend the same UTXO before the 3 months have elapsed.
-* Bob has no guarantee that Alice won't do that.
+* Alice poate crea o altă tranzacție fără a avea un timp de blocare, cheltuind de două ori aceleași intrări. Astfel, Alice poate cheltui aceeași UTXO înainte de expirarea celor 3 luni.
+* Bob nu are nicio garanție că Alice nu va face asta.
 
-It is important to understand the limitations of transaction +nLocktime+. The only guarantee is that Bob will not be able to redeem it before 3 months have elapsed. There is no guarantee that Bob will get the funds. To achieve such a guarantee, the timelock restriction must be placed on the UTXO itself and be part of the locking script, rather than on the transaction. This is achieved by the next form of timelock, called Check Lock Time Verify.
+Este important să înțelegem limitele +nLocktime+ pentru tranzacție. Singura garanție este că Bob nu o va putea răscumpăra înainte de 3 luni. Nu există nicio garanție că Bob va primi fondurile. Pentru a obține o astfel de garanție, restricția de timp trebuie să fie plasată pe UTXO și să facă parte din scriptul de blocare, mai degrabă decât din tranzacție. Acest lucru este realizat prin următoarea formă de timp de blocare, denumită Verifică Control Timp Blocare (Check Lock Time Verify).
 
-==== Check Lock Time Verify (CLTV)
+==== Verifică Control Timp Blocare (Check Lock Time Verify - CLTV)
 
-((("Check Lock Time Verify (CLTV)", id="cltv07")))((("timelocks", "Check Lock Time Verify (CLTV)")))((("scripting", "timelocks", "Check Lock Time Verify (CLTV)")))((("bitcoin improvement proposals", "CHECKLOCKTIMEVERIFY (BIP-65)")))In December 2015, a new form of timelock was introduced to bitcoin as a soft fork upgrade. Based on a specification in BIP-65, a new script operator called _CHECKLOCKTIMEVERIFY_ (_CLTV_) was added to the scripting language. +CLTV+ is a per-output timelock, rather than a per-transaction timelock as is the case with +nLocktime+. This allows for much greater flexibility in the way timelocks are applied.
+((("Verifică Control Timp Blocare (CLTV)", id="cltv07")))((("timpi de blocare", "Verifică Control Timp Blocare (CLTV)")))((("scriptare", "timpi de blocare", "Verifică Control Timp Blocare (CLTV)")))((("propunere de imbunătățire bitcoin", "CHECKLOCKTIMEVERIFY (BIP-65)")))În decembrie 2015, o nouă formă de timp de blocare (timelock) a fost introdusă în bitcoin ca o actualizare soft fork. Pe baza unei specificații din BIP-65, un operator nou numit _CHECKLOCKTIMEVERIFY_ (_CLTV_) a fost adăugat limbajului de script. +CLTV+ este un timp de blocare per ieșire, mai degrabă decât un timp de blocare per tranzacție, cum este cazul cu +nLocktime+. Acest lucru permite o flexibilitate mult mai mare în modul de aplicare a timpilor de blocare.
 
-In simple terms, by adding the +CLTV+ opcode in the redeem script of an output it restricts the output, so that it can only be spent after the specified time has elapsed.
+În termeni simpli, prin adăugarea operatorului +CLTV+ în scriptul de răscumpărare a unei ieșiri, acesta restricționează ieșirea, astfel încât aceasta să nu poate fi cheltuită decât după trecerea timpului specificat.
 
-[TIP]
+[SFAT]
 ====
-While +nLocktime+ is a transaction-level timelock, +CLTV+ is an output-based timelock.
+În timp ce +nLocktime+ este un timp de blocare la nivel de tranzacție, +CLTV+ este untimp de blocare la nivel de ieșire.
 ====
 
-+CLTV+ doesn't replace +nLocktime+, but rather restricts specific UTXO such that they can only be spent in a future transaction with +nLocktime+ set to a greater or equal value.
++CLTV+ nu înlocuiește +nLocktime+, ci mai degrabă restricționează UTXO-uri specifice, astfel încât acestea pot fi cheltuite doar într-o tranzacție viitoare cu +nLocktime+ setat la o valoare mai mare sau egală.
 
-The +CLTV+ opcode takes one parameter as input, expressed as a number in the same format as +nLocktime+ (either a block height or Unix epoch time). As indicated by the +VERIFY+ suffix, +CLTV+ is the type of opcode that halts execution of the script if the outcome is +FALSE+. If it results in TRUE, execution continues.
+Operatorul +CLTV+ primește un parametru ca intrare, exprimat ca număr în același format ca +nLocktime+ (fie o înălțime a blocului, fie un timp de epocă Unix). După cum indică sufixul +VERIFY+, +CLTV+ este tipul de operator care oprește execuția scriptului dacă rezultatul este +FALSE+. Dacă are ca rezultat TRUE, execuția continuă.
 
-In order to lock an output with +CLTV+, you insert it into the redeem script of the output in the transaction that creates the output. For example, if Alice is paying Bob's address, the output would normally contain a P2PKH script like this:
+Pentru a bloca o ieșire cu +CLTV+, introduceți operatorul în scriptul de răscumpărare a ieșirii în tranzacția care creează ieșirea. De exemplu, dacă Alice plătește adresa lui Bob, ieșirea ar conține în mod normal un script P2PKH astfel:
 
 ----
 DUP HASH160 <Bob's Public Key Hash> EQUALVERIFY CHECKSIG
 ----
 
-To lock it to a time, say 3 months from now, the transaction would be a P2SH transaction with a redeem script like this:
+Pentru a o bloca la o dată anume, să spunem peste 3 luni, tranzacția ar fi o tranzacție P2SH cu un script de răscumpărare ca acesta:
 
 ----
 <now + 3 months> CHECKLOCKTIMEVERIFY DROP DUP HASH160 <Bob's Public Key Hash> EQUALVERIFY CHECKSIG
 ----
 
-where +<now {plus} 3 months>+ is a block height or time value estimated 3 months from the time the transaction is mined: current block height {plus} 12,960 (blocks) or current Unix epoch time {plus} 7,760,000 (seconds). For now, don't worry about the +DROP+ opcode that follows +CHECKLOCKTIMEVERIFY+; it will be explained shortly.
+unde +<now {plus} 3 months>+ este o înălțime a blocului sau o valoare a duratei estimată la 3 luni de la minarea tranzacției: înălțimea curentă a blocului {plus} 12.960 (blocuri) sau timpul curent de epocă Unix {plus} 7.760.000 (secunde). Deocamdată nu vă faceți griji în legătură cu operatorul +DROP+ care urmează după +CHECKLOCKTIMEVERIFY+; va fi explicat în scurt timp.
 
-When Bob tries to spend this UTXO, he constructs a transaction that references the UTXO as an input. He uses his signature and public key in the unlocking script of that input and sets the transaction +nLocktime+ to be equal or greater to the timelock in the +CHECKLOCKTIMEVERIFY+ Alice set. Bob then broadcasts the transaction on the bitcoin network.
+Când Bob încearcă să cheltuiască această UTXO, el construiește o tranzacție care face referire la UTXO ca intrare. Își folosește semnătura și cheia publică în scriptul de deblocare a acelei intrări și stabilește ca timpul de blocare al tranzacției +nLocktime+ să fie egal sau mai mare cu timpul de blocare pe care Alice l-a specificat pentru +CHECKLOCKTIMEVERIFY+. Bob transmite apoi tranzacția în rețeaua bitcoin.
 
-Bob's transaction is evaluated as follows. If the +CHECKLOCKTIMEVERIFY+ parameter Alice set is less than or equal the spending transaction's +nLocktime+, script execution continues (acts as if a &#x201c;no operation&#x201d; or NOP opcode was executed). Otherwise, script execution halts and the transaction is deemed invalid.
+Tranzacția lui Bob este evaluată după cum urmează. Dacă parametrul pentru +CHECKLOCKTIMEVERIFY+ pe care Alice l-a setat este mai mic sau egal cu valoarea +nLocktime+ a tranzacției de cheltuire, atunci execuția scriptului continuă (acționează ca și cum nu a fost executată ”nici o operațiune” sau NOP). În caz contrar, execuția scriptului se oprește și tranzacția este considerată invalidă.
 
-More precisely, +CHECKLOCKTIMEVERIFY+ fails and halts execution, marking the transaction invalid if (source: BIP-65):
+Mai precis, +CHECKLOCKTIMEVERIFY+ eșuează și oprește executarea, marcând tranzacția invalidă dacă (sursa: BIP-65):
 
-1. the stack is empty; or
-1. the top item on the stack is less than 0; or
-1. the lock-time type (height versus timestamp) of the top stack item and the +nLocktime+ field are not the same; or
-1. the top stack item is greater than the transaction's +nLocktime+ field; or
-1. the +nSequence+ field of the input is 0xffffffff.
+1. stiva este goală; sau
+1. elementul din vârf al stivei este mai mic de 0; sau
+1. tipul timpului de blocare (înălțime versus marcă de timp) al elementului din vârful stivei și câmpul +nLocktime+ nu sunt aceași; sau
+1. elementul din vârful stivei este mai mare decât câmpul +nLocktime+ set pentru tranzacție ; sau
+1. câmpul +nSequence+ al intrării este 0xffffffff.
 
-[NOTE]
+[NOTĂ]
 ====
-+CLTV+ and +nLocktime+ use the same format to describe timelocks, either a block height or the time elapsed in seconds since Unix epoch. Critically, when used together, the format of +nLocktime+ must match that of +CLTV+ in the outputs&#x2014;they must both reference either block height or time in seconds.
++CLTV+ și +nLocktime+ utilizează același format pentru a descrie timpii de blocare, fie o înălțime a blocului, fie timpul scurs în secunde de la epoca Unix. În mod critic, atunci când este utilizat împreună, formatul +nLocktime+ trebuie să se potrivească cu cel al +CLTV+ setat pentru ieșiri - acestea trebuie să facă referință fie înălțimea blocului, fie la timpul în secunde.
 ====
 
-After execution, if +CLTV+ is satisfied, the time parameter that preceded it remains as the top item on the stack and may need to be dropped, with +DROP+, for correct execution of subsequent script opcodes. You will often see +CHECKLOCKTIMEVERIFY+ followed by +DROP+ in scripts for this reason.
+După executare, dacă +CLTV+ este satisfăcut, parametrul de timp care l-a precedat rămâne ca elementul din vârful stivei și poate fi nevoie să fie îndepărtat, cu +DROP+, pentru executarea corectă a operatorilor ulteriori. De multe ori veți vedea în scripturi +CHECKLOCKTIMEVERIFY+ urmat de +DROP+ din acest motiv.
 
-By using +nLocktime+ in conjunction with +CLTV+, the scenario described in <<locktime_limitations>> changes. Alice can no longer spend the money (because it's locked with Bob's key) and Bob cannot spend it before the 3-month locktime has expired.((("", startref="alicesseven")))
+Folosind +nLocktime+ în combinație cu +CLTV+, scenariul descris în <<locktime_limitations>>  se schimbă. Alice nu mai poate cheltui banii (pentru că sunt blocați cu cheia lui Bob) și Bob nu îi poate cheltui înainte de expirarea perioadei de 3 luni.((("", startref="alicesseven")))
 
-By introducing timelock functionality directly into the scripting language, +CLTV+ allows us to develop some very interesting complex scripts.((("", startref="cltv07")))
+Prin introducerea funcționalității timpilor de blocate (timelock) direct în limbajul de scriptare, +CLTV+ ne permite să dezvoltăm niște scripturi complexe foarte interesante.((("", startref="cltv07")))
 
-The standard is defined in https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki[BIP-65 (CHECKLOCKTIMEVERIFY)].
+Standardul este definit la https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki[BIP-65 (CHECKLOCKTIMEVERIFY)].
 
-==== Relative Timelocks
+==== Timpi Relativi de Blocare
 
-+nLocktime+ and +CLTV+ are ((("timelocks", "relative timelocks", id="Trelative07")))((("scripting", "timelocks", "relative timelocks")))((("relative timelocks", id="relativetime07")))both _absolute timelocks_ in that they specify an absolute point in time. The next two timelock features we will examine are _relative timelocks_ in that they specify, as a condition of spending an output, an elapsed time from the confirmation of the output in the blockchain.
++nLocktime+ și +CLTV+ sunt ((("timpi de blocare", "timpi relativi de blocare", id="Trelative07")))((("scriptare", "timpi de blocare", "timpi relativi de blocare")))((("timpi relativi de blocare", id="relativetime07")))ambele _timpi de blocare absoluți_ prin faptul că ele specifică un punct absolut în timp. Următoarele două funcționalități pentru timpi de blocare pe care le vom examina sunt _timpi de blocare relativi_ prin faptul că ele specifică, ca și condiție de cheltuire unei ieșiri, un timp scurs de la confirmarea ieșirii în lanțul de blocuri.
 
-Relative timelocks are useful because they allow a chain of two or more interdependent transactions to be held off chain, while imposing a time constraint on one transaction that is dependent on the elapsed time from the confirmation of a previous transaction. In other words, the clock doesn't start counting until the UTXO is recorded on the blockchain. This functionality is especially useful in bidirectional state channels and Lightning Networks, as we will see in <<state_channels>>.
+Timpii relativi de blocare sunt utili deoarece permit un lanț de două sau mai multe tranzacții interdependente să fie păstrate în afara lanțului (off chain), impunând în același timp o restricție de timp asupra unei tranzacții care depinde de timpul scurs de la confirmarea unei tranzacții anterioare. Cu alte cuvinte, ceasul nu începe să numere până când UTXO-ul nu este înregistrat în lanțul-de-blocuri. Această funcționalitate este utilă în special în canalele bidirecționale cu stare și în Lightning Networks, așa cum vom vedea în <<state_channels>>.
 
-Relative timelocks, like absolute timelocks, are implemented with both a transaction-level feature and a script-level opcode. The transaction-level relative timelock is implemented as a consensus rule on the value of +nSequence+, a transaction field that is set in every transaction input. Script-level relative timelocks are implemented with the +CHECKSEQUENCEVERIFY+ (CSV) opcode.
+Timpii relativi de blocare, la fel ca timpii absoluți, sunt implementați atât ca o funcționalitate la nivel de tranzacție, cât și ca un operator la nivel de script. Timpul relativ de blocare la nivelul tranzacției este implementat ca regulă de consens asupra valorii +nSequence+, un câmp al tranzacției care este setat în fiecare intrare din tranzacție. Timpii relativi de blocare la nivel de script sunt implementați folosind operatorul +CHECKSEQUENCEVERIFY+ (CSV).
 
-((("bitcoin improvement proposals", "Relative lock-time using consensus-enforced sequence numbers (BIP-68)")))((("bitcoin improvement proposals", "CHECKSEQUENCEVERIFY (BIP-112)")))Relative timelocks are implemented according to the specifications in https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki[BIP-68, Relative lock-time using consensus-enforced sequence numbers] and https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki[BIP-112, CHECKSEQUENCEVERIFY].
+((("propuneri de îmbunătățire bitcoin", "Timpi de blocare relativi folind numerele de secvență impuse de regulile de consens (BIP-68)")))((("propuneri de îmbunătățire bitcoin", "CHECKSEQUENCEVERIFY (BIP-112)")))Timpii relativi de blocare sunt implementați în conformitate cu specificațiile din [BIP-68, Relative lock-time using consensus-enforced sequence numbers] și https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki[BIP-112, CHECKSEQUENCEVERIFY].
 
-BIP-68 and BIP-112 were activated in May 2016 as a soft fork upgrade to the consensus rules.
+BIP-68 și BIP-112 au fost activate în mai 2016, ca o actualizare ”soft fork” la regulile de consens.
 
-==== Relative Timelocks with nSequence
+==== Timpi Relativi de Blocare folosind nSequence
 
-((("nSequence field")))((("scripting", "timelocks", "relative timelocks with nSequence")))Relative timelocks can be set on each input of a transaction, by setting the +nSequence+ field in each input.
+((("câmpul nSequence")))((("scriptare", "timpi de blocare", "timpi relativi de blocare folosind nSequence")))Timpii relativi de blocare pot fi setați pe fiecare intrare a unei tranzacții, prin setarea câmpului +nSequence+ în fiecare intrare.
 
-===== Original meaning of nSequence
+===== Semnificația originală a nSequence
 
-The +nSequence+ field was originally intended (but never properly implemented) to allow modification of transactions in the mempool. In that use, a transaction containing inputs with +nSequence+ value below 2^32^ - 1 (0xFFFFFFFF) indicated a transaction that was not yet "finalized." Such a transaction would be held in the mempool until it was replaced by another transaction spending the same inputs with a higher +nSequence+ value. Once a transaction was received whose inputs had an +nSequence+ value of 0xFFFFFFFF it would be considered "finalized" and mined.
+Câmpul +nSequence+ a fost inițial conceput (dar niciodată implementat corespunzător) pentru a permite modificarea tranzacțiilor din mempool. În această utilizare, o tranzacție care conține intrări cu o valoare +nSequence+ sub 2^32^- 1 (0xFFFFFFFF) însemna o tranzacție care nu a fost încă ”finalizată”. O astfel de tranzacție va fi păstrată în mempool până când aceasta va fi înlocuită cu o altă tranzacție care cheltuie aceleași intrări cu o valoare +nSequence+ mai mare. Odată ce s-a primit o tranzacție ale cărei intrări au o valoare de 0xFFFFFFFF pentru +nSequence+, aceasta va fi considerată ”finalizată” și minată.
 
-The original meaning of +nSequence+ was never properly implemented and the value of +nSequence+ is customarily set to 0xFFFFFFFF in transactions that do not utilize timelocks. For transactions with +nLocktime+ or +CHECKLOCKTIMEVERIFY+, the +nSequence+ value must be set to less than 2^31^ for the timelock guards to have an effect, as explained below.
+Intenția inițială a +nSequence+ nu a fost niciodată implementată în mod corespunzător, iar valoarea +nSequence+ este setată în mod obișnuit la 0xFFFFFFFF în tranzacțiile care nu utilizează timpi de blocare. Pentru tranzacțiile cu +nLocktime+ sau +CHECKLOCKTIMEVERIFY+, valoarea +nSequence+ trebuie să fie setată la mai puțin de 2^31^ pentru ca protecția de timp de blocare să aibă un efect, așa cum este explicat mai jos.
 
-===== nSequence as a consensus-enforced relative timelock
+===== nSequence ca un timp relativ de blocare impus de consens
 
-Since the activation of BIP-68, new consensus rules apply for any transaction containing an input whose +nSequence+ value is less than 2^31^ (bit 1<<31 is not set). Programmatically, that means that if the most significant (bit 1<<31) is not set, it is a flag that means "relative locktime." Otherwise (bit 1<<31 set), the +nSequence+ value is reserved for other uses such as enabling +CHECKLOCKTIMEVERIFY+, +nLocktime+, Opt-In-Replace-By-Fee, and other future developments.
+De la activarea BIP-68, se aplică noi reguli de consens pentru orice tranzacție care conține o intrare a cărei valoare +nSequence+ este mai mică de 2^31^ (bitul 1<<31 nu este setat). Programatic, asta înseamnă că, dacă cel mai semnificativ bit (bit 1<<31) nu este setat, este un indicator care înseamnă ”timp relativ de blocare” activat. În caz contrar (bitul 1<<31 este setat), valoarea +nSequence+ este rezervată altor utilizări, cum ar fi activarea +CHECKLOCKTIMEVERIFY+, +nLocktime+, Opt-In-Replace-By-Fee și a altor evoluții viitoare.
 
-Transaction inputs with +nSequence+ values less than 2^31^ are interpreted as having a relative timelock. Such a transaction is only valid once the input has aged by the relative timelock amount. For example, a transaction with one input with an +nSequence+ relative timelock of 30 blocks is only valid when at least 30 blocks have elapsed from the time the UTXO referenced in the input was mined. Since +nSequence+ is a per-input field, a transaction may contain any number of timelocked inputs, all of which must have sufficiently aged for the transaction to be valid. A transaction can include both timelocked inputs (+nSequence+ < 2^31^) and inputs without a relative timelock (+nSequence+ >= 2^31^).
+Intrările tranzacției cu valori +nSequence+ mai mici de 2^31^ sunt interpretate ca având un timp relativ de blocare. O astfel de tranzacție este valabilă numai după ce intrarea a îmbătrânit cu valoarea timpului relativ de blocare. De exemplu, o tranzacție cu o singură intrare cu un timp relativ de blocare +nSequence+ de 30 de blocuri este valabilă numai atunci când au trecut cel puțin 30 de blocuri din momentul în care UTXO-ul la care se face referință în intrare a fost minat. Deoarece +nSequence+ este un câmp per intrare, iar o tranzacție poate conține oricâte intrări cu timp de blocare, atunci toate intrările trebuie să aibă o vârstă suficientă pentru ca tranzacția să fie validă. O tranzacție poate include atât intrări cu timpi de blocare (+nSequence+ < 2^31^), cât și intrări fără un timp relativ de blocare (+nSequence+ >= 2^31^).
 
-The +nSequence+ value is specified in either blocks or seconds, but in a slightly different format than we saw used in +nLocktime+. A type-flag is used to differentiate between values counting blocks and values counting time in seconds. The type-flag is set in the 23rd least-significant bit (i.e., value 1<<22). If the type-flag is set, then the +nSequence+ value is interpreted as a multiple of 512 seconds. If the type-flag is not set, the +nSequence+ value is interpreted as a number of blocks.
+Valoarea +nSequence+ este specificată fie în blocuri, fie în secunde, dar într-un format ușor diferit decât am văzut folosit la +nLocktime+. Un indicator de tip este utilizat pentru a diferenția între o valoare care se refră la blocuri și una care se referă  la timpul scurs în secunde. Indicatorul de tip este setat în al 23-lea cel mai puțin semnificativ bit (adică, valoarea 1<<22). Dacă este setat indicatorul tip, atunci valoarea +nSequence+ este interpretată ca un multiplu de 512 secunde. Dacă indicatorul tip nu este setat, valoarea +nSequence+ este interpretată ca un număr de blocuri.
 
-When interpreting +nSequence+ as a relative timelock, only the 16 least significant bits are considered. Once the flags (bits 32 and 23) are evaluated, the +nSequence+ value is usually "masked" with a 16-bit mask (e.g., +nSequence+ & 0x0000FFFF).
+Atunci când se interpretează +nSequence+ ca un timp relativ de blocare, sunt considerați doar cei 16 biți mai puțin semnificativi. Odată ce indicatorii (biții 32 și 23) sunt evaluați, valoarea +nSequence+ este de obicei ”mascată” cu o mască de 16 biți (de exemplu, +nSequence+ & 0x0000FFFF).
 
-<<bip_68_def_of_nseq>> shows the binary layout of the +nSequence+ value, as defined by BIP-68.
+<<bip_68_def_of_nseq>> arata structura binară a valorii +nSequence+, asa cum este definită de BIP-68.
 
 [[bip_68_def_of_nseq]]
-.BIP-68 definition of nSequence encoding (Source: BIP-68)
+.Definiția BIP-68 a codificării nSequence (Sursa: BIP-68)
 image::images/mbc2_0701.png["BIP-68 definition of nSequence encoding"]
 
 
-Relative timelocks based on consensus enforcement of the +nSequence+ value are defined in BIP-68.
+Timpii relativi de blocare bazați pe aplicarea consensului asupra valorii +nSequence+ sunt definiți în BIP-68.
 
-The standard is defined in https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki[BIP-68, Relative lock-time using consensus-enforced sequence numbers].
+Standardul este definit la https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki[BIP-68, Relative lock-time using consensus-enforced sequence numbers].
 
-==== Relative Timelocks with CSV
+==== Timpi Relativi de Blocare cu CSV
 
-((("scripting", "timelocks", "relative timelocks with CHECKSEQUENCEVERIFY")))((("CHECKSEQUENCEVERIFY (CSV)")))Just like CLTV and +nLocktime+, there is a script opcode for relative timelocks that leverages the +nSequence+ value in scripts. That opcode is +CHECKSEQUENCEVERIFY+, commonly referred to as +CSV+ for short.
+((("scriptare", "timpi de blocare", "timpi relativi de blocare cu CHECKSEQUENCEVERIFY")))((("CHECKSEQUENCEVERIFY (CSV)")))La fel ca CLTV și +nLocktime+, există un operator de script pentru timpii relativi de blocare care utilizează valoarea +nSequence+ în scripturi. Acest operator este +CHECKSEQUENCEVERIFY+, denumit în mod uzual pe scurt +CSV+.
 
-The +CSV+ opcode when evaluated in an UTXO's redeem script allows spending only in a transaction whose input +nSequence+ value is greater than or equal to the +CSV+ parameter. Essentially, this restricts spending the UTXO until a certain number of blocks or seconds have elapsed relative to the time the UTXO was mined.
+Când este evaluat operatorul +CSV+ în scriptul de răscumpărare al unei UTXO permite cheltuirea numai într-o tranzacție a cărei intrare are valoarea +nSequence+ mai mare sau egală cu parametrul +CSV+. În esență, acest lucru restricționează cheltuirea UTXO-ului până când au trecut un anumit număr de blocuri sau secunde în raport cu timpul în care UTXO a fost minat.
 
-As with CLTV, the value in +CSV+ must match the format in the corresponding +nSequence+ value. If +CSV+ is specified in terms of blocks, then so must +nSequence+. If +CSV+ is specified in terms of seconds, then so must +nSequence+.
+Ca și în cazul CLTV, valoarea din +CSV+ trebuie să corespundă formatului valorii corespunzătoare din +nSequence+. Dacă +CSV+ este specificat în termeni de blocuri, atunci așa trebuie trebuie și +nSequence+. Dacă +CSV+ este specificat în termeni de secunde, atunci așa trebuie și +nSequence+.
 
-Relative timelocks with +CSV+ are especially useful when several (chained) transactions are created and signed, but not propagated, when they're kept "off-chain." A child transaction cannot be used until the parent transaction has been propagated, mined, and aged by the time specified in the relative timelock. One application of this use case can be seen in <<state_channels>> and <<lightning_network>>.((("", startref="relativetime07")))((("", startref="Trelative07")))
+Timpii relativi de blocare cu +CSV+ sunt utili în special atunci când mai multe tranzacții (în lanț) sunt create și semnate, dar nu propagate, atunci când sunt păstrate în afara lanțului (”off-chain”). O tranzacție secundară nu poate fi utilizată până când tranzacția părinte nu a fost propagată, minată și îmbătrânită până la momentul specificat în timpul relativ de blocare. O aplicare a acestui caz de utilizare poate fi văzută în <<state_channels>> și <<lightning_network>>.((("", startref="relativetime07")))((("", startref="Trelative07")))
 
-+CSV+ is defined in detail in https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki[BIP-112, CHECKSEQUENCEVERIFY].
++CSV+ este definit în detaliu la https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki[BIP-112, CHECKSEQUENCEVERIFY].
 
 
-==== Median-Time-Past
+==== Timpul-Median-Trecut (Median-Time-Past)
 
-((("scripting", "timelocks", "Median-Tme-Past")))((("Median-Tme-Past")))((("timelocks", "Median-Tme-Past")))As part of the activation of relative timelocks, there was also a change in the way "time" is calculated for timelocks (both absolute and relative). In bitcoin there is a subtle, but very significant, difference between wall time and consensus time. Bitcoin is a decentralized network, which means that each participant has his or her own perspective of time. Events on the network do not occur instantaneously everywhere. Network latency must be factored into the perspective of each node. Eventually everything is synchronized to create a common ledger. Bitcoin reaches consensus every 10 minutes about the state of the ledger as it existed in the _past_.
+((("scriptare", "timpi de blocare", "Timp-Median-Trecut")))((("Timp-Median-Trecut")))((("timpi de blocare", "Timp-Median-Trecut")))Ca parte a activării timpilor relativi de blocare, a existat, de asemenea, o modificare a modului în care se calculează ”data” pentru timpii de blocare (atât absoluți cât și relativi). În bitcoin există o diferență subtilă, dar foarte semnificativă, între timpul de pe ceas și timpul de consens. Bitcoin este o rețea descentralizată, ceea ce înseamnă că fiecare participant are propria sa perspectivă asupra timpului. Evenimentele din rețea nu au loc instantaneu peste tot. Latența rețelei trebuie luată în considerare în perspectiva fiecărui nod. În cele din urmă, totul este sincronizat pentru a crea un registru comun. Bitcoin ajunge la un consens la fiecare 10 minute despre starea registrului, așa cum a existat în _trecut_.
 
-The timestamps set in block headers are set by the miners. There is a certain degree of latitude allowed by the consensus rules to account for differences in clock accuracy between decentralized nodes. However, this creates an unfortunate incentive for miners to lie about the time in a block so as to earn extra fees by including timelocked transactions that are not yet mature. See the following section for more information.
+Mărcile de timp puse în antetul blocului sunt stabilite de mineri. Există un anumit grad de libertate permis de regulile de consens pentru a ține cont de diferențele de precizie a ceasului dintre nodurile descentralizate. Cu toate acestea, acest lucru creează un stimulent nefericit pentru mineri să mintă în legătură cu data unui bloc, astfel încât să obțină comisioane suplimentare prin includerea tranzacțiilor cu timpi de blocare care încă nu sunt mature. Consultați secțiunea următoare pentru mai multe informații.
 
-To remove the incentive to lie and strengthen the security of timelocks, a BIP was proposed and activated at the same time as the BIPs for relative timelocks. This is BIP-113, which defines a new consensus measurement of time called _Median-Time-Past_.
+Pentru a elimina stimulentul de a minți și pentru a consolida securitatea timpilor de blocare, a fost propus și activat un BIP în același timp cu BIP-urile pentru timpii relativi de blocare. Acesta este BIP-113, care definește o nouă măsurare de consens a timpului numită _Timpul-Median-Trecut_ (Median-Time-Past).
 
-Median-Time-Past is calculated by taking the timestamps of the last 11 blocks and finding the median. That median time then becomes consensus time and is used for all timelock calculations. By taking the midpoint from approximately two hours in the past, the influence of any one block's timestamp is reduced. By incorporating 11 blocks, no single miner can influence the timestamps in order to gain fees from transactions with a timelock that hasn't yet matured.
+Timpul-Median-Trecut (Median-Time-Past) este calculat citind timpul din ultimele 11 blocuri și găsind mediana. Acest timp median devine apoi timp de consens și este utilizat pentru toate calculele timpilor de blocare. Prin preluarea punctului mediu de la aproximativ două ore în trecut, se reduce influența timpului oricărui bloc. Prin încorporarea a 11 blocuri, niciun miner nu poate influența timpul pentru a obține comisioane din tranzacțiile cu un timp de blocare care nu s-a scurs încă.
 
-Median-Time-Past changes the implementation of time calculations for +nLocktime+, +CLTV+, +nSequence+, and +CSV+. The consensus time calculated by Median-Time-Past is always approximately one hour behind wall clock time. If you create timelock transactions, you should account for it when estimating the desired value to encode in +nLocktime+, +nSequence+, +CLTV+, and +CSV+.
+Timpul-Median-Trecut modifică implementarea calculelor de timp pentru +nLocktime+, +CLTV+, +nSequence+, și +CSV+. Timpul de consens calculat de Timpul-Median-Trecut este întotdeauna la aproximativ o oră în urma ceasului de pe perete. Dacă creați tranzacții cu timp de blocare, ar trebui să luați în calcul acest lucru când estimați valoarea dorită pentru +nLocktime+, +nSequence+, +CLTV+, și +CSV+
 
-Median-Time-Past is specified in https://github.com/bitcoin/bips/blob/master/bip-0113.mediawiki[BIP-113].
+Timpul-Median-Trecut este specificat la https://github.com/bitcoin/bips/blob/master/bip-0113.mediawiki[BIP-113].
 
 [[fee_sniping]]
-==== Timelock Defense Against Fee Sniping
+==== Apărare Folosind Timpul de Blocare Împotriva Smulgerii de Comisioane
 
-((("scripting", "timelocks", "defense against fee-sniping")))((("timelocks", "defense against fee-sniping")))((("fees", "fee sniping")))((("security", "defense against fee-sniping")))((("sniping")))Fee-sniping is a theoretical attack scenario, where miners attempting to rewrite past blocks "snipe" higher-fee transactions from future blocks to maximize their profitability.
+((("scriptare", "timpi de blocare", "apărare împotriva smulgerii comisioanelor")))((("timpi de blocare", "apărare împotriva smulgerii comisioanelor")))((("comisioane", "smulgerea comisioaneloe")))((("securitate", "apărare împotriva smulgerii comisioanelor")))((("smulgere")))Smulgerea de comisioane este un scenariu de atac teoretic, în care minerii încearcă să rescrie blocurile din trecut pentru a ”smulge” comisioane mai mari din blocuri viitoare pentru a-și maximiza profitabilitatea.
 
-For example, let's say the highest block in existence is block  #100,000. If instead of attempting to mine block #100,001 to extend the chain, some miners attempt to remine  #100,000. These miners can choose to include any valid transaction (that hasn't been mined yet) in their candidate block  #100,000. They don't have to remine the block with the same transactions. In fact, they have the incentive to select the most profitable (highest fee per kB) transactions to include in their block. They can include any transactions that were in the "old" block  #100,000, as well as any transactions from the current mempool. Essentially they have the option to pull transactions from the "present" into the rewritten "past" when they re-create block  #100,000.
+De exemplu, să spunem că cel mai recent bloc existent este blocul #100.000. Dacă în loc să încerce să mineze blocul #100,001 pentru extinderea lanțului, unii mineri încearcă să remineze blocul #100.000. Acești mineri pot alege să includă orice tranzacție validă (care încă nu a fost minată) în blocul candidat #100.000. Ei nu trebuie să remineze blocul cu aceleași tranzacții. De fapt, aceștia au stimulentul de a selecta cele mai rentabile (cea mai mare taxă per kB) tranzacții pe care să le includă în blocul lor. Aceștia pot include orice tranzacții care s-au aflat în blocul ”vechi” #100.000, precum și orice tranzacții din mempool-ul actual. În esență, au opțiunea de a trage tranzacțiile din ”prezent” în ”trecutul” rescris când re-creează blocul #100.000.
 
-Today, this attack is not very lucrative, because block reward is much higher than total fees per block. But at some point in the future, transaction fees will be the majority of the reward (or even the entirety of the reward). At that time, this scenario becomes inevitable.
+Astăzi, acest atac nu este foarte profitabil, deoarece recompensa per bloc minat este mult mai mare decât comisioanele totale per bloc. Dar la un moment dat în viitor, comisioanele de tranzacție vor compune majoritatea recompensei (sau chiar întreaga recompensă). În acel moment, acest scenariu devine inevitabil.
 
-To prevent "fee sniping," when Bitcoin Core creates transactions, it uses +nLocktime+ to limit them to the "next block," by default. In our scenario, Bitcoin Core would set +nLocktime+ to 100,001 on any transaction it created. Under normal circumstances, this +nLocktime+ has no effect&#x2014;the transactions could only be included in block #100,001 anyway; it's the next block.
+Pentru a preveni ”smulgerea comisioanelor”, atunci când Bitcoin Core creează tranzacții, se folosește +nLocktime+ pentru a le limita de la ”următorul bloc”, în mod implicit. În scenariul nostru, Bitcoin Core ar seta +nLocktime+ la 100,001 la orice tranzacție pe care ar crea-o. În circumstanțe normale, acest +nLocktime+ nu are efect - oricum tranzacțiile pot fi incluse doar începând cu blocul #100,001 (următorul bloc).
 
-But under a blockchain fork attack, the miners would not be able to pull high-fee transactions from the mempool, because all those transactions would be timelocked to block #100,001. They can only remine  #100,000 with whatever transactions were valid at that time, essentially gaining no new fees.
+Însă, în urma unui atac de bifurcare a lanțului de blocuri, minerii nu vor fi capabili să extragă tranzacții cu comisioane mari din mempool, deoarece toate aceste tranzacții ar avea timpi de blocare de la blocul #100,001. Aceștia pot doar să remineze blocul cu numărul #100.000 cu orice tranzacții au fost valide la acea dată, neobținând în esență niciun nou comision.
 
-To achieve this, Bitcoin Core sets the +nLocktime+ on all new transactions to <current block # + 1> and sets the +nSequence+ on all the inputs to 0xFFFFFFFE to enable +nLocktime+.((("", startref="Stimelock07")))
+Pentru a realiza acest lucru, Bitcoin Core stabilește +nLocktime+ la toate tranzacțiile noi la <current block # + 1> și stabilește +nSequence+ pe toate intrările la 0xFFFFFFFE pentru a activa +nLocktime+.((("", startref="Stimelock07")))
 
-=== Scripts with Flow Control (Conditional Clauses)
+=== Scripturi cu Control al Execuției (Clauze Condiționate)
 
-((("transactions", "advanced", "flow control scripts")))((("scripting", "flow control scripts", id="Sflow07")))((("conditional clauses", id="condition07")))((("flow control", id="flow07")))One of the more powerful features of Bitcoin Script is flow control, also known as conditional clauses. You are probably familiar with flow control in various programming languages that use the construct +IF...THEN...ELSE+. Bitcoin conditional clauses look a bit different, but are essentially the same construct.
+((("tranzacții", "avansat", "scripturi cu control al execuției")))((("scriptare", "scripturi cu control al execuției", id="Sflow07")))((("clauze condiționale", id="condition07")))((("control al execuției", id="flow07")))Una dintre funcționalitățile mai puternice ale Bitcoin Script este controlul fluxului de execuție, cunoscut și sub denumirea de clauze condiționale. Probabil că sunteți familiarizați cu controlul fluxului de execuției din diverse limbaje de programare care utilizează forma +IF ... THEN ... ELSE+. Clauzele condiționate din Bitcoin arată un pic diferit, dar sunt, în esență, aceleași construcții.
 
-At a basic level, bitcoin conditional opcodes allow us to construct a redeem script that has two ways of being unlocked, depending on a +TRUE+/+FALSE+ outcome of evaluating a logical condition. For example, if x is +TRUE+, the redeem script is A and the ELSE redeem script is B.
+La un nivel de bază, operatorii condiționali bitcoin ne permit să construim un script de răscumpărare care are două moduri de a fi deblocat, în funcție de rezultatul +TRUE+/+FALSE+ de evaluare a unei condiții logice. De exemplu, dacă x este +TRUE+ (adevărat), scriptul de răscumpărare este A, iar altfel (ELSE) scriptul de răscumpărare este B.
 
-Additionally, bitcoin conditional expressions can be "nested" indefinitely, meaning that a conditional clause can contain another within it, which contains another, etc. Bitcoin Script flow control can be used to construct very complex scripts with hundreds or even thousands of possible execution paths. There is no limit to nesting, but consensus rules impose a limit on the maximum size, in bytes, of a script.
+În plus, expresiile condiționate bitcoin pot fi ”imbircate” la nesfârșit, ceea ce înseamnă că o clauză condițională poate conține o alta în cadrul ei, care conține o alta, etc. . Nu există nicio limită pentru imbircare, dar regulile de consens impun o limită pentru dimensiunea maximă, în octeți, a unui script.
 
-Bitcoin implements flow control using the +IF+, +ELSE+, +ENDIF+, and +NOTIF+ opcodes. Additionally, conditional expressions can contain boolean operators such as +BOOLAND+, pass:[<span class="keep-together"><code>BOOLOR</code></span>], and +NOT+.
+Bitcoin implementează controlul fluxului de execuție folosind operatorii +IF+, +ELSE+, +ENDIF+, and +NOTIF+. În plus, expresiile condiționate pot conține operatori booleeni, cum ar fi +BOOLAND+, pass:[<span class="keep-together"><code>BOOLOR</code></span>], și +NOT+.
 
-At first glance, you may find the bitcoin's flow control scripts confusing. That is because Bitcoin Script is a stack language. The same way that +1 {plus} 1+ looks "backward" when expressed as +1 1 ADD+, flow control clauses in bitcoin also look "backward."
+La prima vedere, scripturile bitcoin de control al fluxului de execuție pot părea confuze. Acest lucru se datorează faptului că Bitcoin Script este un limbaj pe stivă. În același mod în care +1 {plus} 1+ arată ”invers” atunci când este exprimat ca +1 1 ADD+, clauzele de control al fluxului de execuție în bitcoin arată, de asemenea, ”invers”.
 
-In most traditional (procedural) programming languages, flow control looks like this:
+În majoritatea limbajelor de programare tradiționale (procedurale), controlul fluxului de execuție arată astfel:
 
-.Pseudocode of flow control in most programming languages
+.Pseudocod al controlului fluxului de execuție în majoritatea limbajelor de programare
 ----
 if (condition):
   code to run when condition is true
@@ -443,9 +443,9 @@ else:
 code to run in either case
 ----
 
-In a stack-based language like Bitcoin Script, the logical condition comes before the +IF+, which makes it look "backward," like this:
+Într-un limbaj bazat pe stivă precum Bitcoin Script, condiția logică vine înainte de +IF+, ceea ce îl face să arate ”invers”, astfel:
 
-.Bitcoin Script flow control
+.Controlul fluxului de execuție în Bitcoin Script
 ----
 condition
 IF
@@ -456,34 +456,34 @@ ENDIF
 code to run in either case
 ----
 
-When reading Bitcoin Script, remember that the condition being evaluated comes _before_ the +IF+ opcode.
+Când citiți Bitcoin Script, amintiți-vă că condiția evaluată vine _înainte_ de operatorul +IF+.
 
-==== Conditional Clauses with VERIFY Opcodes
+==== Clauze condiționale cu operatorii de tip VERIFY
 
-((("VERIFY opcodes")))((("IF clauses")))((("opcodes", "VERIFY")))Another form of conditional in Bitcoin Script is any opcode that ends in +VERIFY+. The +VERIFY+ suffix means that if the condition evaluated is not +TRUE+, execution of the script terminates immediately and the transaction is deemed invalid.
+((("operatori VERIFY")))((("clauze IF")))((("operatori", "VERIFY")))O altă formă condițională în Bitcoin Script este orice operator care se termină în +VERIFY+. Sufixul +VERIFY+ înseamnă că dacă condiția evaluată nu este +TRUE+ (adevărată), execuția scriptului se termină imediat și tranzacția este considerată invalidă.
 
-((("guard clauses")))Unlike an +IF+ clause, which offers alternative execution paths, the +VERIFY+ suffix acts as a _guard clause_, continuing only if a precondition is met.
+((("clauze gardă")))Spre deosebire de o clauză +IF+, care oferă căi alternative de execuție, sufixul +VERIFY+ acționează ca o _clauză gardă_, continuând doar dacă este îndeplinită o precondiție.
 
-For example, the following script requires Bob's signature and a pre-image (secret) that produces a specific hash. Both conditions must be satisfied to unlock:
+De exemplu, scriptul următor necesită semnătura lui Bob și o pre-imagine (secret) care produce un rezumat (hash) specific. Ambele condiții trebuie îndeplinite:
 
-.A redeem script with an +EQUALVERIFY+  guard clause.
+.Un script de răscumpărare cu o clauză gardă +EQUALVERIFY+.
 ----
 HASH160 <expected hash> EQUALVERIFY <Bob's Pubkey> CHECKSIG
 ----
 
-To redeem this, Bob must construct an unlocking script that presents a valid pre-image and a signature:
+Pentru a-l răscumpăra, Bob trebuie să construiască un script de deblocare care să prezinte o pre-imagine validă și o semnătură:
 
-.An unlocking script to satisfy the above redeem script
+.Un script de deblocare pentru a satisface scriptul de răscumpărare de mai sus
 ----
 <Bob's Sig> <hash pre-image>
 ----
 
-Without presenting the pre-image, Bob can't get to the part of the script that checks for his signature.
+Fără a prezenta pre-imaginea, Bob nu poate ajunge la partea din script care verifică semnătura sa.
 
 [role="pagebreak-after"]
-This script can be written with an +IF+ instead:
+Acest script poate fi scris cu un +IF+ în schimb:
 
-.A redeem script with an +IF+ guard clause
+.Un script de răscumpărare cu o clauză gardă +IF+
 ----
 HASH160 <expected hash> EQUAL
 IF
@@ -491,27 +491,27 @@ IF
 ENDIF
 ----
 
-Bob's unlocking script is identical:
+Scriptul de deblocare al lui Bob este identic:
 
-.An unlocking script to satisfy the above redeem script
+.Un script de deblocare pentru a satisface scriptul de răscumpărare de mai sus
 ----
 <Bob's Sig> <hash pre-image>
 ----
 
-The script with +IF+ does the same thing as using an opcode with a +VERIFY+ suffix; they both operate as guard clauses. However, the +VERIFY+ construction is more efficient, using two fewer opcodes.
+Scriptul cu +IF+ face același lucru ca și folosirea unui operator cu sufixul +VERIFY+; ambele funcționează ca și clauze gardă. Cu toate acestea, construcția +VERIFY+ este mai eficientă, folosind cu doi operatori mai puțin.
 
-So, when do we use +VERIFY+ and when do we use +IF+? If all we are trying to do is to attach a precondition (guard clause), then +VERIFY+ is better. If, however, we want to have more than one execution path (flow control), then we need an +IF...ELSE+ flow control clause.
+Deci, când folosim +VERIFY+ și când folosim +IF+? Dacă tot ce încercăm să facem este să atașăm o precondiție (clauză gardă), atunci +VERIFY+ este mai bun. Dacă, totuși, dorim să avem mai mult de o cale de execuție, atunci avem nevoie de o clauză +IF ... ELSE+.
 
-[TIP]
+[SFAT]
 ====
-((("EQUAL opcode")))((("opcodes", "EQUAL")))((("EQUALVERIFY opcode")))((("opcodes", "EQUALVERIFY")))An opcode such as +EQUAL+ will push the result (+TRUE+/+FALSE+) onto the stack, leaving it there for evaluation by subsequent opcodes. In contrast, the opcode +EQUALVERIFY+ suffix does not leave anything on the stack. Opcodes that end in +VERIFY+ do not leave the result on the stack.
+((("operatorul EQUAL")))((("operatori", "EQUAL")))((("operatorul EQUALVERIFY")))((("operatori", "EQUALVERIFY")))Un operator precum +EQUAL+ va împinge rezultatul (+TRUE+/+FALSE+) pe stivă, lăsându-l acolo pentru evaluarea de către urmatorii operatori. În schimb, operatorul +EQUALVERIFY+ nu lasă nimic pe stivă. Codurile care se termină cu +VERIFY+ nu lasă rezultatul pe stivă.
 ====
 
-==== Using Flow Control in Scripts
+==== Utilizarea Controlului Fluxului de Execuție în Scripturi
 
-A very common use for flow control in Bitcoin Script is to construct a redeem script that offers multiple execution paths, each a different way of redeeming the UTXO.
+O utilizare foarte întâlnit pentru controlul fluxului în Bitcoin Script este construirea unui script de răscumpărare care oferă mai multe căi de execuție, fiecare cale fiind un mod diferit de răscumpărare a UTXO.
 
-((("use cases", "buying coffee")))Let's look at a simple example, where we have two signers, Alice and Bob, and either one is able to redeem. With multisig, this would be expressed as a 1-of-2 multisig script. For the sake of demonstration, we will do the same thing with an +IF+ clause:
+((("utilizări", "cumpărarea de cafea")))Să ne uităm la un exemplu simplu, în care avem doi semnatari, Alice și Bob, și fiecare dintre ei este în măsură să răscumpere. Folosind multisemnătură, acest lucru ar fi exprimat ca un script multisemnătură 1 din 2. De dragul demonstrației, vom face același lucru cu o clauză +IF+:
 
 ----
 IF
@@ -521,26 +521,26 @@ ELSE
 ENDIF
 ----
 
-Looking at this redeem script, you may be wondering: "Where is the condition? There is nothing preceding the +IF+ clause!"
+Privind acest script de răscumpărare, s-ar putea să vă întrebați: ”Unde este condiția? Nu există nimic care să precede clauza +IF+!”
 
-The condition is not part of the redeem script. Instead, the condition will be offered in the unlocking script, allowing Alice and Bob to "choose" which execution path they want.
+Condiția nu face parte din scriptul de răscumpărare. În schimb, condiția va fi oferită în scriptul de deblocare, permițându-i lui Alice și Bob să ”aleagă” ce cale de execuție doresc.
 
-Alice redeems this with the unlocking script:
+Alice răscumpără cu scriptul de deblocare:
 ----
 <Alice's Sig> 1
 ----
 
-The +1+ at the end serves as the condition (+TRUE+) that will make the +IF+ clause execute the first redemption path for which Alice has a signature.
++1+ la sfârșit servește ca condiție (+TRUE+) care va face ca clauza +IF+ să execute prima cale de răscumpărare pentru care Alice are o semnătură.
 
-For Bob to redeem this, he would have to choose the second execution path by giving a +FALSE+ value to the +IF+ clause:
+Pentru ca Bob să răscumpere, ar trebui să aleagă a doua cale de execuție dând o valoare +FALSE+ (falsă) clauzei +IF+:
 
 ----
 <Bob's Sig> 0
 ----
 
-Bob's unlocking script puts a +0+ on the stack, causing the +IF+ clause to execute the second (+ELSE+) script, which requires Bob's signature.
+Scriptul de deblocare al lui Bob pune un +0+ pe stivă, determinând clauza +IF+ să execute al doilea script (+ELSE+), care necesită semnătura lui Bob.
 
-Since +IF+ clauses can be nested, we can create a "maze" of execution paths. The unlocking script can provide a "map" selecting which execution path is actually executed:
+Din moment ce clauzele +IF+ pot fi imbircate, putem crea un ”labirint” de căi de execuție. Scriptul de deblocare poate furniza o ”hartă” care selectează calea de execuție care este efectiv executată:
 
 ----
 IF
@@ -554,19 +554,19 @@ ELSE
 ENDIF
 ----
 
-In this scenario, there are three execution paths (+script A+, +script B+, and +script C+). The unlocking script provides a path in the form of a sequence of +TRUE+ or +FALSE+ values. To select path +script B+, for example, the unlocking script must end in +1 0+ (+TRUE+, +FALSE+). These values will be pushed onto the stack, so that the second value (+FALSE+) ends up at the top of the stack. The outer +IF+ clause pops the +FALSE+ value and executes the first +ELSE+ clause. Then the +TRUE+ value moves to the top of the stack and is evaluated by the inner (nested) +IF+, selecting the +B+ execution path.
+În acest scenariu, există trei căi de execuție (+script A+, +script B+, și +script C+). Scriptul de deblocare oferă o cale sub forma unei secvențe de valori +TRUE+ sau +FALSE+. Pentru a selecta calea +script B+, de exemplu, scriptul de deblocare trebuie să se termine în +1 0+ (+TRUE+, +FALSE+). Aceste valori vor fi împinse pe stivă, astfel încât a doua valoare (+FALSE+) să se ajungă în partea de sus a stivei. Clauza exterioară +IF+ scoate valoarea +FALSE+ și execută prima clauză +ELSE+. Apoi, valoarea +TRUE+ ajunge în vârful stivei și este evaluată de +IF+-ul interior (imbricat) , selectând calea de execuție +B+.
 
-Using this construct, we can build redeem scripts with tens or hundreds of execution paths, each offering a different way to redeem the UTXO. To spend, we construct an unlocking script that navigates the execution path by putting the appropriate +TRUE+ and +FALSE+ values on the stack at each flow control point.((("", startref="Sflow07")))((("", startref="flow07")))((("", startref="condition07")))
+Folosind această formă, putem construi scripturi de răscumpărare cu zeci sau sute de căi de execuție, fiecare oferind un mod diferit de a răscumpăra o UTXO. Pentru a cheltui, construim un script de deblocare care navighează pe calea de execuție punând valorile corespunzătoare +TRUE+ și +FALSE+ pe stivă la fiecare punct de control al fluxului de execuție.((("", startref="Sflow07")))((("", startref="flow07")))((("", startref="condition07")))
 
-=== Complex Script Example
+=== Exemplu de Script Complex
 
-((("transactions", "advanced", "example")))((("scripting", "complex script example", id="Scomplex07")))In this section we combine many of the concepts from this chapter into a single example.
+((("tranzacții", "avansat", "exemplu")))((("scriptare", "exemplu de script complex", id="Scomplex07")))În această secțiune vom combina multe dintre conceptele din acest capitol într-un singur exemplu.
 
-((("use cases", "import/export", id="mohamseventwo")))Our example uses the story of Mohammed, the company owner in Dubai who is operating an import/export business.
+((("utilizare", "import/export", id="mohamseventwo")))Exemplul nostru folosește povestea lui Mohammed, proprietarul companiei din Dubai care operează o afacere de import/export.
 
-((("transactions", "advanced", "multisignature scripts")))((("scripting", "multisignature scripts", "import/export example")))((("multisignature scripts")))In this example, Mohammed wishes to construct a company capital account with flexible rules. The scheme he creates requires different levels of authorization depending on timelocks. The participants in the multisig scheme are Mohammed, his two partners Saeed and Zaira, and their company lawyer Abdul. The three partners make decisions based on a majority rule, so two of the three must agree. However, in the case of a problem with their keys, they want their lawyer to be able to recover the funds with one of the three partner signatures. Finally, if all partners are unavailable or incapacitated for a while, they want the lawyer to be able to manage the account directly.
+((("tranzacții", "avansat", "scripturi multisemnătură")))((("scriptare", "scripturi multisemnătură", "exemplu import/export")))((("scripturi multisemnătură")))În acest exemplu, Mohammed dorește să creeze pentru companie un cont de capital cu reguli flexibile. Schema pe care o creează necesită diferite niveluri de autorizare în funcție de timpii de blocare. Participanții la schema multisemnătură sunt Mohammed, cei doi parteneri Saeed și Zaira și avocatul companiei Abdul. Cei trei parteneri iau decizii pe baza regulii majorității, deci doi dintre cei trei trebuie să fie de acord. Cu toate acestea, în cazul unei probleme cu cheile lor, ei doresc ca avocatul lor să poată recupera fondurile împreună cu una dintre cele trei semnături ale partenerilor. În cele din urmă, dacă toți partenerii sunt indisponibili sau incapacitați pentru o perioadă, ei doresc ca avocatul să poată gestiona contul în mod direct.
 
-Here's the redeem script that Mohammed designs to achieve this (line number prefix as XX):
+Iată scriptul de răscumpărare pe care Mohammed îl creează pentru a realiza acest lucru (prefixul este numărul liniei în forma XX):
 
 .Variable Multi-Signature with Timelock
 ----
@@ -585,136 +585,136 @@ Here's the redeem script that Mohammed designs to achieve this (line number pref
 13  ENDIF
 ----
 
-Mohammed's script implements three execution paths using nested +IF...ELSE+ flow control clauses.
+Scriptul lui Mohammed implementează trei căi de execuție folosind clauze +IF...ELSE+ imbricate.
 
-In the first execution path, this script operates as a simple 2-of-3 multisig with the three partners. This execution path consists of lines 3 and 9. Line 3 sets the quorum of the multisig to +2+ (2-of-3). This execution path can be selected by putting +TRUE TRUE+ at the end of the unlocking script:
+În prima cale de execuție, acest script funcționează ca un o simplă multisenătură 2-din-3 cu cei trei parteneri. Această cale de execuție constă din liniile 3 și 9. Linia 3 stabilește cvorumul multisemnăturii la +2+ (2-din-3). Această cale de execuție poate fi selectată punând +TRUE TRUE+ la sfârșitul scriptului de deblocare:
 
-.Unlocking script for the first execution path (2-of-3 multisig)
+.Scriptul de deblocare pentru prima cale de execuție (multisemnătura 2-din-3)
 ----
 0 <Mohammed's Sig> <Zaira's Sig> TRUE TRUE
 ----
 
 
-[TIP]
+[SFAT]
 ====
-The +0+ at the beginning of this unlocking script is because of a bug in +CHECKMULTISIG+ that pops an extra value from the stack. The extra value is disregarded by the +CHECKMULTISIG+, but it must be present or the script fails. Pushing +0+ (customarily) is a workaround to the bug, as described in <<multisig_bug>>.
++0+ la începutul acestui script de deblocare se datorează unui defect al +CHECKMULTISIG+ care scoate o valoare suplimentară de pe stivă. Valoarea suplimentară este ignorată de +CHECKMULTISIG+, dar trebuie să fie prezentă sau scriptul eșuează. Adaugare +0+ (în mod obișnuit) este o soluție de rezolvare a erorii, așa cum este descris în <<multisig_bug>>.
 ====
 
-The second execution path can only be used after 30 days have elapsed from the creation of the UTXO. At that time, it requires the signature of Abdul the lawyer and one of the three partners (a 1-of-3 multisig). This is achieved by line 7, which sets the quorum for the multisig to +1+. To select this execution path, the unlocking script would end in +FALSE TRUE+:
+A doua cale de execuție poate fi utilizată numai după ce au trecut 30 de zile de la crearea UTXO-ului. La acel moment, este nevoie de semnătura lui Abdul avocatul, și a unuia dintre cei trei parteneri (o multisemnătură 1-din-3). Acest lucru este realizat la linia 7, care stabilește cvorumul pentru multisig la +1+. Pentru a selecta această cale de execuție, scriptul de deblocare ar trebui să se termine în +FALSE TRUE+:
 
-.Unlocking script for the second execution path (Lawyer + 1-of-3)
+.Scriptul de deblocare pentru a doua cale de execuție (avocat + 1-din-3)
 ----
 0 <Saeed's Sig> <Abdul's Sig> FALSE TRUE
 ----
 
-[TIP]
+[SFAT]
 ====
-Why +FALSE TRUE+? Isn't that backward? Because the two values are pushed on to the stack, with +FALSE+ pushed first, then +TRUE+ pushed second. +TRUE+ is therefore popped _first_ by the first +IF+ opcode.
+De ce +FALSE TRUE+? Nu este invers? Deoarece cele două valori sunt împinse pe stivă, cu +FALSE+ împins mai întâi, apoi +TRUE+ împins al doilea. Prin urmare, +TRUE+ este scos _primul_ de către operatorul +IF+.
 ====
 
-Finally, the third execution path allows Abdul the lawyer to spend the funds alone, but only after 90 days. To select this execution path, the unlocking script has to end in +FALSE+:
+În cele din urmă, a treia cale de execuție îi permite lui Abdul avocatul să cheltuiască fondurile singur, dar numai după 90 de zile. Pentru a selecta această cale de execuție, scriptul de deblocare trebuie să se termine în +FALSE+:
 
-.Unlocking script for the third execution path (Lawyer only)
+.Deblocarea scriptului pentru a treia cale de execuție (doar de către avocat)
 ----
 <Abdul's Sig> FALSE
 ----
 
-Try running the script on paper to see how it behaves on the stack.
+Încercați să rulați scriptul pe hârtie pentru a vedea cum se comportă pe stivă.
 
-A few more things to consider when reading this example. See if you can find the answers:
+Alte câteva lucruri de luat în considerare atunci când citiți acest exemplu. Vedeți dacă puteți găsi răspunsurile:
 
-* Why can't the lawyer redeem the third execution path at any time by selecting it with +FALSE+ on the unlocking script?
+* De ce nu poate avocatul răscumpăra în orice moment a treia cale de execuție, selectând-o cu +FALSE+ pe scriptul de deblocare?
 
-* How many execution paths can be used 5, 35, and 105 days, respectively, after the UTXO is mined?
+* Câte căi de execuție pot fi utilizate la 5, 35 și, respectiv, 105 zile, după ce UTXO-ul a fost minat?
 
-* Are the funds lost if the lawyer loses his key? Does your answer change if 91 days have elapsed?
+* Sunt fondurile pierdute dacă avocatul își pierde cheia? Răspunsul dumneavoastră se schimbă dacă au trecut 91 de zile?
 
-* How do the partners "reset" the clock every 29 or 89 days to prevent the lawyer from accessing the funds?
+* Cum ”resetează” partenerii ceasul la fiecare 29 sau 89 de zile pentru a împiedica avocatul să acceseze fondurile?
 
-* Why do some +CHECKSIG+ opcodes in this script have the +VERIFY+ suffix while others don't?((("", startref="Scomplex07")))((("", startref="mohamseventwo")))
+* De ce unele coduri +CHECKSIG+ din acest script au sufixul +VERIFY+ în timp ce altele nu?((("", startref="Scomplex07")))((("", startref="mohamseventwo")))
 
 [[segwit]]
-=== Segregated Witness
+=== Martor Segregat
 
-((("segwit (Segregated Witness)", id="Ssegwit07")))Segregated Witness (segwit) is an upgrade to the bitcoin consensus rules and network protocol, proposed and implemented as a BIP-9 soft-fork that was activated on bitcoin's mainnet on August 1st, 2017.
+((("segwit (Martor Segregat)", id="Ssegwit07")))Funcționalitatea de Martorul Segregat (Segregated Witness - segwit) este o imbunătățire adusă regulilor de consens bitcoin și protocolul de rețea, propusă și implementată ca soft-fork-ul BIP-9 care a fost activat în rețeaua bitcoin la 1 august 2017.
 
-In cryptography, the term "witness" is used to describe a solution to a cryptographic puzzle. In bitcoin terms, the witness satisfies a cryptographic condition placed on a unspent transaction output (UTXO).
+În criptografie, termenul ”martor” este folosit pentru a descrie o soluție pentru un puzzle criptografic. În termeni bitcoin, martorul îndeplinește o condiție criptografică plasată pe o ieșire de tranzacție necheltuită (UTXO).
 
-In the context of bitcoin, a digital signature is _one type of witness_, but a witness is more broadly any solution that can satisfy the conditions imposed on an UTXO and unlock that UTXO for spending. The term “witness” is a more general term for an “unlocking script” or “scriptSig.”
+În contextul bitcoinului, o semnătură digitală este _un tip de martor_, dar un martor este mai pe larg orice soluție care poate satisface condițiile impuse unui UTXO și poate debloca acea UTXO pentru a fi cheltuită. Termenul ”martor” este un termen mai general pentru un ”script de deblocare” sau „scriptSig”.
 
-Before segwit’s introduction, every input in a transaction was followed by the witness data that unlocked it. The witness data was embedded in the transaction as part of each input. The term _segregated witness_, or _segwit_ for short, simply means separating the signature or unlocking script of a specific output. Think "separate scriptSig," or “separate signature” in the simplest form.
+Înainte de introducerea segwit, fiecare intrare dintr-o tranzacție era urmată de datele martorului care a deblocat-o. Datele martorului au fost încorporate în tranzacție ca parte a fiecărei intrări. Termenul _martor segregat_ (segregated witness), sau _segwit_ pe scurt, înseamnă pur și simplu separarea semnăturii sau a scriptului de deblocare pentru o ieșire specifică. Gândiți ca la ”scriptSig separat” sau ”semnătura separată” în cea mai simplă formă.
 
-Segregated Witness therefore is an architectural change to bitcoin that aims to move the witness data from the +scriptSig+ (unlocking script) field of a transaction into a separate _witness_ data structure that accompanies a transaction. Clients may request transaction data with or without the accompanying witness data.
+Prin urmare, Martorul Segregat este o modificare arhitecturală asupra bitcoin care are ca scop mutarea datelor martor din câmpul +scriptSig+ (script de deblocare) al unei tranzacții într-o structură de date _martor_ separată care însoțește o tranzacție. Clienții pot solicita datele tranzacției cu sau fără datele martor care le însoțesc.
 
-In this section we will look at some of the benefits of Segregated Witness, describe the mechanism used to deploy and implement this architecture change, and demonstrate the use of Segregated Witness in transactions and addresses.
+În această secțiune vom analiza unele dintre beneficiile Martorului Segregat, vom descrie mecanismul folosit pentru instalarea și implementarea acestei schimbări de arhitectură și vom demonstra utilizarea Martorului Segregat în tranzacții și adrese.
 
-Segregated Witness is defined by the following BIPs:
+Martorul Segregat este definit de următoarele BIP-uri:
 
-https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki[BIP-141] :: The main definition of Segregated Witness.
+https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki[BIP-141] :: Definiția principală a Martorului Segregat.
 
-https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki[BIP-143] :: Transaction Signature Verification for Version 0 Witness Program
+https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki[BIP-143] :: Verificarea Semnăturii Tranzacției pentru Programul Martor Versiunea 0
 
-https://github.com/bitcoin/bips/blob/master/bip-0144.mediawiki[BIP-144] :: Peer Services&#x2014;New network messages and serialization formats
+https://github.com/bitcoin/bips/blob/master/bip-0144.mediawiki[BIP-144] :: Servicii de-la-egal-la-egal - Mesaje de rețea noi și formate de serializare
 
-https://github.com/bitcoin/bips/blob/master/bip-0145.mediawiki[BIP-145] :: getblocktemplate Updates for Segregated Witness (for mining)
+https://github.com/bitcoin/bips/blob/master/bip-0145.mediawiki[BIP-145] :: getblocktemplate Actualizări pentru Martor Segregat (pentru minerit)
 
-https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki[BIP-173]:: Base32 address format for native v0-16 witness outputs
+https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki[BIP-173]:: Formatul adresei Base32 pentru ieșirile martor native v0-16
 
 
-==== Why Segregated Witness?
+==== De ce Martor Segregat?
 
-Segregated Witness is an architectural change that has several effects on the scalability, security, economic incentives, and performance of bitcoin:
+Martorul Segregat este o schimbare arhitecturală care are mai multe efecte asupra scalabilității, securității, stimulentelor economice și performanței bitcoin:
 
-Transaction Malleability :: By moving the witness outside the transaction, the transaction hash used as an identifier no longer includes the witness data. Since the witness data is the only part of the transaction that can be modified by a third party (see <<segwit_txid>>), removing it also removes the opportunity for transaction malleability attacks. With Segregated Witness, transaction hashes become immutable by anyone other than the creator of the transaction, which greatly improves the implementation of many other protocols that rely on advanced bitcoin transaction construction, such as payment channels, chained transactions, and lightning networks.
+Maleabilitatea Tranzacției :: Prin mutarea martorului în afara tranzacției, rezumatul (hash-ul) tranzacției folosit ca identificator nu mai include datele martor. Deoarece datele martor sunt singura parte a tranzacției care poate fi modificată de un terț (vezi <<segwit_txid>>), eliminarea acestora elimină și posibilitatea atacurilor de maleabilitate a tranzacțiilor. Cu Martor Segregat, rezumatele (hash-urile) tranzacțiilor devin imutabile față de oricine altcineva decât de creatorul tranzacției, ceea ce îmbunătățește considerabil implementarea multor altor protocoale care se bazează pe construcția avansată a tranzacțiilor bitcoin, cum ar fi canalele de plată, tranzacții înlănțuite și rețele lightning.
 
-Script Versioning :: With the introduction of Segregated Witness scripts, every locking script is preceded by a _script version_ number, similar to how transactions and blocks have version numbers. The addition of a script version number allows the scripting language to be upgraded in a backward-compatible way (i.e., using soft fork upgrades) to introduce new script operands, syntax, or semantics. The ability to upgrade the scripting language in a nondisruptive way will greatly accelerate the rate of innovation in bitcoin.
+Versiunarea Scripturilor :: Odată cu introducerea scripturilor Martor Segregat, fiecare script de blocare este precedat de un număr de _versiune script_, similar cu modul în care tranzacțiile și blocurile au numere de versiune. Adăugarea unui număr de versiune de script permite actualizarea limbajului de script într-un mod compatibil (întotdeauna, folosind actualizări soft fork) pentru a introduce noi operatori de script, sintaxă nouă sau semantică nouă. Capacitatea de a actualiza limbajul de scriptare într-un mod nedisruptiv va accelera mult rata de inovație în bitcoin.
 
-Network and Storage Scaling :: The witness data is often a big contributor to the total size of a transaction. More complex scripts such as those used for multisig or payment channels are very large. In some cases these scripts account for the majority (more than 75%) of the data in a transaction. By moving the witness data outside the transaction, Segregated Witness improves bitcoin’s scalability. Nodes can prune the witness data after validating the signatures, or ignore it altogether when doing simplified payment verification. The witness data doesn’t need to be transmitted to all nodes and does not need to be stored on disk by all nodes.
+Scalarea Rețeilei si a Stocării :: Datele martor sunt adesea un mare contribuitor la dimensiunea totală a unei tranzacții. Scripturi mai complexe, precum cele utilizate pentru multisemnătură sau canale de plată, sunt foarte mari. În unele cazuri, aceste scripturi reprezintă majoritatea (mai mult de 75%) din datele dintr-o tranzacție. Prin mutarea datelor martor în afara tranzacției, Martorul Segregat îmbunătățește scalabilitatea bitcoin. Nodurile pot să curețe datele martor după validarea semnăturilor sau să le ignore cu totul atunci când fac verificări de plată simplificate. Datele martor nu trebuie transmise tuturor nodurilor și nu trebuie să fie stocate pe disc de către toate nodurile.
 
-Signature Verification Optimization :: Segregated Witness upgrades the signature functions (+CHECKSIG+, +CHECKMULTISIG+, etc.) to reduce the algorithm's computational complexity. Before segwit, the algorithm used to produce a signature required a number of hash operations that was proportional to the size of the transaction. Data-hashing computations increased in O(n^2^) with respect to the number of signature operations, introducing a substantial computational burden on all nodes verifying the signature. With segwit, the algorithm is changed to reduce the complexity to O(n).
+Optimizarea Verificării Semnăturii :: Martorul Segregat îmbunătățește funcțiile de semnătură (+CHECKSIG+, +CHECKMULTISIG+, etc.) prin reducerea complexitații de calcul a algoritmului. Înainte de segwit, algoritmul folosit pentru producerea unei semnături necesita un număr de operații de rezumare proporțional cu dimensiunea tranzacției. Calculele pentru rezumarea datelor au crescut în O(n^2^) raportat la numărul de operațiuni de semnătură, introducând o povară de calcul substanțială pe toate nodurile care verifică semnătura. Cu segwit, algoritmul este schimbat pentru a reduce complexitatea la O (n).
 
-Offline Signing Improvement :: Segregated Witness signatures incorporate the value (amount) referenced by each input in the hash that is signed. Previously, an offline signing device, such as a hardware wallet, would have to verify the amount of each input before signing a transaction. This was usually accomplished by streaming a large amount of data about the previous transactions referenced as inputs. Since the amount is now part of the commitment hash that is signed, an offline device does not need the previous transactions. If the amounts do not match (are misrepresented by a compromised online system), the signature will be invalid.
+Îmbunătățirea Semnării Offline :: Semnăturile Martor Segregat includ încorporate valoarea (suma) la care face referire fiecare intrare din rezumatul (hash-ul) semnat. Anterior, un dispozitiv de semnare offline, cum ar fi un portofel hardware, ar fi trebuit să verifice valoarea fiecărei intrări înainte de a semna o tranzacție. Acest lucru se realiza de obicei prin transmiterea unei cantități mari de date despre tranzacțiile anterioare menționate ca intrări. Din moment ce suma face parte din rezumatul (hash-ul) de angajament semnat, un dispozitiv offline nu are nevoie de tranzacțiile anterioare. Dacă sumele nu se potrivesc (sunt prezentate greșit de un sistem online compromis), semnătura nu va fi validă.
 
-==== How Segregated Witness Works
+==== Cum Funcționează Martorul Segregat
 
-At first glance, Segregated Witness appears to be a change to how transactions are constructed and therefore a transaction-level feature, but it is not. Rather, Segregated Witness is a change to how individual UTXO are spent and therefore is a per-output feature.
+La prima vedere, Martorul Segregat pare să fie o modificare a modului în care se construiesc tranzacțiile și, prin urmare, o caracteristică la nivel de tranzacție, dar nu este așa. Mai degrabă, Martorul Segregat este o schimbare a modului în care sunt cheltuite UTXO-urile individuale și, prin urmare, este o caracteristică per-ieșire.
 
-A transaction can spend Segregated Witness outputs or traditional (inline-witness) outputs or both. Therefore, it does not make much sense to refer to a transaction as a “Segregated Witness transaction.” Rather we should refer to specific transaction outputs as “Segregated Witness outputs."
+O tranzacție poate cheltui ieșiri Martor Segregat sau ieșiri tradiționale (martor încorporat) sau ambele. Prin urmare, nu are prea mult sens să ne referim la o tranzacție ca ”tranzacție Martor Segregat”. Mai degrabă, ar trebui să ne referim la ieșiri specifice ale tranzacțiilor ca ”ieșiri Martor Segregat”.
 
-When a transaction spends an UTXO, it must provide a witness. In a traditional UTXO, the locking script requires that witness data be provided _inline_ in the input part of the transaction that spends the UTXO. A Segregated Witness UTXO, however, specifies a locking script that can be satisfied with witness data outside of the input (segregated).
+Când o tranzacție cheltuiește o UTXO, trebuie să ofere un martor. Într-o UTXO tradițională, scriptul de blocare necesită ca datele martor să fie furnizate _încorporate_ în partea de intrare a tranzacției care cheltuie UTXO-ul. Totuși, o UTXO Martor Segregat specifică un script de blocare care poate fi satisfăcut cu datele martor exterioare intrării (segregate).
 
-==== Soft Fork (Backward Compatibility)
+==== Bifurcare Soft (Compatibilitate Versiuni Anterioare)
 
-Segregated Witness is a significant change to the way outputs and transactions are architected. Such a change would normally require a simultaneous change in every bitcoin node and wallet to change the consensus rules&#x2014;what is known as a hard fork. Instead, segregated witness is introduced with a much less disruptive change, which is backward compatible, known as a soft fork. This type of upgrade allows nonupgraded software to ignore the changes and continue to operate without any disruption.
+Martorul Segregat reprezintă o schimbare semnificativă a modului în care sunt proiectate ieșirile și tranzacțiile. O astfel de modificare ar necesita, în mod normal, o schimbare simultană în fiecare nod și portofel bitcoin pentru a schimba regulile de consens - ceea ce este cunoscut sub numele de bifurcare hard. În schimb, martorul segregat este introdus cu o schimbare mult mai puțin perturbatoare, care este compatibilă cu versiunile anterioare, cunoscută sub numele de bifurcare soft. Acest tip de îmbunătățire permite software-ului neactualizat să ignore modificările și să continue să funcționeze fără întreruperi.
 
-Segregated Witness outputs are constructed so that older systems that are not segwit-aware can still validate them. To an old wallet or node, a Segregated Witness output looks like an output that _anyone can spend_. Such outputs can be spent with an empty signature, therefore the fact that there is no signature inside the transaction (it is segregated) does not invalidate the transaction. Newer wallets and mining nodes, however, see the Segregated Witness output and expect to find a valid witness for it in the transaction’s witness data.
+Ieșirile Martor Segregat sunt construite astfel încât sistemele mai vechi care nu folosesc segwit să le poată totuși valida. Pentru un portofel sau nod vechi, o ieșire Martor Segregat pare o ieșire pe care _oricine o poate cheltui_. Astfel de ieșirile pot fi cheltuite cu o semnătură goală, prin urmare, faptul că nu există nicio semnătură în cadrul tranzacției (este segregată) nu invalidează tranzacția. Portofelele și nodurile mai noi, însă, văd ieșirea Martor Segregat și se așteaptă să găsească un martor valid pentru aceasta în datele martor ale tranzacției.
 
-==== Segregated Witness Output and Transaction Examples
+==== Exemple de Ieșire și Tranzacție cu Martor Segregat
 
-Let’s look at some of our example transactions and see how they would change with Segregated Witness. We’ll first look at how a Pay-to-Public-Key-Hash (P2PKH) payment is transformed with the Segregated Witness program. Then, we’ll look at the Segregated Witness equivalent for Pay-to-Script-Hash (P2SH) scripts. Finally, we’ll look at how both of the preceding Segregated Witness programs can be embedded inside a P2SH script.
+Să ne uităm la unele dintre exemplele noastre de tranzacții și să vedem cum s-ar schimba acestea când folosim Martor Segrecat. Vom analiza mai întâi cum se transformă o Plată-către-Cheie-Publică (P2PKH) cu ajutorul programului Martor Segregat. Apoi, ne vom uita la echivalentul Martor Segregat pentru scripturile Plată-către-Rezumat-Script (P2SH). În cele din urmă, vom analiza modul în care ambele programe Martorilor Segregat precedente pot fi încorporate într-un script P2SH.
 
 [[p2wpkh]]
-===== Pay-to-Witness-Public-Key-Hash (P2WPKH)
+===== Plată-către-Martor-Rezumat-Cheie-Publică (Pay-to-Witness-Public-Key-Hash - P2WPKH)
 
-In <<cup_of_coffee>>, ((("use cases", "buying coffee", id="aliced")))Alice created a transaction to pay Bob for a cup of coffee. That transaction created a P2PKH output with a value of 0.015 BTC that was spendable by Bob. The output’s script looks like this:
+În <<cup_of_coffee>>, ((("utilizări", "cumpărare cafea", id="aliced")))Alice a creat o tranzacție pentru a-i plăti lui Bob o ceașcă de cafea. Acea tranzacție a creat o ieșire P2PKH cu o valoare de 0,015 BTC care a fost cheltuită de Bob. Scriptul ieșirii arată astfel:
 
-.Example P2PKH output script
+. Exemplu script ieșire P2PKH
 ----
 DUP HASH160 ab68025513c3dbd2f7b92a94e0581f5d50f654e7 EQUALVERIFY CHECKSIG
 ----
 
-With Segregated Witness, Alice would create a Pay-to-Witness-Public-Key-Hash (P2WPKH) script, which looks like this:
+Cu Martor Segregat, Alice ar crea un script Plată-către-Martor-Rezumat-Cheie-Publică (P2WPKH), care arată astfel:
 
-.Example P2WPKH output script
+.Exemplu script ieșire P2WPKH
 ----
 0 ab68025513c3dbd2f7b92a94e0581f5d50f654e7
 ----
 
-As you can see, a Segregated Witness output’s locking script is much simpler than a traditional output. It consists of two values that are pushed on to the script evaluation stack. To an old (nonsegwit-aware) bitcoin client, the two pushes would look like an output that anyone can spend and does not require a signature (or rather, can be spent with an empty signature). To a newer, segwit-aware client, the first number (0) is interpreted as a version number (the _witness version_) and the second part (20 bytes) is the equivalent of a locking script known as a _witness program_. The 20-byte witness program is simply the hash of the public key, as in a P2PKH script.
+După cum vedeți, scriptul de blocare al unei ieșiri cu Martorilor Segregat este mult mai simplu decât cel al unei ieșiri tradiționale. Este format din două valori care sunt împinse pe stiva de evaluare a scriptului. Pentru un client bitcoin vechi (fără segwit), cele două împingeri ar arăta ca o ieșire pe care o poate cheltui oricine și nu are nevoie de o semnătură (sau mai degrabă, poate fi cheltuită cu o semnătură goală). Pentru un client mai nou, care folosește segwit, primul număr (0) este interpretat ca un număr de versiune (_versiunea martor), iar a doua parte (20 octeți) este echivalentul unui script de blocare cunoscut sub numele de program _martor_. Programul martor de 20 de octeți este pur și simplu rezumatul (hash-ul) cheii publice, ca într-un script P2PKH.
 
-Now, let’s look at the corresponding transaction that Bob uses to spend this output. For the original script (nonsegwit), Bob’s transaction would have to include a signature within the transaction input:
+Acum, să ne uităm la tranzacția corespunzătoare pe care Bob o folosește pentru a cheltui această ieșire. Pentru scriptul original (nonsegwit), tranzacția lui Bob ar trebui să includă o semnătură în intrarea tranzacției:
 
-.Decoded transaction showing a P2PKH output being spent with a signature
+.Tranzacția decodată care arată o ieșire P2PKH ce este cheltuită cu o semnătură
 ----
 [...]
 “Vin” : [
@@ -725,9 +725,9 @@ Now, let’s look at the corresponding transaction that Bob uses to spend this o
 [...]
 ----
 
-However, to spend the Segregated Witness output, the transaction has no signature on that input. Instead, Bob’s transaction has an empty +scriptSig+ and includes a Segregated Witness, outside the transaction itself:
+Cu toate acestea, pentru a cheltui ieșirea cu Martor Segregat, tranzacția nu are o semnătură pe această intrare. În schimb, tranzacția lui Bob are un script +scriptSig+ gol, și include un Martor Segregat în exteriorul tranzacției în sine:
 
-.Decoded transaction showing a P2WPKH output being spent with separate witness data
+.Tranzacția decodată care arată o ieșire P2WPKH cheltuită folosind date martor separate
 ----
 [...]
 “Vin” : [
@@ -740,28 +740,28 @@ However, to spend the Segregated Witness output, the transaction has no signatur
 [...]
 ----
 
-===== Wallet construction of P2WPKH
+===== Construcția portofelului pentru P2WPKH
 
-It is extremely important to note that P2WPKH should only be created by the payee (recipient) and not converted by the sender from a known public key, P2PKH script, or address. The sender has no way of knowing if the recipient's wallet has the ability to construct segwit transactions and spend P2WPKH outputs.
+Este extrem de important de reținut faptul că P2WPKH ar trebui să fie creat doar de beneficiar (destinatar) și nu convertit de expeditor dintr-o cheie publică cunoscută, script P2PKH sau adresă. Expeditorul nu are cum să știe dacă portofelul destinatarului are capacitatea de a construi tranzacții segwit și de a cheltui ieșirile P2WPKH.
 
-Additionally, P2WPKH outputs must be constructed from the hash of a _compressed_ public key. Uncompressed public keys are nonstandard in segwit and may be explicitly disabled by a future soft fork. If the hash used in the P2WPKH came from an uncompressed public key, it may be unspendable and you may lose funds. P2WPKH outputs should be created by the payee's wallet by deriving a compressed public key from their private key.
+În plus, ieșirile P2WPKH trebuie să fie construite din hash-ul unei chei publice _comprimate_. Cheile publice necomprimate nu sunt standard în segwit și e posibil să fie dezactivate explicit de o viitoare bifurcație soft. Dacă rezumatul (hash-ul) folosit în P2WPKH a provenit de la o cheie publică necomprimată, este posibil să fie necheltuibil și puteți pierde fonduri. Ieșirile P2WPKH ar trebui create de portofelul beneficiarului, derivând o cheie publică comprimată din cheia lor privată.
 
-[WARNING]
+[ATENȚIE]
 ====
-P2WPKH should be constructed by the payee (recipient) by converting a compressed public key to a P2WPKH hash. You should never transform a P2PKH script, bitcoin address, or uncompressed public key to a P2WPKH witness script.
+P2WPKH ar trebui să fie construit de beneficiar (destinatar) prin transformarea unei chei publice comprimate într-un rezumat (hash) P2WPKH. Niciodată nu ar trebui să transformați un script P2PKH, o adresă bitcoin sau o cheie publică necomprimată într-un script martor P2WPKH.
 ====
 
 [[p2wsh]]
-===== Pay-to-Witness-Script-Hash (P2WSH)
+===== Plată-către-Martor-Rezumat-Script (Pay-to-Witness-Script-Hash - P2WSH)
 
-The ((("use cases", "import/export", id="mohamappd")))second type of witness program corresponds to a Pay-to-Script-Hash (P2SH) script. We saw this type of script in <<p2sh>>. In that example, P2SH was used by Mohammed's company to express a multisignature script. Payments to Mohammed's company were encoded with a locking script like this:
+Al doilea  ((("utilizări", "import/export", id="mohamappd")))tip de program martor corespunde unui script Plată-către-Rezumat-Script (P2SH). Am văzut acest tip de script în <<p2sh>>. În acel exemplu, P2SH a fost folosit de compania lui Mohammed pentru a exprima un script multisemnătură. Plățile către compania lui Mohammed au fost codate cu un script de blocare ca acesta:
 
-.Example P2SH output script
+. Exemplu script ieșire P2SH
 ----
 HASH160 54c557e07dde5bb6cb791c7a540e0a4796f5e97e EQUAL
 ----
 
-This P2SH script references the hash of a _redeem script_ that defines a 2-of-3 multisignature requirement to spend funds. To spend this output, Mohammed's company would present the redeem script (whose hash matches the script hash in the P2SH output) and the signatures necessary to satisfy that redeem script, all inside the transaction input:
+Acest script P2SH face referire la rezumatul (hash-ul) unui _script de răscumpărare_ care definește o multisemnătură 2-din-3 pentru a cheltui fonduri. Pentru a cheltui această ieșire, compania lui Mohammed va prezenta scriptul de răscumpărare (al cărui rezumat se potrivește cu rezumatul scriptului în ieșirea P2SH) și semnăturile necesare pentru a satisface scriptul de răscumpărare, toate în interiorul intrării tranzacției:
 
 .Decoded transaction showing a P2SH output being spent
 ----
@@ -773,24 +773,24 @@ This P2SH script references the hash of a _redeem script_ that defines a 2-of-3 
 ]
 ----
 
-Now, let's look at how this entire example would be upgraded to segwit. If Mohammed's customers were using a segwit-compatible wallet, they would make a payment, creating a Pay-to-Witness-Script-Hash (P2WSH) output that would look like this:
+Acum, să ne uităm la modul în care acest exemplu ar fi actualizat la segwit. Dacă clienții lui Mohammed foloseau un portofel compatibil cu segwit, ar fi făcut o plată, creând o ieșire Plată-către-Martor-Rezumat-Script (P2WSH) care ar arăta astfel:
 
-.Example P2WSH output script
+. Exemplu script ieșire P2WSH
 ----
 0 a9b7b38d972cabc7961dbfbcb841ad4508d133c47ba87457b4a0e8aae86dbb89
 ----
 
-Again, as with the example of P2WPKH, you can see that the Segregated Witness equivalent script is a lot simpler and omits the various script operands that you see in P2SH scripts. Instead, the Segregated Witness program consists of two values pushed to the stack: a witness version (0) and the 32-byte SHA256 hash of the redeem script.
+Din nou, la fel ca în exemplul P2WPKH, puteți vedea că scriptul echivalent cu Martor Segregat este mult mai simplu și omite diferiți operanzi pe care le vedeți în scripturile P2SH. În schimb, programul Martor Segregat constă din două valori împinse pe stivă: o versiune martor (0) și rezumatul SHA256 pe 32 de octeți al scriptului de răscumpărare.
 
-[TIP]
+[SFAT]
 ====
-While P2SH uses the 20-byte +RIPEMD160(SHA256(script))+ hash, the P2WSH witness program uses a 32-byte +SHA256(script)+ hash. This difference in the selection of the hashing algorithm is deliberate and is used to differentiate between the two types of witness programs (P2WPKH and P2WSH) by the length of the hash and to provide stronger security to P2WSH (128 bits of security in P2WSH versus 80 bits of security in P2SH).
+În timp ce P2SH folosește rezumatul pe 20 octeți +RIPEMD160 (SHA256 (script))+, programul martor P2WSH folosește un rezumat pe 32 de octeți +SHA256 (script)+. Această diferență în selectarea algoritmului de rezumare este deliberată și este utilizată pentru a diferenția între cele două tipuri de programe martor (P2WPKH și P2WSH) în funcție de lungimea rezumatului și pentru a asigura o securitate mai puternică pentru P2WSH (128 biți de securitate pentru P2WSH față de 80 biți de securitate pentru P2SH).
 
 ====
 
-Mohammed's company can spend the P2WSH output by presenting the correct redeem script and sufficient signatures to satisfy it. Both the redeem script and the signatures would be segregated _outside_ the spending transaction as part of the witness data. Within the transaction input, Mohammed's ((("", startref="mohamappd")))wallet would put an empty +scriptSig+:
+Compania lui Mohammed poate cheltui ieșirea P2WSH prezentând scriptul corect de răscumpărare și semnături suficiente pentru a-l satisface. Atât scriptul de răscumpărare, cât și semnăturile vor fi separate în _exteriorul_ tranzacției de cheltuire ca parte a datelor martor. În cadrul intrării tranzacției, portofelul lui Mohammed (((("", startref="mohamappd")))ar puneo valoarea goală pentru +scriptSig+:
 
-.Decoded transaction showing a P2WSH output being spent with separate witness data
+.Tranzacție decodată care arată o ieșire P2WSH cheltuită folosind date martor separate
 ----
 [...]
 “Vin” : [
@@ -803,58 +803,58 @@ Mohammed's company can spend the P2WSH output by presenting the correct redeem s
 [...]
 ----
 
-===== Differentiating between P2WPKH and P2WSH
+===== Diferențierea între P2WPKH și P2WSH
 
-In the previous two sections, we demonstrated two types of witness programs: <<p2wpkh>> and <<p2wsh>>. Both types of witness programs consist of a single byte version number followed by a longer hash. They look very similar, but are interpreted very differently: one is interpreted as a public key hash, which is satisfied by a signature and the other as a script hash, which is satisfied by a redeem script. The critical difference between them is the length of the hash:
+În cele două secțiuni anterioare, am demonstrat două tipuri de programe de martor: <<p2wpkh>> și <<p2wsh>>. Ambele tipuri de programe martor constau dintr-un număr de versiune pe un singur octet urmat de un rezumat mai lung. Acestea arată foarte asemănător, dar sunt interpretate foarte diferit: unul este interpretat ca un rezumat de cheie publică, care este satisfăcut de o semnătură, iar celălalt ca un rezumat de script, care este satisfăcut de un script de răscumpărare. Diferența critică dintre ele este lungimea rezumatului:
 
-* The public key hash in P2WPKH is 20 bytes
-* The script hash in P2WSH is 32 bytes
+* Rezumatul cheii publice în P2WPKH este de 20 de octeți
+* Rezumatul scriptului în P2WSH este de 32 de octeți
 
-This is the one difference that allows a wallet to differentiate between the two types of witness programs. By looking at the length of the hash, a wallet can determine what type of witness program it is, P2WPKH or P2WSH.
+Aceasta este singura diferență care permite unui portofel să diferențieze între cele două tipuri de programe martor. Analizând lungimea rezumatului, un portofel poate determina ce tip de program martor este, P2WPKH sau P2WSH.
 
-==== Upgrading to Segregated Witness
+==== Trecerea la Martor Segregat
 
-As we can see from the previous examples, upgrading to Segregated Witness is a two-step process. First, wallets must create special segwit type outputs. Then, these outputs can be spent by wallets that know how to construct Segregated Witness transactions. In the examples, Alice's wallet was segwit-aware and able to create special outputs with Segregated Witness scripts. Bob's wallet is also segwit-aware and able to spend those outputs. What may not be obvious from the example is that in practice, Alice's wallet needs to _know_ that Bob uses a segwit-aware wallet and can spend these outputs. Otherwise, if Bob's wallet is not upgraded and Alice tries to make segwit payments to Bob, Bob's wallet will not be able to detect these payments.
+După cum putem vedea din exemplele anterioare, trecerea la Martor Segregat este un proces în două etape. În primul rând, portofelele trebuie să creeze ieșiri speciale de tip segwit. Apoi, aceste ieșiri pot fi cheltuite de portofele care știu să construiască tranzacții cu Martor Segregat. În exemplele precendente, portofelul lui Alice putea folosi segwit și era capabil să creeze ieșiri speciale cu scripturi Martor Segregat. Portofelul lui Bob, de asemenea, poate folosi segwit și este capabil să cheltuiască aceste ieșiri. Ceea ce nu poate fi evident din exemplu este că, în practică, portofelul lui Alice trebuie să știe că Bob folosește un portofel segwit și poate cheltui aceste ieșiri. În caz contrar, dacă portofelul lui Bob nu este actualizat și Alice încearcă să efectueze plăți segwit către Bob, portofelul lui Bob nu va putea detecta aceste plăți.
 
-[TIP]
+[SFAT]
 ====
-For P2WPKH and P2WSH payment types, both the sender and the recipient wallets need to be upgraded to be able to use segwit. Furthermore, the sender's wallet needs to know that the recipient's wallet is segwit-aware.
+Pentru tipurile de plată P2WPKH și P2WSH, atât portofelele expeditorului cât și destinatarul trebuie actualizate pentru a putea utiliza segwit. Mai mult, portofelul expeditorului trebuie să știe că portofelul destinatarului poate folosi segwit.
 ====
 
-Segregated Witness will not be implemented simultaneously across the entire network. Rather, Segregated Witness is implemented as a backward-compatible upgrade, where _old and new clients can coexist_. Wallet developers will independently upgrade wallet software to add segwit capabilities. The P2WPKH and P2WSH payment types are used when both sender and recipient are segwit-aware. The traditional P2PKH and P2SH will continue to work for nonupgraded wallets. That leaves two important scenarios, which are addressed in the next section:
+Martorul Segregat nu va fi implementat simultan în intreaga retea. Mai degrabă, Martorul Segregat este implementat ca o actualizare compatibilă cu versiunile precedente, unde _clienții vechi și noi pot coexista_. Dezvoltatorii de portofele vor actualiza în mod independent software-ul portofel pentru a adăuga funcționalitățile segwit. Tipurile de plată P2WPKH și P2WSH sunt utilizate atunci când atât expeditorul cât și destinatarul pot folosi segwit. P2PKH și P2SH tradiționale vor continua să funcționeze pentru portofelele neactualizate. Aceasta crează două scenarii importante, care sunt abordate în secțiunea următoare:
 
-* Ability of a sender's wallet that is not segwit-aware to make a payment to a recipient's wallet that can process segwit transactions
+* Posibilitatea portofelului unui expeditor care nu folosește segwit de a efectua o plată către portofelul unui destinatar care poate procesa tranzacții segwit
 
-* Ability of a sender's wallet that is segwit-aware to recognize and distinguish between recipients that are segwit-aware and ones that are not, by their _addresses_.
+* Posibilitatea portofelului unui expeditor care este folosește segwit de a distinge între destinatarii care folosesc segwit și cei care nu folosesc, bazat pe _adresele_ lor.
 
-===== Embedding Segregated Witness inside P2SH
+===== Încorporarea Martor Segregat în P2SH
 
-Let's assume, for example, that Alice's wallet is not upgraded to segwit, but Bob's wallet is upgraded and can handle segwit transactions. Alice and Bob can use "old" non-segwit transactions. But Bob would likely want to use segwit to reduce transaction fees, taking advantage of the discount that applies to witness data.
+Să presupunem, de exemplu, că portofelul lui Alice nu este actualizat să folosească segwit, dar portofelul lui Bob este actualizat și poate trata tranzacții segwit. Alice și Bob pot folosi tranzacții ”vechi” non-segwit. Însă Bob ar dori să folosească segwit pentru a reduce comisioanele de tranzacție, profitând de reducerea care se aplică datelor martor.
 
-In this case Bob's wallet can construct a P2SH address that contains a segwit script inside it. Alice's wallet sees this as a "normal" P2SH address and can make payments to it without any knowledge of segwit. Bob's wallet can then spend this payment with a segwit transaction, taking full advantage of segwit and reducing transaction fees.
+În acest caz portofelul lui Bob poate construi o adresă P2SH care conține un script segwit în interiorul său. Portofelul lui Alice consideră că este o adresă P2SH ”normală” și poate face plăți către ea fără să știe informații despre segwit. Portofelul lui Bob poate cheltui această plată cu o tranzacție segwit, profitând din plin de segwit și reducând taxele de tranzacție.
 
-Both forms of witness scripts, P2WPKH and P2WSH, can be embedded in a P2SH address. The first is noted as P2SH(P2WPKH) and the second is noted as P2SH(P2WSH).
+Ambele forme de scripturi martor, P2WPKH și P2WSH, pot fi încorporate într-o adresă P2SH. Primul este notat ca P2SH (P2WPKH) iar al doilea este notat ca P2SH(P2WSH).
 
-===== Pay-to-Witness-Public-Key-Hash inside Pay-to-Script-Hash
+===== Plată-către-Martor-Rezumat-Cheie-Publică în interiorul Plată-către-Rezumat-Script
 
-The first form of witness script we will examine is P2SH(P2WPKH). This is a Pay-to-Witness-Public-Key-Hash witness program, embedded inside a Pay-to-Script-Hash script, so that it can be used by a wallet that is not aware of segwit.
+Prima formă de script martor pe care o vom examina este P2SH(P2WPKH). Acesta este un program martor Plată-căte-Martor-Rezumat-Cheie-Publică, încorporat într-un script Plată-către-Rezumat-Script, astfel încât să poată fi folosit de un portofel care nu știe segwit.
 
-Bob's wallet constructs a P2WPKH witness program with Bob's public key. This witness program is then hashed and the resulting hash is encoded as a P2SH script. The P2SH script is converted to a bitcoin address, one that starts with a "3," as we saw in the <<p2sh>> section.
+Portofelul lui Bob construiește un program martor P2WPKH cu cheia publică a lui Bob. Acest program martor este apoi rezumat iar rezumatul rezultat este codat ca un script P2SH. Scriptul P2SH este convertit într-o adresă bitcoin, una care începe cu un ”3”, așa cum am văzut în secțiunea <<p2sh>>.
 
-Bob's wallet starts with the P2WPKH witness program we saw earlier:
+Portofelul lui Bob începe cu programul martor P2WPKH pe care l-am văzut mai devreme:
 
-.Bob's P2WPKH witness program
+.Programul martor P2WPKH al lui Bob
 ----
 0 ab68025513c3dbd2f7b92a94e0581f5d50f654e7
 ----
 
-The P2WPKH witness program consists of the witness version and Bob's 20-byte public key hash.
+Programul martor P2WPKH este format din versiunea martorului și rezumatul cheii publice pe 20 de octeți a lui Bob.
 
-Bob's wallet then hashes the preceding witness program, first with SHA256, then with RIPEMD160, producing another 20-byte hash.
+Portofelul lui Bob rezumă apoi programul martor precedent, mai întâi cu SHA256, apoi cu RIPEMD160, producând încă un rezumat pe 20 de biți.
 
-Let's use +bx+ on the command-line to replicate that:
+Să folosim +bx+ de la linia de comandă pentru a replica că:
 
-.HASH160 of the P2WPKH witness program
+.HASH160 din programul martor P2WPKH
 ----
 echo \
 '0 [ab68025513c3dbd2f7b92a94e0581f5d50f654e7]'\
@@ -863,7 +863,7 @@ echo \
 ----
 
 
-Next, the redeem script hash is converted to a bitcoin address. Let's use +bx+ on the command-line again:
+În continuare, rezumatul scriptului de răscumpărare este convertit într-o adresă bitcoin. Să folosim din nou +bx+ de la linia de comandă:
 
 .P2SH address
 ----
@@ -873,24 +873,24 @@ echo \
 37Lx99uaGn5avKBxiW26HjedQE3LrDCZru
 ----
 
-Now, Bob can display this address for customers to pay for their coffee. Alice's wallet can make a payment to +37Lx99uaGn5avKBxiW26HjedQE3LrDCZru+, just as it would to any other bitcoin address.
+Acum, Bob poate afișa această adresă iar clienții să plătească pentru cafeaua lor. Portofelul lui Alice poate efectua o plată către +37Lx99uaGn5avKBxiW26HjedQE3LrDCZru+, la fel cum ar face-o la orice altă adresă bitcoin.
 
-To pay Bob, Alice's wallet would lock the output with a P2SH script:
+Pentru a-i plăti lui Bob, portofelul lui Alice ar bloca ieșirea cu un script P2SH:
 ----
 HASH160 3e0547268b3b19288b3adef9719ec8659f4b2b0b EQUAL
 ----
 
-Even though Alice's wallet has no support for segwit, the payment it creates can be spent by Bob with a segwit transaction.((("", startref="aliced")))
+Chiar dacă portofelul lui Alice nu are suport pentru segwit, plata pe care o creează poate fi cheltuită de Bob cu o tranzacție segwit.((("", startref="aliced")))
 
-===== Pay-to-Witness-Script-Hash inside Pay-to-Script-Hash
+===== Plată-către-Martor-Rezumat-Script în interiorul Plată-către-Rezumat-Script
 
-Similarly, a P2WSH witness program for a multisig script or other complicated script can be embedded inside a P2SH script and address, making it possible for any wallet to make payments that are segwit compatible.
+În mod similar, un program martor P2WSH pentru un script multisemnătură sau alt script complicat poate fi încorporat într-un script și adresă P2SH, ceea ce face posibil ca orice portofel să facă plăți compatibile cu segwit.
 
-As we saw in <<p2wsh>>, Mohammed's ((("use cases", "import/export")))company is using Segregated Witness payments with multisignature scripts. To make it possible for any client to pay his company, regardless of whether their wallets are upgraded for segwit, Mohammed's wallet can embed the P2WSH witness program inside a P2SH script.
+După cum am văzut în <<p2wsh>>, Compania lui Mohammed ((("utilizări", "import/export")))utilizează plăți cu Martor Segregat cu scripturi multisemnătură. Pentru a face posibil ca orice client să poată efectua plăți către compania lui, indiferent dacă portofelele lor sunt actualizate pentru segwit sau nu, portofelul lui Mohammed poate încorpora programul martor P2WSH într-un script P2SH.
 
-First, Mohammed's wallet hashes the redeem script with SHA256 (just once). Let's use +bx+ to do that on the command-line:
+În primul rând, portofelul lui Mohammed rezumă scriptul de răscumpărare cu SHA256 (o singură dată). Să folosim +bx+ pentru a face aceasta de la linia de comandă:
 
-.Mohammed's wallet creates a P2WSH witness program
+.Portofelul lui Mohammed creează un program martor P2WSH
 ----
 echo \
 2 \ [04C16B8698A9ABF84250A7C3EA7EEDEF9897D1C8C6ADF47F06CF73370D74DCCA01CDCA79DCC5C395D7EEC6984D83F1F50C900A24DD47F569FD4193AF5DE762C587] \
@@ -909,9 +909,9 @@ Next, the hashed redeem script is turned into a P2WSH witness program:
 0 9592d601848d04b172905e0ddb0adde59f1590f1e553ffc81ddc4b0ed927dd73
 ----
 
-Then, the witness program itself is hashed with SHA256 and RIPEMD160, producing a new 20-byte hash, as used in traditional P2SH. Let's use +bx+ on the command-line to do that:
+Apoi, programul martor însuși este rezumat cu SHA256 și RIPEMD160, producând un nou rezumat pe 20 de octeți, așa cum este folosit în P2SH tradițional. Să folosim +bx+ de la linia de comandă pentru a face asta:
 
-.The HASH160 of the P2WSH witness program
+.HASH160 din programul martor P2WSH
 ----
  echo \
 '0 [9592d601848d04b172905e0ddb0adde59f1590f1e553ffc81ddc4b0ed927dd73]'\
@@ -919,9 +919,9 @@ Then, the witness program itself is hashed with SHA256 and RIPEMD160, producing 
 86762607e8fe87c0c37740cddee880988b9455b2
 ----
 
-Next, the wallet constructs a P2SH bitcoin address from this hash. Again, we use +bx+ to calculate on the command-line:
+În continuare, portofelul construiește o adresă bitcoin P2SH din acest rezumat. Din nou, folosim +bx+ pentru a calcula de la linia de comandă:
 
-.P2SH bitcoin address
+.Adresa bitcoin P2SH
 ----
 echo \
 '86762607e8fe87c0c37740cddee880988b9455b2'\
@@ -929,119 +929,119 @@ echo \
 3Dwz1MXhM6EfFoJChHCxh1jWHb8GQqRenG
 ----
 
-Now, Mohammed's clients can make payments to this address without any need to support segwit. To send a payment to Mohammed, a wallet would lock the output with the following P2SH script:
+Acum, clienții lui Mohammed pot efectua plăți la această adresă fără a fi nevoie să suporte segwit. Pentru a trimite o plată către Mohammed, un portofel ar bloca ieșirea cu următorul script P2SH:
 
-.P2SH script used to lock payments to Mohammed's multisig
+.Scriptul P2SH folosit pentru a bloca plățile pentru scriptul multisemnătură a lui Mohammed
 ----
 HASH160 86762607e8fe87c0c37740cddee880988b9455b2 EQUAL
 ----
 
-Mohammed's company can then construct segwit transactions to spend these payments, taking advantage of segwit features including lower transaction fees.
+Compania lui Mohammed poate apoi să realizeze tranzacții segwit pentru a cheltui aceste plăți, profitând de funcționalitățile segwit, inclusiv comisioane de tranzacție mai mici.
 
-===== Segregated Witness addresses
+===== Adrese Martor Segregat
 
-Even after segwit activation, it will take some time until most wallets are upgraded. At first, segwit will be embedded in P2SH, as we saw in the previous section, to ease compatibility between segwit-aware and unaware wallets.
+Chiar și după activarea segwit, va dura ceva timp până când majoritatea portofelelor vor fi actualizate. La început, segwit va fi încorporat în P2SH, așa cum am văzut în secțiunea precedentă, pentru a ușura compatibilitatea între portofelele care nu folosesc segwit și cele care folosesc.
 
-However, once wallets are broadly supporting segwit, it makes sense to encode witness scripts directly in a native address format designed for segwit, rather than embed it in P2SH.
+Cu toate acestea, odată ce portofelele acceptă pe larg segwit, are sens să codificați scripturile martor direct într-un format de adresă nativ conceput pentru segwit, decât să-l încorporați în P2SH.
 
-The native segwit address format is defined in BIP-173:
+Formatul de adresă nativ segwit este definit în BIP-173:
 
-https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki[BIP-173]:: Base32 address format for native v0-16 witness outputs
+https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki[BIP-173]:: Formatul adresei Base32 pentru ieșirile martor native v0-16
 
-BIP-173 only encodes witness (P2WPKH and P2WSH) scripts. It is not compatible with non-segwit P2PKH or P2SH scripts. BIP-173 is a checksummed Base32 encoding, as compared to the Base58 encoding of a "traditional" bitcoin address. BIP-173 addresses are also called _bech32_ addresses, pronounced "beh-ch thirty two", alluding to the use of a "BCH" error detection algorithm and 32-character encoding set.
+BIP-173 codifică doar scripturile martor (P2WPKH și P2WSH). Nu este compatibil cu scripturile P2PKH sau P2SH non-segwit. BIP-173 este o codare Base32 cu verificare, similară cu codificarea Base58 a unei adrese bitcoin ”tradiționale”. Adresele BIP-173 mai sunt numite adrese _bech32_, pronunțate "beh-ch thirty two", care fac aluzie la utilizarea unui algoritm ”BCH” de detectare a erorilor și a unui set de codare pe 32 de caractere.
 
-BIP-173 addresses use 32 lower-case-only alphanumeric character set, carefully selected to reduce errors from misreading or mistyping. By choosing a lower-case-only character set, bech32 is easier to read, speak, and 45% more efficient to encode in QR codes.
+Adresele BIP-173 folosesc 32 de caractere alfanumerice cu litere mici, selectate cu atenție pentru a reduce erorile de citire sau dactilografiere. Alegând un set de caractere cu litere mici, bech32 este mai ușor de citit, de vorbit și de 45% mai eficient de codat în coduri QR.
 
-The BCH error detection algorithm is a vast improvement over the previous checksum algorithm (from Base58Check), allowing not only detection but also _correction_ of errors. Address-input interfaces (such as text-fields in forms) can detect and highlight which character was most likely mistyped when they detect an error.
+Algoritmul de detectare a erorilor BCH este o îmbunătățire semnificativă față de algoritmul precedent de control (de la Base58Check), permițând nu numai detectarea, ci și _corectarea_ erorilor. Interfețele de introducere a adresei (cum ar fi câmpurile text din formulare) pot detecta și evidenția caracterul cel mai probabil greșit atunci când au detectat o eroare.
 
-From the BIP-173 specification, here are some examples of bech32 addresses:
+Din specificația BIP-173, iată câteva exemple de adrese bech32:
 
 Mainnet P2WPKH:: bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4
 Testnet P2WPKH:: tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx
 Mainnet P2WSH:: bc1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3qccfmv3
 Testnet P2WSH:: tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7
 
-As you can see in these examples, a segwit bech32 string is up to 90 characters long and consists of three parts:
+După cum puteți vedea în aceste exemple, un șir de caractere segwit bech32 are o lungime de până la 90 de caractere și este format din trei părți:
 
-The human readable part:: This prefix "bc" or "tb" identifying mainnet or testnet.
+Partea lizibilă pentru om:: Acest prefix ”bc” sau ”tb” identificând mainnet (rețeaua principală) sau testnet (rețeaua de test).
 
-The separator:: The digit "1", which is not part of the 32-character encoding set and can only appear in this position as a separator
+Separatorul:: Cifra ”1”, care nu face parte din setul de codificare pe 32 de caractere și poate apărea doar în această poziție ca separator
 
-The data part:: A minimum of 6 alphanumeric characters, the checksum encoded witness script
+Partea de date:: Un minim de 6 caractere alfanumerice, martorul script codificat cu sumă de control
 
-At this time, only a few wallets accept or produce native segwit bech32 addresses, but as segwit adoption increases, you will see these more and more often.
+În acest moment, doar câteva portofele acceptă sau produc adrese segwit bech32 native, dar pe măsură ce adoptarea segwit crește, le veți vedea din ce în ce mai des.
 
 [[segwit_txid]]
-===== Transaction identifiers
+===== Identificatori de tranzacție
 
-((("transaction IDs (txid)")))One of the greatest benefits of Segregated Witness is that it eliminates third-party transaction malleability.
+((("ID-uri de tranzacție (txid)")))Unul dintre cele mai mari avantaje ale Martorului Segregat este faptul că elimină maleabilitatea tranzacțiilor de către terți.
 
-Before segwit, transactions could have their signatures subtly modified by third parties, changing their transaction ID (hash) without changing any fundamental properties (inputs, outputs, amounts). This created opportunities for denial-of-service attacks as well as attacks against poorly written wallet software that assumed unconfirmed transaction hashes were immutable.
+Înainte de segwit, tranzacțiile puteau avea semnăturile lor modificate în mod subtil de către terți, schimbând ID-ul tranzacției (rezumatul) fără a modifica proprietăți fundamentale (intrări, ieșiri, sume). Acest lucru a creat oportunități pentru atacuri denial-of-service, precum și atacuri împotriva unui software portofel prost scris, care presupunea că rezumatele de tranzacție neconfirmate sunt imutabile.
 
-With the introduction of Segregated Witness, transactions have two identifiers, +txid+ and +wtxid+. The traditional transaction ID +txid+ is the double-SHA256 hash of the serialized transaction, without the witness data. A transaction +wtxid+ is the double-SHA256 hash of the new serialization format of the transaction with witness data.
+Odată cu introducerea Martorului Segregat, tranzacțiile au doi identificatori, +txid+ și +wtxid+. ID-ul tranzacției tradiționale +txid+ este rezumatul dublu-SHA256 al tranzacției serializate, fără datele martor. O tranzacție +wtxid+ este rezumatul dublu-SHA256 al noului format de serializare al tranzacției cu datele martor.
 
-The traditional +txid+ is calculated in exactly the same way as with a nonsegwit transaction. However, since the segwit transaction has empty ++scriptSig++s in every input, there is no part of the transaction that can be modified by a third party. Therefore, in a segwit transaction, the +txid+ is immutable by a third party, even when the transaction is unconfirmed.
+ID-ul tradițional +txid+ este calculat exact în același mod ca și în cazul unei tranzacții nonsegwit. Cu toate acestea, din moment ce tranzacția segwit are ++scriptSig++-urile goale pentru fiecare intrare, nu există nicio parte a tranzacției care să poată fi modificată de o terță parte. Prin urmare, într-o tranzacție segwit, +txid+ este imutabil de către o terță parte, chiar și atunci când tranzacția este neconfirmată.
 
-The +wtxid+ is like an "extended" ID, in that the hash also incorporates the witness data. If a transaction is transmitted without witness data, then the +wtxid+ and +txid+ are identical. Note that since the +wtxid+ includes witness data (signatures) and since witness data may be malleable, the +wtxid+ should be considered malleable until the transaction is confirmed. Only the +txid+ of a segwit transaction can be considered immutable by third parties and only if _all_ the inputs of the transaction are segwit inputs.
++wtxid + este ca un ID ”extins”, prin faptul că rezumatul încorporează și datele martor. Dacă o tranzacție este transmisă fără date martor, atunci +wtxid+ și +txid+ sunt identice. Rețineți că, deoarece +wtxid+ include datele martor (semnături) și întrucât datele martor pot fi maleabile, +wtxid+ ar trebui să fie considerat maleabil până la confirmarea tranzacției. Doar +txid+-ul unei tranzacții segwit poate fi considerat imutabil de către terți și numai dacă _toate_ intrările tranzacției sunt intrări segwit.
 
-[TIP]
+[SFAT]
 ====
-Segregated Witness transactions have two IDs: +txid+ and +wtxid+. The +txid+ is the hash of the transaction without the witness data and the +wtxid+ is the hash inclusive of witness data. The +txid+ of a transaction where all inputs are segwit inputs is not susceptible to third-party transaction malleability.
+Tranzacțiile Martor Segregat au două ID-uri: +txid+ și +wtxid+. +txid+ este rezumatul tranzacției fără datele martor, iar +wtxid+ este rezumatul cu datele martor incluse. +txid+-ul unei tranzacții în care toate intrările sunt segwit nu este susceptibil la maleabilitatea tranzacțiilor de către terți.
 ====
 
-==== Segregated Witness' New Signing Algorithm
+==== Noul Algoritm de Semnare pentru Martor Segregat
 
-Segregated Witness modifies the semantics of the four signature verification functions (+CHECKSIG+, +CHECKSIGVERIFY+, +CHECKMULTISIG+, and +CHECKMULTISIGVERIFY+), changing the way a transaction commitment hash is calculated.
+Martorul Segregat modifică semantica celor patru funcții de verificare a semnăturilor (+CHECKSIG+, +CHECKSIGVERIFY+, +CHECKMULTISIG+, and +CHECKMULTISIGVERIFY+), schimbând modul în care este calculat rezumatul angajamentului de tranzacție.
 
-Signatures in bitcoin transactions are applied on a _commitment hash_, which is calculated from the transaction data, locking specific parts of the data indicating the signer's commitment to those values. For example, in a simple +SIGHASH_ALL+ type signature, the commitment hash includes all inputs and outputs.
+Semnăturile din tranzacțiile bitcoin sunt aplicate pe un _rezumat de angajament_, care este calculat din datele tranzacției, blocând anumite părți ale datelor care indică angajamentul semnatarului pentru aceste valori. De exemplu, într-o simplă semnătura de tipul +SIGHASH_ALL+, rezumatul de angajament include toate intrările și ieșirile.
 
-Unfortunately, the way the commitment hash was calculated introduced the possibility that a node verifying the signature can be forced to perform a significant number of hash computations. Specifically, the hash operations increase in O(n^2^) with respect to the number of signature operations in the transaction. An attacker could therefore create a transaction with a very large number of signature operations, causing the entire bitcoin network to have to perform hundreds or thousands of hash operations to verify the transaction.
+Din păcate, modul în care a fost calculat rezumatul de angajament a introdus posibilitatea ca un nod care verifică semnătura să fie obligat să efectueze un număr semnificativ de calcule de rezumare. Mai exact, operațiile de rezumare cresc în O(n^2^) raportat la numărul de operațiuni de semnare din tranzacție. Prin urmare, un atacator ar putea crea o tranzacție cu un număr foarte mare de operațiuni de semnare, determinând întreaga rețea bitcoin să efectueze sute sau mii de operațiuni de rezumare pentru a verifica tranzacția.
 
-Segwit represented an opportunity to address this problem by changing the way the commitment hash is calculated. For segwit version 0 witness programs, signature verification occurs using an improved commitment hash algorithm as specified in BIP-143.
+Segwit a reprezentat o oportunitate de a aborda această problemă schimbând modul în care este calculat rezumatul angajamentului. Pentru programele martor segwit versiunea 0, verificarea semnăturii are loc folosind un algoritm de rezumare de angajament îmbunătățit, așa cum este specificat în BIP-143.
 
-The new algorithm achieves two important goals. Firstly, the number of hash operations increases by a much more gradual O(n) to the number of signature operations, reducing the opportunity to create denial-of-service attacks with overly complex transactions. Secondly, the commitment hash now also includes the value (amounts) of each input as part of the commitment. This means that a signer can commit to a specific input value without needing to "fetch" and check the previous transaction referenced by the input. In the case of offline devices, such as hardware wallets, this greatly simplifies the communication between the host and the hardware wallet, removing the need to stream previous transactions for validation. A hardware wallet can accept the input value "as stated" by an untrusted host. Since the signature is invalid if that input value is not correct, the hardware wallet doesn't need to validate the value before signing the input.
+Noul algoritm atinge două obiective importante. În primul rând, numărul de operații de rezumare crește mult mai gradual cu O(n) raportat la numărul de operațiuni de semnătură, reducând posibilitatea de a crea atacuri denial-of-service cu tranzacții excesiv de complexe. În al doilea rând, rezumatul de angajament include, de asemenea, valoarea (sumele) fiecărei intrări ca parte a angajamentului. Aceasta înseamnă că un semnatar se poate angaja la o valoare specifică de intrare fără a fi nevoie să ”aducă” și să verifice tranzacția anterioară la care a făcut referire. În cazul dispozitivelor offline, cum ar fi portofelele hardware, acest lucru simplifică foarte mult comunicarea între gazdă și portofelul hardware, eliminând nevoia de a parcurge tranzacții anterioare pentru validare. Un portofel hardware poate accepta valoarea de intrare ”așa cum este declarată” de către o gazdă de încredere. Deoarece semnătura nu este validă dacă acea valoare de intrare nu este corectă, portofelul hardware nu trebuie să valideze valoarea înainte de semnarea intrării.
 
-==== Economic Incentives for Segregated Witness
+==== Stimulente economice pentru Martor Segregat
 
-Bitcoin mining nodes and full nodes incur costs for the resources used to support the bitcoin network and the blockchain. As the volume of bitcoin transactions increases, so does the cost of resources (CPU, network bandwidth, disk space, memory). Miners are compensated for these costs through fees that are proportional to the size (in bytes) of each transaction. Nonmining full nodes are not compensated, so they incur these costs because they have a need to run an authoritative fully validating full-index node, perhaps because they use the node to operate a bitcoin business.
+Nodurile de minerit bitcoin și nodurile complete suportă costuri pentru resursele utilizate pentru a susține rețeaua bitcoin și lanțul-de-bocuri. Pe măsură ce volumul tranzacțiilor bitcoin crește, la fel crește și costul resurselor (procesor, lățime de bandă a rețelei, spațiu pe disc, memorie). Minerii sunt compensați pentru aceste costuri prin comisioane proporționale cu dimensiunea (în octeți) a fiecărei tranzacții. Nodurile complete care nu minează nu sunt compensate, deci ele suportă aceste costuri deoarece au nevoie să ruleze un nod complet de validare a indexului, poate pentru că folosesc nodul pentru a derula o afacere bitcoin.
 
-Without transaction fees, the growth in bitcoin data would arguably increase dramatically. Fees are intended to align the needs of bitcoin users with the burden their transactions impose on the network, through a market-based price discovery mechanism.
+Fără comisioane de tranzacție, creșterea datelor bitcoin ar putea escalada dramatic. Comisioanele sunt destinate să alinieze nevoile utilizatorilor bitcoin cu sarcina pe care tranzacțiile o au asupra rețelei, printr-un mecanism de stabilire a prețurilor intr-o piață liberă.
 
-The calculation of fees based on transaction size treats all the data in the transaction as equal in cost. But from the perspective of full nodes and miners, some parts of a transaction carry much higher costs. Every transaction added to the bitcoin network affects the consumption of four resources on nodes:
+Calculul comisioanelor pe baza mărimii tranzacției tratează toate datele din tranzacție ca fiind egale ca și cost. Dar, din perspectiva nodurilor complete și a minerilor, anumite părți ale unei tranzacții crează costuri mult mai mari. Fiecare tranzacție adăugată rețelei bitcoin afectează consumul a patru resurse:
 
-Disk Space :: Every transaction is stored in the blockchain, adding to the total size of the blockchain. The blockchain is stored on disk, but the storage can be optimized by “pruning” older transactions.
+Spațiu pe Disc:: Fiecare tranzacție este stocată în lanțul-de-blocuri, adăugând la dimensiunea totală a lanțului-de-blocuri. Lanțul-de-blocuri este stocat pe disc, dar stocarea poate fi optimizată prin ”retezarea” tranzacțiilor mai vechi.
 
-CPU :: Every transaction must be validated, which requires CPU time.
+CPU:: Fiecare tranzacție trebuie validată, ceea ce necesită timp de procesor.
 
-Bandwidth :: Every transaction is transmitted (through flood propagation) across the network at least once. Without any optimization in the block propagation protocol, transactions are transmitted again as part of a block, doubling the impact on network capacity.
+Lățime de bandă : Fiecare tranzacție este transmisă (prin propagarea prin inundare) în rețea cel puțin o dată. Fără nici o optimizare în protocolul de propagare a blocului, tranzacțiile sunt transmise din nou ca parte a unui bloc, dublând impactul asupra capacității rețelei.
 
-Memory :: Nodes that validate transactions keep the UTXO index or the entire UTXO set in memory to speed up validation. Because memory is at least one order of magnitude more expensive than disk, growth of the UTXO set contributes disproportionately to the cost of running a node.
+Memorie:: Nodurile care validează tranzacțiile păstrează indexul UTXO sau întreg setul UTXO în memorie pentru a accelera validarea. Deoarece memoria este cu cel puțin un ordin de mărime mai scumpă decât spațiul pe disc, creșterea setului UTXO contribuie în mod disproporționat la costul rulării unui nod.
 
-As you can see from the list, not every part of a transaction has an equal impact on the cost of running a node or on the ability of bitcoin to scale to support more transactions. The most expensive part of a transaction are the newly created outputs, as they are added to the in-memory UTXO set. By comparison, signatures (aka witness data) add the least burden to the network and the cost of running a node, because witness data are only validated once and then never used again. Furthermore, immediately after receiving a new transaction and validating witness data, nodes can discard that witness data. If fees are calculated on transaction size, without discriminating between these two types of data, then the market incentives of fees are not aligned with the actual costs imposed by a transaction. In fact, the current fee structure actually encourages the opposite behavior, because witness data is the largest part of a transaction.
+După cum puteți vedea din listă, nu fiecare parte a unei tranzacții are un impact egal asupra costului de rulare a unui nod sau asupra capacității bitcoi de a scala pentru a susține mai multe tranzacții. Cea mai scumpă parte a unei tranzacții sunt ieșirile nou create, deoarece acestea sunt adăugate la setul UTXO din memorie. Prin comparație, semnăturile (datele martor) adaugă cea mai mică povară rețelei și costurilor de rulare a unui nod, deoarece datele martor sunt validate o singură dată și nu se mai folosesc niciodată. În plus, imediat după primirea unei noi tranzacții și validarea datelor martor nodurile pot renunța la datele respective. Dacă comisioanele sunt calculate pentru dimensiunea tranzacției, fără a face discriminări între aceste două tipuri de date, atunci stimulentele de piață ale comisioanelor nu sunt aliniate la costurile reale impuse de o tranzacție. De fapt, structura actuală a comisioanelor încurajează comportamentul opus, deoarece datele martor sunt cea mai mare parte a unei tranzacții.
 
-The incentives created by fees matter because they affect the behavior of wallets. All wallets must implement some strategy for assembling transactions that takes into consideration a number of factors, such as privacy (reducing address reuse), fragmentation (making lots of loose change), and fees. If the fees are overwhelmingly motivating wallets to use as few inputs as possible in transactions, this can lead to UTXO picking and change address strategies that inadvertently bloat the UTXO set.
+Stimulentele create de comisioane contează pentru că afectează comportamentul portofelelor. Toate portofelele trebuie să implementeze o strategie pentru asamblarea tranzacțiilor care ia în considerare o serie de factori, cum ar fi confidențialitatea (reducerea reutilizării adreselor), fragmentarea (producerea de măruțiș) și comisioanele. Dacă comisioanele motivează copleșitor portofelele să folosească cât mai puține intrări în tranzacții, acest lucru poate duce la strategii de alegere a UTXO-urilor si a adreselor de rest care din neateție pot umfla setul UTXO.
 
-Transactions consume UTXO in their inputs and create new UTXO with their outputs. A transaction, therefore, that has more inputs than outputs will result in a decrease in the UTXO set, whereas a transaction that has more outputs than inputs will result in an increase in the UTXO set. Let’s consider the _difference_ between inputs and outputs and call that the “Net-new-UTXO.” That’s an important metric, as it tells us what impact a transaction will have on the most expensive network-wide resource, the in-memory UTXO set. A transaction with positive Net-new-UTXO adds to that burden. A transaction with a negative Net-new-UTXO reduces the burden. We would therefore want to encourage transactions that are either negative Net-new-UTXO or neutral with zero Net-new-UTXO.
+Tranzacțiile consumă UTXO-uri în intrările lor și creează UTXO-uro noi cu ieșirile lor. Prin urmare, o tranzacție, care are mai multe intrări decât ieșiri, va duce la o scădere a setului UTXO, în timp ce o tranzacție care are mai multe ieșiri decât intrări va duce la o creștere a setului UTXO. Să luăm în considerare _diferența_ dintre intrări și ieșiri și să o numim la ”UTXO-nou-Net”. Aceasta este o metrică importantă, deoarece ne spune ce impact va avea o tranzacție asupra celei mai scumpe resurse din toată rețeaua, setul UTXO din memorie. O tranzacție cu un UTXO-nou-Net pozitiv crește povara. O tranzacție cu un UTXO-nou-Net negativ reduce povara. Prin urmare, am dori să încurajăm tranzacțiile care au un UTXO-nou-Net negativ sau neutru, cu zero UTXO-nou-Net.
 
-Let’s look at an example of what incentives are created by the transaction fee calculation, with and without Segregated Witness. We will look at two different transactions. Transaction A is a 3-input, 2-output transaction, which has a Net-new-UTXO metric of &#x2013;1, meaning it consumes one more UTXO than it creates, reducing the UTXO set by one. Transaction B is a 2-input, 3-output transaction, which has a Net-new-UTXO metric of 1, meaning it adds one UTXO to the UTXO set, imposing additional cost on the entire bitcoin network. Both transactions use multisignature (2-of-3) scripts to demonstrate how complex scripts increase the impact of segregated witness on fees. Let’s assume a transaction fee of 30 satoshi per byte and a 75% fee discount on witness data:
+Să ne uităm la un exemplu de stimulente care sunt create prin calculul comisionului de tranzacție, cu și fără Martor Segregat. Vom analiza două tranzacții diferite. Tranzacția A este o tranzacție cu 3 intrări și 2 ieșiri, care are o valoare UTXO-nou-Net de -1, ceea ce înseamnă că consumă cu un UTXO mai mult decât creează, reducând setul UTXO cu unul. Tranzacția B este o tranzacție cu 2 intrări și 3 ieșiri, care are o valoare UTXO-nou-Net de 1, ceea ce înseamnă că adaugă o UTXO la setul UTXO, impunând un cost suplimentar întregii rețele bitcoin. Ambele tranzacții folosesc scripturi multisemnătură (2-din-3) pentru a demonstra modul în care scripturile complexe cresc impactul martorului segregat asupra comisioanelor. Să presupunem un comision de tranzacție de 30 satoshi pe octet și o reducere de 75% pentru datele martor:
 
 ++++
 <dl>
-<dt>Without Segregated Witness</dt>
+<dt> Fără Martor Segregat </dt>
 <dd>
-<p>Transaction A fee: 25,710 satoshi</p>
-<p>Transaction B fee: 18,990 satoshi</p>
+<p>Comision tranzacție A: 25.710 satoshi</p>
+<p>Comision tranzacție B: 18.990 satoshi</p>
 </dd>
 
-<dt>With Segregated Witness</dt>
+<dt>Cu Martor Segregat</dt>
 <dd>
-<p>Transaction A fee: 8,130 satoshi</p>
-<p>Transaction B fee: 12,045 satoshi</p>
+<p>Comision tranzacție A: 8.130 satoshi</p>
+<p>Comision tranzacție B: 12,045 satoshi</p>
 </dd>
 </dl>
 ++++
 
 
-Both transactions are less expensive when segregated witness is implemented. But comparing the costs between the two transactions, we see that before Segregated Witness, the fee is higher for the transaction that has a negative Net-new-UTXO. After Segregated Witness, the transaction fees align with the incentive to minimize new UTXO creation by not inadvertently penalizing transactions with many inputs.
+Ambele tranzacții sunt mai puțin costisitoare atunci când este foloist martorul segregat. Dar comparând costurile dintre cele două tranzacții, vedem că înainte de Martor Segregat, comisionul este mai mare pentru tranzacția care are un UTXO-nou-Net negativ. După Martor Segregat, comisioanele de tranzacție se aliniază cu stimulentul de a reduce crearea de noi UTXO-uri, fără a penaliza din greșeală tranzacțiile cu multe intrări.
 
-Segregated Witness therefore has two main effects on the fees paid by bitcoin users. Firstly, segwit reduces the overall cost of transactions by discounting witness data and increasing the capacity of the bitcoin blockchain. Secondly, segwit’s discount on witness data corrects a misalignment of incentives that may have inadvertently created more bloat in the UTXO set.((("", startref="Tadv07")))((("", startref="Ssegwit07")))
+Martorul Segregat are, prin urmare, două efecte principale asupra comisioanelor plătite de utilizatorii bitcoin. În primul rând, segwit reduce costul general al tranzacțiilor prin reducerea datelor martor și creșterea capacității lanțului-de-blocuri bitcoin. În al doilea rând, reducerea datelor martor corectează o aliniere greșită a stimulentelor care ar putea să creeze din neatenție mai multe date în setul UTXO.((("", startref="Tadv07")))((("", startref="Ssegwit07")))
