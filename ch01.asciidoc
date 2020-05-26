@@ -208,3 +208,4 @@ Joe verifică apoi cu atenție pentru a se asigura că a introdus suma corectă,
 ****
 
 Alice este acum deținătoarea a 0.10 BTC pe care îi poate cheltui. În capitolul următor, vom analiza prima ei achiziție cu bitcoin si vom examina mai în detaliu tehnologiile care stau la baza tranzacțiilor și propagării.((("", startref="BCbasic01")))((("utilizări", "cumpărat cafea", startref="aliceone")))
+
