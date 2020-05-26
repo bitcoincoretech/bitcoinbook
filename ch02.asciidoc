@@ -1,37 +1,37 @@
 [[ch02_bitcoin_overview]]
-== How Bitcoin Works
+== Cum Funcționează Bitcoin
 
-=== Transactions, Blocks, Mining, and the Blockchain
+=== Tranzacții, Blocuri, Minerit si Blockchain
 
-((("bitcoin", "overview of", id="BCover02")))((("central trusted authority")))((("decentralized systems", "bitcoin overview", id="DCSover02")))The bitcoin system, unlike traditional banking and payment systems, is based on decentralized trust. Instead of a central trusted authority, in bitcoin, trust is achieved as an emergent property from the interactions of different participants in the bitcoin system. In this chapter, we will examine bitcoin from a high level by tracking a single transaction through the bitcoin system and watch as it becomes "trusted" and accepted by the bitcoin mechanism of distributed consensus and is finally recorded on the blockchain, the distributed ledger of all transactions. Subsequent chapters will delve into the technology behind transactions, the network, and mining.
+((("bitcoin", "prezentare generală a", id="BCover02")))((("autoritate centrală de încredere")))((("sisteme descentralizate", "prezentare generală a bitcoin", id="DCSover02")))Sistemul bitcoin, spre deosebire de sistemele tradiționale bancare și de plăți, se bazează pe o încredere descentralizată. În locul unei autorități centrale de încredere, în bitcoin, încrederea este obținută ca o proprietate emergentă din interacțiunile diferiților participanți în sistemul bitcoin. În acest capitol, vom examina bitcoin de la un nivel ridicat urmărind o singură tranzacție prin sistemul bitcoin și vom urmări cum devine ”de încredere” și acceptată de către mecanismul bitcoin de consens distribuit și în final înregistrată pe blockchain (lanțul-de-blocuri), registrul distribuit al tuturor tranzacțiilor.  Capitolele ulterioare vor aprofunda tehnologia din spatele tranzacțiilor, rețelei și mineritului.
 
-==== Bitcoin Overview
+==== Prezentare Generală a Bitcoin
 
-In the overview diagram shown in <<bitcoin-overview>>, we see that the bitcoin system consists of users with wallets containing keys, transactions that are propagated across the network, and miners who produce (through competitive computation) the consensus blockchain, which is the authoritative ledger of all transactions.
+În diagrama de ansamblu prezentată în <<bitcoin-overview>>, vedem că sistemul bitcoin este format din utilizatori cu portofele care conțin chei, tranzacții care sunt propagate în rețea și mineri care produc (prin calcul competitiv) lanțul de blocuri (blockchain-ul) consensual, care este registrul autoritar a tuturor tranzacțiilor.
 
 
-((("blockchain explorer sites")))Each example in this chapter is based on an actual transaction made on the bitcoin network, simulating the interactions between the users (Joe, Alice, Bob, and Gopesh) by sending funds from one wallet to another. While tracking a transaction through the bitcoin network to the blockchain, we will use a _blockchain explorer_ site to visualize each step. A blockchain explorer is a web application that operates as a bitcoin search engine, in that it allows you to search for addresses, transactions, and blocks and see the relationships and flows between them.
+((("site-uri de explorare a lantului de blocuri")))Fiecare exemplu din acest capitol se bazează pe o tranzacție reală realizată în rețeaua bitcoin, simulând interacțiunile dintre utilizatori (Joe, Alice, Bob și Gopesh) prin trimiterea de fonduri dintr-un portofel în altul. În timp ce urmărim o tranzacție prin rețeaua bitcoin către blockchain, vom folosi un site _blockchain explorer_ (explorator pentru lanțul de blocuri) pentru a vizualiza fiecare pas. Un blockchain explorer este o aplicație web care funcționează ca un motor de căutare bitcoin, prin faptul că vă permite să căutați adrese, tranzacții și blocuri și să vedeți relațiile și fluxurile dintre ele.
 
 [[bitcoin-overview]]
-.Bitcoin overview
-image::images/mbc2_0201.png["Bitcoin Overview"]
+.Prezentare generală bitcoin
+image::images/mbc2_0201.png["Prezentare generală bitcoin"]
 
-((("Bitcoin Block Explorer")))((("BlockCypher Explorer")))((("blockchain.info")))((("BitPay Insight")))Popular blockchain explorers include:
+((("Explorator de Bloc Bitcoin")))((("Explorator BlockCypher")))((("blockchain.info")))((("BitPay Insight")))Exploratorii populari pentru lanțul de blocuri (blockchain) includ:
 
 * https://live.blockcypher.com[BlockCypher Explorer]
 * https://blockchain.info[blockchain.info]
 * https://insight.bitpay.com[BitPay Insight]
 * https://blockstream.info[Blockstream Explorer]
 
-Each of these has a search function that can take a bitcoin address, transaction hash, block number, or block hash and retrieve corresponding information from the bitcoin network. With each transaction or block example, we will provide a URL so you can look it up yourself and study it in detail.
+Fiecare dintre aceștia are o funcție de căutare care poate lua o adresă bitcoin, un rezumat de tranzacție, un număr de bloc sau un rezumat de bloc și să returneze informațiile corespunzătoare din rețeaua bitcoin. Cu fiecare exemplu de tranzacție sau bloc, vom oferi o adresă URL, astfel încât să le puteți căuta și să le analizați în detaliu.
 
 
 [[cup_of_coffee]]
-==== Buying a Cup of Coffee
+==== Cumpărarea unei Cești de Cafea
 
-((("use cases", "buying coffee", id="UCcoffee02")))Alice, introduced in the previous chapter, is a new user who has just acquired her first bitcoin. In <<getting_first_bitcoin>>, Alice met with her friend Joe to exchange some cash for bitcoin. The transaction created by Joe funded Alice's wallet with 0.10 BTC. Now Alice will make her first retail transaction, buying a cup of coffee at Bob's coffee shop in Palo Alto, California.
+((("utilizări", "cumpărarea de cafea", id="UCcoffee02")))Alice, prezentată în capitolul precedent, este un utilizator nou care tocmai a achiziționat primul ei bitcoin. În <<getting_first_bitcoin>>, Alice s-a întâlnit cu prietenul ei Joe pentru a schimba ceva bani pentru bitcoin. Tranzacția creată de Joe a alimentat portofelul lui Alice cu 0,10 BTC. Acum Alice va face prima ei tranzacție, cumpărând o ceașcă de cafea la magazinul lui Bob din Palo Alto, California.
 
-((("exchange rates", "determining")))Bob's Cafe recently started accepting bitcoin payments by adding a bitcoin option to its point-of-sale system. The prices at Bob's Cafe are listed in the local currency (US dollars), but at the register, customers have the option of paying in either dollars or bitcoin. Alice places her order for a cup of coffee and Bob enters it into the register, as he does for all transactions.  The point-of-sale system automatically converts the total price from US dollars to bitcoin at the prevailing market rate and displays the price in both currencies:
+((("cursuri de schimb", "determinare")))Cafeneaua lui Bob a început recent să accepte plăți bitcoin prin adăugarea unei opțiuni bitcoin în sistemul său de punct de vânzare. Prețurile la cafeneaua lui Bob sunt listate în moneda locală (dolari americani), dar la tejghea, clienții au opțiunea de a plăti fie în dolari, fie în bitcoin. Alice plasează comanda pentru o ceașcă de cafea iar Bob o introduce în registru, așa cum face pentru toate tranzacțiile. Sistemul de vânzare convertește automat prețul total din dolari americani la cursul de schimb existent și afișează prețul în ambele monede:
 
 ----
 Total:
@@ -40,118 +40,118 @@ $1.50 USD
 ----
 
 
-((("millibits")))Bob says, "That's one-dollar-fifty, or fifteen millibits."
+((("milibits")))Bob spune: „Costă un dolar-cincizeci sau cincisprezece milibiți”.
 
-((("payment requests")))((("QR codes", "payment requests")))Bob's point-of-sale system will also automatically create a special QR code containing a _payment request_ (see <<payment-request-QR>>).
+((("solicitare de plată")))((("coduri QR", "cereri de plată")))Deasemenea, sistemul de vânzări al lui Bob va crea automat un cod QR special care conține o _solicitare de plată_ (vezi <<payment-request-QR>>).
 
-Unlike a QR code that simply contains a destination bitcoin address, a payment request is a QR-encoded URL that contains a destination address, a payment amount, and a generic description such as "Bob's Cafe." This allows a bitcoin wallet application to prefill the information used to send the payment while showing a human-readable description to the user. You can scan the QR code with a bitcoin wallet application to see what Alice would see.
+Spre deosebire de un codul QR care conține doar o adresă bitcoin de destinație, o solicitare de plată este o adresă URL codificată în codul QR care conține o adresă de destinație, o sumă de plată și o descriere generică, cum ar fi ”Cafeneaua lui Bob”. Acest lucru permite unei aplicații portofel bitcoin să completeze automat informațiile utilizate pentru a trimite plata și în acelasi timp să arate o descriere care poate fi citită cu ușurintă de către utilizator. Puteți scana codul QR cu o aplicație portofel bitcoin pentru a observa ce va vedea Alice.
 
 
 [[payment-request-QR]]
-.Payment request QR code
+.Cod QR pentru solicitare de plată
 image::images/mbc2_0202.png["payment-request"]
 
-[TIP]
+[Sfat]
 ====
-((("QR codes", "warnings and cautions")))((("transactions", "warnings and cautions")))((("warnings and cautions", "avoid sending money to addresses appearing in book")))Try to scan this with your wallet to see the address and amount but DO NOT SEND MONEY.
+((("coduri QRs", "avertismente și precauții")))((("tranzacții", "avertismente și precauții")))((("avertismente și precauții", "evitați să trimiteți bani către adresele care apar în carte")))Încercați să scanați acest cod cu portofelul pentru a vedea adresa și suma, dar NU TRIMITEȚI BANI.
 ====
 [[payment-request-URL]]
-.The payment request QR code encodes the following URL, defined in BIP-21:
+Codul QR al solicitării de plată codifică următoarea adresă URL, definită în BIP-21:
 ----
 bitcoin:1GdK9UzpHBzqzX2A9JFP3Di4weBwqgmoQA?
 amount=0.015&
 label=Bob%27s%20Cafe&
 message=Purchase%20at%20Bob%27s%20Cafe
 
-Components of the URL
+Componentele URL-ului
 
-A bitcoin address: "1GdK9UzpHBzqzX2A9JFP3Di4weBwqgmoQA"
-The payment amount: "0.015"
-A label for the recipient address: "Bob's Cafe"
-A description for the payment: "Purchase at Bob's Cafe"
+O adresă bitcoin: "1GdK9UzpHBzqzX2A9JFP3Di4weBwqgmoQA"
+Suma de plată: "0.015"
+O etichetă pentru adresa destinatarului: "Bob's Cafe"
+O descriere a plății: "Purchase at Bob's Cafe"
 ----
 
-Alice uses her smartphone to scan the barcode on display. Her smartphone shows a payment of +0.0150 BTC+ to +Bob's Cafe+ and she selects Send to authorize the payment. Within a few seconds (about the same amount of time as a credit card authorization), Bob sees the transaction on the register, completing the transaction.
+Alice folosește smartphone-ul pentru a scana codul de bare afișat. Smartphone-ul ei arată o plată de +0.0150 BTC+ la +Bob's Cafe+ și ea selectează Send (Trimitere) pentru a autoriza plata. În câteva secunde (aproximativ aceeași perioadă de timp ca și o autorizație cu cardul), Bob vede tranzacția în registru și finalizează tranzacția.
 
-In the following sections, we will examine this transaction in more detail. We'll see how Alice's wallet constructed it, how it was propagated across the network, how it was verified, and finally, how Bob can spend that amount in subsequent transactions.
+În secțiunile următoare, vom examina această tranzacție mai detaliat. Vom vedea cum portofelul lui Alice a construit-o, cum a fost propagată în rețea, cum a fost verificată și, în final, cum Bob poate cheltui suma respectivă în tranzacțiile ulterioare.
 
-[NOTE]
+[NOTĂ]
 ====
-((("fractional values")))((("milli-bitcoin")))((("satoshis")))The bitcoin network can transact in fractional values, e.g., from millibitcoin (1/1000th of a bitcoin) down to 1/100,000,000th of a bitcoin, which is known as a satoshi.  Throughout this book, we’ll use the term “bitcoin” to refer to any quantity of bitcoin currency, from the smallest unit (1 satoshi) to the total number (21,000,000) of all bitcoin that will ever be mined.
+((("valori fracționale")))((("mili-bitcoin")))((("satoshi-uri")))Rețeaua bitcoin poate tranzacționa în valori fracționale, de exemplu, de la milibitcoin (1/1000 dintr-un bitcoin) până la 1/100.000.000 de bitcoin, care este cunoscut sub numele de satoshi. De-a lungul acestei cărți, vom folosi termenul ”bitcoin” pentru a ne referi la orice cantitate de monedă bitcoin, de la cea mai mică unitate (1 satoshi) la numărul total (21.000.000) de bitcoin care va fi minat vreodată.
 ====
 
-You can examine Alice's transaction to Bob's Cafe on the blockchain using a block explorer site (<<view_alice_transaction>>):
+Puteți examina tranzacția lui Alice cu Cafeneaua lui Bob în lanțul de blocuri (blockchain) folosind un site de exlorat blocuri  (<<view_alice_transaction>>):
 
 [[view_alice_transaction]]
-.View Alice's transaction on https://blockchain.info/tx/0627052b6f28912f2703066a912ea577f2ce4da4caa5a5fbd8a57286c345c2f2[blockchain.info]
+.Vizualizați tranzacția lui Alice la: https://blockchain.info/tx/0627052b6f28912f2703066a912ea577f2ce4da4caa5a5fbd8a57286c345c2f2[blockchain.info]
 ====
 ----
 https://blockchain.info/tx/0627052b6f28912f2703066a912ea577f2ce4da4caa5a5fbd8a57286c345c2f2
 ----
 ====
 
-=== Bitcoin Transactions
+=== Tranzacții Bitcoin
 
-((("transactions", "defined")))In simple terms, a transaction tells the network that the owner of some bitcoin value has authorized the transfer of that value to another owner. The new owner can now spend the bitcoin by creating another transaction that authorizes the transfer to another owner, and so on, in a chain of ownership.
+((("tranzacții", "definit")))În termeni simpli, o tranzacție spune rețelei că deținătorul unei anumite valori bitcoin a autorizat transferul acelei valori către un alt proprietar. Noul proprietar poate acum cheltui bitcoin prin crearea unei alte tranzacții care autorizează transferul către un alt proprietar și așa mai departe, într-un lanț de proprietate.
 
-==== Transaction Inputs and Outputs
+==== Intrările și Ieșirile unei tranzacții
 
-((("transactions", "overview of", id="Tover02")))((("outputs and inputs", "basics of")))Transactions are like lines in a double-entry bookkeeping ledger.  Each transaction contains one or more "inputs," which are like debits against a bitcoin account. On the other side of the transaction, there are one or more "outputs," which are like credits added to a bitcoin account. ((("fees", "transaction fees")))The inputs and outputs (debits and credits) do not necessarily add up to the same amount. Instead, outputs add up to slightly less than inputs and the difference represents an implied _transaction fee_, which is a small payment collected by the miner who includes the transaction in the ledger. A bitcoin transaction is shown as a bookkeeping ledger entry in <<transaction-double-entry>>.
+((("tranzacții", "prezentare generalaă a", id="Tover02")))((("ieșiri și intrări", "bazele")))Tranzacțiile sunt ca niște linii într-un registru de evidență cu două intrări. Fiecare tranzacție conține una sau mai multe ”intrări”, care sunt precum debiturile pentru un cont bitcoin. Pe cealaltă parte a tranzacției, există una sau mai multe ”ieșiri”, care sunt precum creditele adăugate într-un cont bitcoin. ((("comisioane", "comisioane de tranzacție")))Intrările și ieșirile (debite și credite) nu însumează neapărat aceeași sumă. În schimb, ieșirile însumează mai puțin decât intrarile, iar diferența reprezintă un _comision de tranzacție_ inplicit, care este o mică plată colectată de către minerul care include tranzacția în registru. O tranzacție bitcoin este prezentată ca o înregistrare în evidența contabilă în <<transaction-double-entry>>.
 
-The transaction also contains proof of ownership for each amount of bitcoin (inputs) whose value is being spent, in the form of a digital signature from the owner, which can be independently validated by anyone. ((("spending bitcoin", "defined")))In bitcoin terms, "spending" is signing a transaction that transfers value from a previous transaction over to a new owner identified by a bitcoin address.
+Tranzacția conține, de asemenea, dovada dreptului de proprietate pentru fiecare sumă de bitcoin (intrări) a cărei valoare este cheltuită, sub forma unei semnături digitale de la proprietar, care poate fi validată independent de oricine. ((("cheltuirea bitcoin", "definit")))În termeni bitcoin ”a cheltui” înseamnă a semna o tranzacție care transferă valoare de la o tranzacție anterioară către un nou proprietar identificat de o adresă bitcoin. 
 
 [[transaction-double-entry]]
-.Transaction as double-entry bookkeeping
-image::images/mbc2_0203.png["Transaction Double-Entry"]
+.Tranzacția ca evidență contabilă cu intrare dublă
+image::images/mbc2_0203.png["Tranzacție Dublă-Intrare"]
 
-==== Transaction Chains
+==== Lanțuri de Tranzacție
 
-((("chain of transactions")))Alice's payment to Bob's Cafe uses a previous transaction's output as its input. In the previous chapter, Alice received bitcoin from her friend Joe in return for cash. That transaction created a bitcoin value locked by Alice's key. Her new transaction to Bob's Cafe references the previous transaction as an input and creates new outputs to pay for the cup of coffee and receive change. The transactions form a chain, where the inputs from the latest transaction correspond to outputs from previous transactions. Alice's key provides the signature that unlocks those previous transaction outputs, thereby proving to the bitcoin network that she owns the funds. She attaches the payment for coffee to Bob's address, thereby "encumbering" that output with the requirement that Bob produces a signature in order to spend that amount. This represents a transfer of value between Alice and Bob. This chain of transactions, from Joe to Alice to Bob, is illustrated in <<blockchain-mnemonic>>.
+((("lanț de tranzacții")))Plata lui Alice către Cafeneaua lui Bob utilizează ca intrare o ieșire a unei tranzacții anterioare. În capitolul precedent, Alice a primit bitcoin de la prietenul ei Joe în schimbul dolarilor. Acea tranzacție a creat o valoare bitcoin blocată de cheia lui Alice. Noua ei tranzacție cu Cafeneaua lui Bob face referire la tranzacția anterioară drept intrare și creează noi ieșiri pentru a plăti cana de cafea și pentru a primi restul. Tranzacțiile formează un lanț, în care intrările din ultima tranzacție corespund ieșirilor tranzacțiilor anterioare. Cheia lui Alice furnizează semnătura care deblochează acele ieșiri ale tranzacțiilor anterioare, dovedind astfel rețelei bitcoin că ea deține fondurile. Ea atașează plata pentru cafea la adresa lui Bob, ”încărcând” acea ieșire cu cerința ca Bob să producă o semnătură pentru a cheltui acea sumă. Acesta reprezintă un transfer de valoare între Alice și Bob. Acest lanț de tranzacții, de la Joe la Alice până la Bob, este ilustrat în <<blockchain-mnemonic>>.
 
 [[blockchain-mnemonic]]
-.A chain of transactions, where the output of one transaction is the input of the next transaction
-image::images/mbc2_0204.png["Transaction chain"]
+.Un lanț de tranzacții, în care ieșirea unei tranzacții este intrarea următoarei tranzacții
+image::images/mbc2_0204.png["Lanț de tranzacții"]
 
-==== Making Change
+==== Primirea Restului
 
-((("change, making")))((("change addresses")))((("addresses", "change addresses")))Many bitcoin transactions will include outputs that reference both an address of the new owner and an address of the current owner, called the _change_ address. This is because transaction inputs, like currency notes, cannot be divided. If you purchase a $5 US dollar item in a store but use a $20 US dollar bill to pay for the item, you expect to receive $15 US dollars in change. The same concept applies to bitcoin transaction inputs. If you purchased an item that costs 5 bitcoin but only had a 20 bitcoin input to use, you would send one output of 5 bitcoin to the store owner and one output of 15 bitcoin back to yourself as change (less any applicable transaction fee). Importantly, the change address does not have to be the same address as that of the input and for privacy reasons is often a new address from the owner's wallet.
+((("rest, primire")))((("adrese pentru rest")))((("adrese", "adrese pentru rest")))Multe tranzacții bitcoin vor include ieșiri care se referă atât la o adresă a noului proprietar, cât și la o adresă a proprietarului curent, numită adresa pentru _rest_. Acest lucru se datorează faptului că intrările tranzacției, la fel ca bancnotele, nu pot fi divizate. Dacă achiziționați un articol de 5 dolari dintr-un magazin, dar utilizați o banctontă în valoare de 20 de dolari pentru a plăti articolul, vă așteptați să primiți rest 15 dolari. Același concept se aplică intrărilor tranzacțiilor bitcoin. Dacă ați achiziționat un articol care costă 5 bitcoin, dar ați avut doar o intrare de 20 de bitcoin, veți trimite o ieșire de 5 bitcoin proprietarului magazinului și o ieșire de 15 bitcoin înapoi ca rest (exceptând cazul când se aplică comisioane pentru tranzacție).
 
-Different wallets may use different strategies when aggregating inputs to make a payment requested by the user. They might aggregate many small inputs, or use one that is equal to or larger than the desired payment. Unless the wallet can aggregate inputs in such a way to exactly match the desired payment plus transaction fees, the wallet will need to generate some change. This is very similar to how people handle cash. If you always use the largest bill in your pocket, you will end up with a pocket full of loose change. If you only use the loose change, you'll always have only big bills. People subconsciously find a balance between these two extremes, and bitcoin wallet developers strive to program this balance.
+Diferite portofele pot utiliza diferite strategii atunci când agregă intrări pentru a efectua o plată solicitată de utilizator. Aceștea ar putea agrega multe intrări mici sau pot utiliza una egală sau mai mare decât plata dorită. Cu excepția cazului în care portofelul poate agrega intrări în așa fel încât să corespundă exact plății dorite, plus comisioanele de tranzacție, portofelul va trebui să genereze niște rest. Acest lucru este foarte similar cu modul în care oamenii lucrează cu numerar. Dacă utilizați întotdeauna cea mai mare bancnotă din buzunar, veți avea un buzunar plin de mărunțiș. Dacă utilizați doar mărunțiș, veți avea întotdeauna doar bancnote mari. Oamenii găsesc în mod inconștient un echilibru între aceste două extreme, iar dezvoltatorii de portofele bitcoin se străduiesc să programeze acest echilibru.
 
-((("transactions", "defined")))((("outputs and inputs", "defined")))((("inputs", see="outputs and inputs")))In summary, _transactions_ move value from _transaction inputs_ to _transaction outputs_. An input is a reference to a previous transaction's output, showing where the value is coming from. A transaction output directs a specific value to a new owner's bitcoin address and can include a change output back to the original owner. Outputs from one transaction can be used as inputs in a new transaction, thus creating a chain of ownership as the value is moved from owner to owner (see <<blockchain-mnemonic>>).
+((("tranzacții", "definit")))((("intrări și ieșiri", "definit")))((("intrări", see="intrări și ieșiri")))Pe scurt, _tranzacțiile_ mută valoare de la _intrările tranzacției_ la _ieșirile tranzacției_. O intrare este o referință la ieșirea unei tranzcții anterioare, aratând de unde vine valoarea. Ieșirea unei tranzacții direcționează o valoare specifică la adresa unui nou proprietar și poate include o ieșire pentru rest înapoi la proprietarul inițial. Ieșirile de la o tranzacție pot fi folosite ca intrări într-o nouă tranzacție, creând astfel un lanț de proprietate, valoarea fiind mutată de la un proprietar la altul  (vezi <<blockchain-mnemonic>>).
 
-==== Common Transaction Forms
+==== Forme Uzuale de Tranzacții
 
-The most common form of transaction is a simple payment from one address to another, which often includes some "change" returned to the original owner. This type of transaction has one input and two outputs and is shown in <<transaction-common>>.
+Cea mau uzuală formă de tranzacție este o plată simplă de la o adresă la alta, care include adesea niște ”rest” înapoiat proprietarului original. Acest tip de tranzacție are o intrare și două ieșiri și este prezentat în <<transaction-common>>.
 
 [[transaction-common]]
-.Most common transaction
-image::images/mbc2_0205.png["Common Transaction"]
+.Cele mai uzuale tranzacții
+image::images/mbc2_0205.png["Tranzacție Uzuală"]
 
-Another common form of transaction is one that aggregates several inputs into a single output (see <<transaction-aggregating>>). This represents the real-world equivalent of exchanging a pile of coins and currency notes for a single larger note. Transactions like these are sometimes generated by wallet applications to clean up lots of smaller amounts that were received as change for payments.
+O altă formă uzuală de tranzacție este una care agregă câteva intrări intr-o singură ieșire (vezi <<transaction-aggregating>>). Aceasta reprezintă echivalentul in lumea reală a schimbării unei movile de monede si bancnote pentru o singură bancnotă mai mare. Tranzacții de felul acesta sunt uneori generate de aplicația portofel pentru a curăța multe sume mai mici care au fost primite ca rest.
 
 [[transaction-aggregating]]
-.Transaction aggregating funds
-image::images/mbc2_0206.png["Aggregating Transaction"]
+.Tranzacție care agregă fonduri
+image::images/mbc2_0206.png["Tranzacție care Agregă"]
 
-Finally, another transaction form that is seen often on the bitcoin ledger is a transaction that distributes one input to multiple outputs representing multiple recipients (see <<transaction-distributing>>). This type of transaction is sometimes used by commercial entities to distribute funds, such as when processing payroll payments to multiple employees.((("", startref="Tover02")))
+În cele din urmă, o altă formă de tranzacție care e des întâlnită pe registrul bitcoin este o tranzacție care distribuie o intrare la mai multe ieșiri, reprezentând mai mulți destinatari (vezi <<transaction-distributing>>). Acest tip de tranzacție este folosit uneori de entități comerciale pentru a distribui fonduri, cum ar fi atunci când prelucrează plăți salariale către mai mulți angajați.((("", startref="Tover02")))
 
 [[transaction-distributing]]
-.Transaction distributing funds
-image::images/mbc2_0207.png["Distributing Transaction"]
+.Tranzacții care distribuie fonduri
+image::images/mbc2_0207.png["Tranzactie care Distribuie"]
 
-=== Constructing a Transaction
+=== Construirea unei tranzacții
 
-((("transactions", "constructing", id="Tconstruct02")))((("wallets", "constructing transactions")))Alice's wallet application contains all the logic for selecting appropriate inputs and outputs to build a transaction to Alice's specification. Alice only needs to specify a destination and an amount, and the rest happens in the wallet application without her seeing the details. Importantly, a wallet application can construct transactions even if it is completely offline. Like writing a check at home and later sending it to the bank in an envelope, the transaction does not need to be constructed and signed while connected to the bitcoin network.
+((("tranzacții", "construire", id="Tconstruct02")))((("portofele", "construirea tranzacțiilor")))Aplicația portofel a lui Alice conține toata logica necesară pentru a selecta intrările și ieșirile corespunzătoare pentru a construi o tranzacție comform specificațiilor lui Alice. Ea trebuie să specifice doar o destinație si o sumă, iar restul se întâmplă in aplicatia portofel fără ca Alice să vada detaliile. E important de ținut minte că o aplicație portofel poate construi tranzacții chiar daca este complet offline. La fel cum ați scrie un cec acasă iar mai târziu l-ați trimite la bancă intr-un plic, nu e nevoie ca tranzacția să fie construită si semnată  în timp ce sunteți conectat la rețeaua bitcoin.
 
-==== Getting the Right Inputs
+==== Obținerea Intrărilor Corecte
 
-((("outputs and inputs", "locating and tracking inputs")))Alice's wallet application will first have to find inputs that can pay the amount she wants to send to Bob. Most wallets keep track of all the available outputs belonging to addresses in the wallet. Therefore, Alice's wallet would contain a copy of the transaction output from Joe's transaction, which was created in exchange for cash (see <<getting_first_bitcoin>>). A bitcoin wallet application that runs as a full-node client actually contains a copy of every unspent output from every transaction in the blockchain. This allows a wallet to construct transaction inputs as well as quickly verify incoming transactions as having correct inputs. However, because a full-node client takes up a lot of disk space, most user wallets run "lightweight" clients that track only the user's own unspent outputs.
+((("ieșiri și intrări", "localizarea și urmărirea intrărilor")))Aplicația portofel a lui Alice va trebui mai înâi să găsească intrările care pot plăti suma pe care vrea să o trimită lui Bob. Majoritatea portofelelor urmăresc toate ieșirile disponibile aparținând adreselor din portofel. Prin urmare portofelul lui Alice ar conține o copie a ieșirilor de la tranzacția lui Joe, care a fost creată la schimb pentru numerar (vezi <<getting_first_bitcoin>>) . O aplicație portofel bitcoin care rulează ca și client nod-complet conține, de fapt, o copie a fiecărei ieșiri necheltuite de la fiecare tranzacție din lanțul de blocuri. Aceasta permite unui portofel să construiască intrările tranzacției, precum și să verifice rapid că tranzacțiile primite au intrările corecte. Totuși, pentru că un client nod-complet ocupă mult spațiu pe disc, majoritatea utilizatorilor aleg să ruleze clienți ”supli” care pot urmări doar ieșirile necheltuite ale utilizatorului.
 
-If the wallet application does not maintain a copy of unspent transaction outputs, it can query the bitcoin network to retrieve this information using a variety of APIs available by different providers or by asking a full-node using an application programming interface (API) call. <<example_2-2>> shows an API request, constructed as an HTTP GET command to a specific URL. This URL will return all the unspent transaction outputs for an address, giving any application the information it needs to construct transaction inputs for spending. We use the simple command-line HTTP client _cURL_ to retrieve the response.
+Dacă aplicația portofel nu păstrează o copie a ieșirilor necheltuite ale tranzacției, ea poate interoga rapid rețeaua bitcoin pentru a primi această informație folosind o varietate de API-uri oferite de diferiți furnizori sau interogând un nod-complet folosind un apel la interfața de programare a aplicației (API).  <<example_2-2>> arată o solicitare API construit ca o comandă HTTP GET la un URL specific. Acest URL va returna pentru o adresă toate ieșirile necheltuite ale tranzacției. Vom folosi clientul HTTP _cURL_ din linia de comandă pentru a primi răspunsul.
 
 [[example_2-2]]
-.Look up all the unspent outputs for Alice's bitcoin address
+.Identifică toate ieșirile necheltuite pentru adresa bitcoin a lui Alice
 ====
 [source,bash]
 ----
@@ -180,109 +180,109 @@ $ curl https://blockchain.info/unspent?active=1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK
 ----
 
 
-The response in <<example_2-2>> shows one unspent output (one that has not been redeemed yet) under the ownership of Alice's address +1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK+. The response includes the reference to the transaction in which this unspent output is contained (the payment from Joe) and its value in satoshis, at 10 million, equivalent to 0.10 bitcoin. With this information, Alice's wallet application can construct a transaction to transfer that value to new owner addresses.
+Răspunsul la  <<example_2-2>> arată o ieșire necheltuită (una care nu a fost încă folosită) în propritatea adresei lui Alice +1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK+. Răspunsul include referința la tranzacția în care este conținută această ieșire necheltuită (plata de la Joe) și valoarea ei în statoshi, la 10 milioane, echivalentul a 0,10 bitcoin. Cu aceste informații aplicația portofel a lui Alice poate construi o tranzacție pentru a transfera acea valoare la adresa noului proprietar.
 
-[TIP]
+[Sfat]
 ====
-View the https://www.blockchain.com/btc/tx/7957a35fe64f80d234d76d83a2a8f1a0d8149a41d81de548f0a65a8a999f6f18[transaction from Joe to Alice].
+Vedeți https://www.blockchain.com/btc/tx/7957a35fe64f80d234d76d83a2a8f1a0d8149a41d81de548f0a65a8a999f6f18[tranzacție de la Joe la Alice].
 ====
 
-As you can see, Alice's wallet contains enough bitcoin in a single unspent output to pay for the cup of coffee. Had this not been the case, Alice's wallet application might have to "rummage" through a pile of smaller unspent outputs, like picking coins from a purse until it could find enough to pay for the coffee. In both cases, there might be a need to get some change back, which we will see in the next section, as the wallet application creates the transaction outputs (payments).
+După cum puteți vedea, portofelul lui Alice conține destul bitcoin într-o singură ieșire necheltuită pentru a plăti ceașca de cafea. Dacă nu ar fi fost cazul, aplicația portofel a lui Alice ar fi fost nevoită să ”scotocească” printr-o grămadă de ieșiri necheltuite, ca atunci când căutam monede intr-o poșetă, până când ar fi putut găsi destule pentru a plăti pentru cafea. În amblele cazuri, s-ar putea să fie necesar să primească rest, ceea ce vom vedea în secțiunea următoare, când aplicația portofel creează ieșirile tranzacției (plățile).
 
 
-==== Creating the Outputs
+==== Creearea Ieșirilor
 
-((("outputs and inputs", "creating outputs")))A transaction output is created in the form of a script that creates an encumbrance on the value and can only be redeemed by the introduction of a solution to the script. In simpler terms, Alice's transaction output will contain a script that says something like, "This output is payable to whoever can present a signature from the key corresponding to Bob's address." Because only Bob has the wallet with the keys corresponding to that address, only Bob's wallet can present such a signature to redeem this output. Alice will therefore "encumber" the output value with a demand for a signature from Bob.
+((("ieșiri și intrări", "creearea ieșirilor")))Ieșirea unei tranzacții este creată sub forma unui script care creează o restricție pentru valoare, și poate fi încasată prin prezentarea unei soluții la script. În termeni simpli, ieșirea tranzacției lui Alice va conține un script care spune ceva de genul, ”Această ieșire este plătibilă oricui poate prezenta o semnătură de la cheia care corespunde adresei lui Bob”. Deoarece doar Bob are portofelul cu cheile care corespund acelei adrese, doar portofelul lui Bob poate să prezinte o asemenea semnătură pentru a încasa această ieșire. Drept urmare, Alice va ”restricționa” valoarea ieșirii cu cerința unei semnături de la Bob.
 
-This transaction will also include a second output, because Alice's funds are in the form of a 0.10 BTC output, too much money for the 0.015 BTC cup of coffee. Alice will need 0.085 BTC in change. Alice's change payment is created by Alice's wallet as an output in the very same transaction as the payment to Bob. Essentially, Alice's wallet breaks her funds into two payments: one to Bob and one back to herself. She can then use (spend) the change output in a subsequent transaction.
+Această tranzacție va include deasemenea o a doua ieșire, pentru că fondurile lui Alice sunt sub forma unei ieșiri de 0,10 BTC, prea mulți bani pentru cei 0,015 BTC cât costă ceașca de cafea. Alice va avea nevoie de 0,085 BTC rest. Plata pentru restul lui Alice este creată de către portofelul lui Alice sub forma unei ieșiri chiar în aceeași tranzacție cu plata pentru Bob. Practic, portofelul lui Alice împarte fondurile ei în două plăți: una către Bob și una înapoi către ea însăși. Ea poate apoi folosi (cheltui) ieșirea rest într-o tranzacție ulterioară.
 
-Finally, for the transaction to be processed by the network in a timely fashion, Alice's wallet application will add a small fee. This is not explicit in the transaction; it is implied by the difference between inputs and outputs. If instead of taking 0.085 in change, Alice creates only 0.0845 as the second output, there will be 0.0005 BTC (half a millibitcoin) left over. The input's 0.10 BTC is not fully spent with the two outputs, because they will add up to less than 0.10. The resulting difference is the _transaction fee_ that is collected by the miner as a fee for validating and including the transaction in a block to be recorded on the blockchain.
+În cele din urmă, pentru ca tranzacția lui Alice să fie procesată de către rețea în timp util, aplicația portofel a lui Alice va adăuga un mic comision. Acesta nu este explicit în tranzacție; este implicit în diferența dintre intrări și ieșiri. În loc să ceară rest 0,085, Alice crează doar 0,0845 pentru a doua ieșire, vor fi 0,0005 BTC (jumătate de milibitcoin) rămași. Cei 0,10 BTC ai intrării nu vor fi cheltuiți în intregime pe cele două ieșiri, pentru că ieșirile vor însuma mai puțin de 0,10. Diferența rezultată este _comisionul de tranzacție_ care este colectat de către miner drept comision pentru validarea și includerea tranzacției intr-un block ca parte a lanțului de blocuri.
 
-The resulting transaction can be seen using a blockchain explorer web application, as shown in <<transaction-alice>>.
+Tranzacția rezultată poate fi văzuta folosind o aplicație web ca explorator de lanț de blocuri (blockchain explorer), așa cum se vede în  <<transaction-alice>>.
 
 [[transaction-alice]]
 [role="smallerseventyfive"]
-.Alice's transaction to Bob's Cafe
-image::images/mbc2_0208.png["Alice Coffee Transaction"]
+.Tranzacția lui Alice către Cafeneaua lui Bob
+image::images/mbc2_0208.png["Tranzacția cu cafea a lui Alice"]
 
 [[transaction-alice-url]]
-[TIP]
+[Sfat]
 ====
-View the https://www.blockchain.com/btc/tx/0627052b6f28912f2703066a912ea577f2ce4da4caa5a5fbd8a57286c345c2f2[transaction from Alice to Bob's Cafe].
-====
-
-==== Adding the Transaction to the Ledger
-
-The transaction created by Alice's wallet application is 258 bytes long and contains everything necessary to confirm ownership of the funds and assign new owners. Now, the transaction must be transmitted to the bitcoin network where it will become part of the blockchain. In the next section we will see how a transaction becomes part of a new block and how the block is "mined." Finally, we will see how the new block, once added to the blockchain, is increasingly trusted by the network as more blocks are added.
-
-===== Transmitting the transaction
-
-((("propagation", "process of")))Because the transaction contains all the information necessary to process, it does not matter how or where it is transmitted to the bitcoin network. The bitcoin network is a peer-to-peer network, with each bitcoin client participating by connecting to several other bitcoin clients. The purpose of the bitcoin network is to propagate transactions and blocks to all participants.
-
-===== How it propagates
-
-((("bitcoin nodes", "defined")))((("nodes", see="bitcoin nodes")))Any system, such as a server, desktop application, or wallet, that participates in the bitcoin network by "speaking" the bitcoin protocol is called a _bitcoin node_. Alice's wallet application can send the new transaction to any bitcoin node it is connected to over any type of connection: wired, WiFi, mobile, etc.  Her bitcoin wallet does not have to be connected to Bob's bitcoin wallet directly and she does not have to use the internet connection offered by the cafe, though both those options are possible, too. ((("propagation", "flooding technique")))((("flooding technique")))Any bitcoin node that receives a valid transaction it has not seen before will immediately forward it to all other nodes to which it is connected, a propagation technique known as _flooding_. Thus, the transaction rapidly propagates out across the peer-to-peer network, reaching a large percentage of the nodes within a few seconds.
-
-===== Bob's view
-
-If Bob's bitcoin wallet application is directly connected to Alice's wallet application, Bob's wallet application might be the first node to receive the transaction. However, even if Alice's wallet sends the transaction through other nodes, it will reach Bob's wallet within a few seconds. Bob's wallet will immediately identify Alice's transaction as an incoming payment because it contains outputs redeemable by Bob's keys. Bob's wallet application can also independently verify that the transaction is well formed, uses previously unspent outputs, and contains sufficient transaction fees to be included in the next block. At this point Bob can assume, with little risk, that the transaction will shortly be included in a block and confirmed.
-
-[TIP]
-====
-((("confirmations", "of small-value transactions", secondary-sortas="small-value transactions")))A common misconception about bitcoin transactions is that they must be "confirmed" by waiting 10 minutes for a new block, or up to 60 minutes for a full six confirmations. Although confirmations ensure the transaction has been accepted by the whole network, such a delay is unnecessary for small-value items such as a cup of coffee. A merchant may accept a valid small-value transaction with no confirmations, with no more risk than a credit card payment made without an ID or a signature, as merchants routinely accept today.((("", startref="Tconstruct02")))
+Vedeți  https://www.blockchain.com/btc/tx/0627052b6f28912f2703066a912ea577f2ce4da4caa5a5fbd8a57286c345c2f2[tranzacția lui Alice către cafeneaua lui Bob].
 ====
 
-=== Bitcoin Mining
+==== Adăugarea Tranzacției în Registru
 
-((("mining and consensus", "overview of", id="MACover02")))((("blockchain (the)", "overview of mining", id="BToverview02")))Alice's transaction is now propagated on the bitcoin network. It does not become part of the _blockchain_ until it is verified and included in a block by a process called _mining_. See <<mining>> for a detailed explanation.
+Tranzacția creeată de aplicația portofel a lui Alice are o lungime de 258 octeți și conține tot ceea ce este necesar pentru a confirma deținerea fondurilor și pentru a desemna noi proprietari. Acum, tranzacția trebuie transmisă către rețeaua bitcoin unde va deveni parte a lanțului de blocuri. În secțiunea următoare vom vedea cum o tranzacție devine parte a unui nou bloc și cum blocul este ”minat”. În cele din urmă, vom vedea cum noul bloc, odată adăugat la lanțul de blocuri, devine din ce în ce mai de încredere pentru rețea pe măsură ce noi blocuri sunt adăugate.
 
-The bitcoin system of trust is based on computation. Transactions are bundled into _blocks_, which require an enormous amount of computation to prove, but only a small amount of computation to verify as proven. The mining process serves two purposes in bitcoin:
+===== Transmiterea tranzacției
 
-* ((("mining and consensus", "consensus rules", "security provided by")))((("consensus", see="mining and consensus")))Mining nodes validate all transactions by reference to bitcoin's _consensus rules_. Therefore, mining provides security for bitcoin transactions by rejecting invalid or malformed transactions.
-* Mining creates new bitcoin in each block, almost like a central bank printing new money. The amount of bitcoin created per block is limited and diminishes with time, following a fixed issuance schedule.
+((("propagare", "procesul de")))Deoarece tranzacția conține toate informațiile necesare procesării, nu contează cum sau unde este transmisă către rețeaua bitcoin. Rețeaua bitcoin este o rețea de la egal la egal (peer-to-peer), cu fiecare client bitcoin participând prin conectarea la alți clienți bitcoin. Scopul rețelei bitcoin este să propage tranzacții și blocuri la toți participanții.
 
+===== Cum se propagă
 
-Mining achieves a fine balance between cost and reward. Mining uses electricity to solve a mathematical problem. A successful miner will collect a _reward_ in the form of new bitcoin and transaction fees. However, the reward will only be collected if the miner has correctly validated all the transactions, to the satisfaction of the rules of _consensus_. This delicate balance provides security for bitcoin without a central authority.
+((("noduri bitcoin", "definit")))((("noduri", see="noduri bitcoin")))Orice sistem, cu ar fi un server, aplicație desktop, sau portofel, care participă în rețeaua bitcoin ”vorbind” protocolul bitcoin este numit _nod bitcoin_. Aplicația portofel a lui Alice poate să trimită noi tranzacții către orice nod bitcoin la care este conectată prin orice tip de conexiune: cablu, WiFi, mobilă, etc. Portofelul ei bitcoin nu trebuie să se conecteze direct la portofelul bitcoin a lui Bob și ea nu trebuie să folosească conexiunea la internet oferită de către cafenea, deși ambele opțiuni sunt posibile și ele. ((("propagare", "mecanismul inundării")))((("mecanismul inundării")))Orice nod bitcoin care primește o tranzacție validă pe care nu a mai vazut-o înainte o va transmite imediat tuturor celorlalte noduri cu care este conectat, un mecanism de propagare cunoscut sub numele de _inundare_. Astfel, tranzacția se propagă rapid în toată rețeaua de la egal la egal, ajungând la un procent ridicat de noduri în câteva secunde.
 
-A good way to describe mining is like a giant competitive game of sudoku that resets every time someone finds a solution and whose difficulty automatically adjusts so that it takes approximately 10 minutes to find a solution. Imagine a giant sudoku puzzle, several thousand rows and columns in size. If I show you a completed puzzle you can verify it quite quickly. However, if the puzzle has a few squares filled and the rest are empty, it takes a lot of work to solve! The difficulty of the sudoku can be adjusted by changing its size (more or fewer rows and columns), but it can still be verified quite easily even if it is very large. The "puzzle" used in bitcoin is based on a cryptographic hash and exhibits similar characteristics: it is asymmetrically hard to solve but easy to verify, and its difficulty can be adjusted.
+===== Perspectiva lui Bob
 
-((("mining and consensus", "mining farms and pools")))In <<user-stories>>, we introduced ((("use cases", "mining for bitcoin")))Jing, an entrepreneur in Shanghai. Jing runs a _mining farm_, which is a business that runs thousands of specialized mining computers, competing for the reward. Every 10 minutes or so, Jing's mining computers compete against thousands of similar systems in a global race to find a solution to a block of transactions. ((("Proof-of-Work algorithm")))((("mining and consensus", "Proof-of-Work algorithm")))Finding such a solution, the so-called _Proof-of-Work_ (PoW), requires quadrillions of hashing operations per second across the entire bitcoin network. The algorithm for Proof-of-Work involves repeatedly hashing the header of the block and a random number with the SHA256 cryptographic algorithm until a solution matching a predetermined pattern emerges. The first miner to find such a solution wins the round of competition and publishes that block into the blockchain.
+Dacă aplicația portofel a lui Bob este conectată direct la aplicația portofel a lui Alice, este posibil ca aplicația portofel a lui Bob să fie primul nod care primește tranzacția. Totuși, chiar dacă portofelul lui Alice trimite tranzacția prin alte noduri, aceasta va ajunge la portofelul lui Bob în câteva secunde. Portofelul lui Bob va identifica imediat tranzacția lui Alice ca o plată de intrare deoarece conține ieșiri care pot fi încasate cu cheile lui Bob. Aplicația portofel a lui Bob poate și să verifice independent că tranzacția este formată corect, că folosește ieșiri anterioare necheltuite, și că conține un comision de tranzacție suficient de mare pentru a fi inclusă în următorul bloc. În acest moment, Bob poate presupune, cu un risc scăzut, că tranzacția va fi inclusă în scurt timp într-un bloc si apoi confirmată.
 
-Jing started mining in 2010 using a very fast desktop computer to find a suitable Proof-of-Work for new blocks. As more miners started joining the bitcoin network, the difficulty of the problem increased rapidly. Soon, Jing and other miners upgraded to more specialized hardware, with high-end dedicated graphical processing units (GPUs), often used in gaming desktops or consoles. At the time of this writing, the difficulty is so high that it is profitable only to mine with ((("application-specific integrated circuits (ASIC)")))application-specific integrated circuits (ASIC), essentially hundreds of mining algorithms printed in hardware, running in parallel on a single silicon chip. ((("mining pools", "defined")))Jing's company also participates in a _mining pool_, which much like a lottery pool allows several participants to share their efforts and rewards. Jing's company now runs a warehouse containing thousands of  ASIC miners to mine for bitcoin 24 hours a day. The company pays its electricity costs by selling the bitcoin it is able to generate from mining, creating some income from the profits.
-
-=== Mining Transactions in Blocks
-
-((("blocks", "mining transactions in")))New transactions are constantly flowing into the network from user wallets and other applications. As these are seen by the bitcoin network nodes, they get added to a temporary pool of unverified transactions maintained by each node. As miners construct a new block, they add unverified transactions from this pool to the new block and then attempt to prove the validity of that new block, with the mining algorithm (Proof-of-Work). The process of mining is explained in detail in <<mining>>.
-
-Transactions are added to the new block, prioritized by the highest-fee transactions first and a few other criteria. Each miner starts the process of mining a new block of transactions as soon as he receives the previous block from the network, knowing he has lost that previous round of competition. He immediately creates a new block, fills it with transactions and the fingerprint of the previous block, and starts calculating the Proof-of-Work for the new block. Each miner includes a special transaction in his block, one that pays his own bitcoin address the block reward (currently 12.5 newly created bitcoin) plus the sum of transaction fees from all the transactions included in the block. If he finds a solution that makes that block valid, he "wins" this reward because his successful block is added to the global blockchain and the reward transaction he included becomes spendable. ((("mining pools", "operation of")))Jing, who participates in a mining pool, has set up his software to create new blocks that assign the reward to a pool address. From there, a share of the reward is distributed to Jing and other miners in proportion to the amount of work they contributed in the last round.
-
-((("candidate blocks")))((("blocks", "candidate blocks")))Alice's transaction was picked up by the network and included in the pool of unverified transactions. Once validated by the mining software it was included in a new block, called a _candidate block_, generated by Jing's mining pool. All the miners participating in that mining pool immediately start computing Proof-of-Work for the candidate block. Approximately five minutes after the transaction was first transmitted by Alice's wallet, one of Jing's ASIC miners found a solution for the candidate block and announced it to the network. Once other miners validated the winning block they started the race to generate the next block.
-
-Jing's winning block became part of the blockchain as block #277316, containing 419 transactions, including Alice's transaction. The block containing Alice's transaction is counted as one "confirmation" of that transaction.
-
-[TIP]
+[Sfat]
 ====
-You can see the block that includes https://blockchain.info/btc/block/277316[Alice's transaction].
+((("confirmări", "de valoare mică tranzacții", secondary-sortas="tranzacții de valoare mică")))O concepție greșită despre tranzacțiile bitcoin este că ele trebui să fie ”confirmate” așteptând 10 minute pentru un bloc nou, sau până la 60 de minute pentru șase confirmări complete. Deși confirmările asigură că tranzacția a fost acceptată de către toată rețeaua, o asemenea întârziere nu este necesară pentru articole de valoare mică cum ar fi o ceașcă de cafea. Un comerciant poate accepta o tranzacție de valoare mică fără nici o confirmare, fară a avea un risc mai mare decât o plată cu cardul de credit fară un act de identificare sau semnătură, cum comercianții acceptă in mod curent astăzi.((("", startref="Tconstruct02")))
 ====
 
-((("confirmations", "role in transactions")))Approximately 19 minutes later, a new block, #277317, is mined by another miner. Because this new block is built on top of block #277316 that contained Alice's transaction, it added even more computation to the blockchain, thereby strengthening the trust in those transactions. Each block mined on top of the one containing the transaction counts as an additional confirmation for Alice's transaction. As the blocks pile on top of each other, it becomes exponentially harder to reverse the transaction, thereby making it more and more trusted by the network.
+=== Minerit de Bitcoin
 
-((("genesis block")))((("blocks", "genesis block")))((("blockchain (the)", "genesis block")))In the diagram in <<block-alice1>>,  we can see block #277316, which contains Alice's transaction. Below it are 277,316 blocks (including block #0), linked to each other in a chain of blocks (blockchain) all the way back to block #0, known as the _genesis block_. Over time, as the "height" in blocks increases, so does the computation difficulty for each block and the chain as a whole. The blocks mined after the one that contains Alice's transaction act as further assurance, as they pile on more computation in a longer and longer chain. By convention, any block with more than six confirmations is considered irrevocable, because it would require an immense amount of computation to invalidate and recalculate six blocks. We will examine the process of mining and the way it builds trust in more detail in <<mining>>.((("", startref="BToverview02")))((("", startref="MACover02")))
+((("minerit și consens", "privire de ansamblu asupra", id="MACover02")))((("lanț(ul) de blocuri", "privire de ansamblu asupra mineritului", id="BToverview02")))Tranzacția lui Alice este acum propagată în rețeaua bitcoin. Nu devine parte a _lanțului de blocuri_ până când nu este verificată și inclusă într-un bloc printr-un process numit _minerit_. Vezi <<mining>> pentru o explicație detaliată.
+
+Sistemul de încredere al bitcoin se bazează pe calcul. Tranzacțiile sunt grupate în _blocuri_, care necesită o cantitate enormă de calcul pentru a dovedi, dar doar o cantitate mică de calcul pentru a verifica ca fiind dovedit. Procesul de minerit are două scopuri în bitcoin:
+
+* ((("minerit și consens", "reguli de consens", "securitate oferită de")))((("consens", see="minerit și consens")))Nodurile de minerit validează toate tranzacțiile facând referire la _regulile de consens_. Prin urmare mineritul asigură securitatea pentru tranzacțiile bitcoin respingând tranzacțiile invalide sau cu anomalii.
+* Mineritul crează bitcoin nou la fiecare bloc, aproape ca o bancă centrală care tipărește bani noi. Cantitatea de bitcoin creată per bloc este limitată și se dimiuează cu timpul, urmând un program de emitere fix.
+
+
+Mineritul realizează un echilibru fin între cost și recompensă. Mineritul necesită electricitate pentru a rezolva o problemă matematică. Un miner care are succes va colecta o _recompensă_ sub forma de bitcoin nou și comisioane de tranzacție. Totuși, recompensa va fi colectată doar dacă minerul a validat corect tranzacțiile, în conformitate cu regulile de _consens_. Această balanță delicată oferă securitate pentru bitcoin fără o autoritate centrală.
+
+O modalitate bună de a descrie mineritul este asemenea un joc competitiv de sudoku uriaș care se resetează de fiecare dată când cineva găsește o solutie și a cărui dificultate se ajustează automat astfel încât să dureze aproximativ 10 minute pentru a găsi o soluție. Imaginați-vă un puzzle sudoku uriaș, cu dimensiunea de câteva mii de rânduri și coloane. Dacă vă arăt un puzzle completat, îl puteți verifica destul de repede. Totuși, dacă puzzelul are câteva pătrățele completate și restul sunt goale, este nevoie de multă muncă pentru a fi rezolvat! Dificultatea jocului de sudoku poate fi ajustată schimbându-i dimensiunile (mai multe sau mai puține rânduri și coloane), dar poate fi totuși verificat destul de ușor chiar daca este foarte mare. ”Puzzel-ul” folosit în bitcoin se bazează pe un rezumat (hash) criptografic și prezintă caracteristici similare: există o asimetrie între cât este de greu de rezolvat și cât este de ușor de verificat, iar dificultatea poate fi ajustată.
+
+((("minerit și consens", "bazine și ferme de minerit")))În <<user-stories>>, l-am introdus ((("utilizări, "minerit de bitcoin"))) pe Jing, un antrepenor din Shangai. Jing operează o _fermă de minerit_, care este o afacere ce operează mii de calculatoare specializate în minerit, concurând pentru recompensă. La aproximativ fiecare 10 minute, calculatoarele de minerit ale lui Jing concurează impotriva a mii de sisteme similare într-o cursă globală pentru a găsi o soluție la un bloc de tranzacții. ((("algoritm Dovadă-de-Lucru")))((("minerit și consens", "algoritm Dovadă-de-Lucru")))Găsirea unei asemenea soluții, așa numita _Dovadă-de-Lucru_ (Proof-of-Work), necesită cvadrilaje de operații de rezumare (hashing) pe secundă în întreaga rețea bitcoin. Algoritmul pentru Dovadă-de-Lucru implică rezumarea (hashing-ul) antetului blocului impreună cu un număr aleator, folosind algoritmul cripografic SHA256 până este găsită o soluție care se potrivește cu un șablon predefinit.
+
+Jing a început mineritul in 2010 folosind un calculator desktop foarte rapid pentru a găsi o Dovadă-de-Lucru potrivită pentru blocuri noi. Pe măsură ce mai mulți mineri s-au alăturat rețelei bitcoin, dificultatea problemei de rezolvat a crescut rapid. În curând, Jing și alți mineri au avansat la hardware mai specializat, cu plăci dedicate de procesare grafică (GPU) ca cele folosite la jocurile pe desktop sau consolă. La momentul redactării, dificultatea este atât de ridicată încât mineritul este profitabil doar folosind ((("circuite integrate specifice aplicației (ASIC)")))circuite integrate specifice aplicațieii (ASIC), în esență sute de algoritmi de minerit întipăriți în hardware, rulând în paralel pe un singur chip de silicon. ((("bazine de minerit", "definit")))Compania lui Jing participă de asemenea într-un _bazin de minerit_ care, asemenea unui grup de oameni care joacă la loterie, permite mai multor participanți să își impartă eforturile și recompensele. Compania lui Jing acum operează un depozit care conține mii de mineri ASIC pentru a mina bitcoin 24 de ore pe zi. Compania plătește costrurile pentru electricitate vânzând bitcoin-ul pe care îl generează din minerit, obținând un profit din venituri.
+
+=== Mineritul Tranzacțiilor în Blocuri
+
+((("blocuri", "mineritul tranzacțiilor în")))Tranzacții noi ajung constant în rețea de la portofelele utilizatorilor și de la alte aplicații. Imediat ce sunt văzute de către nodurile bitcoin din rețea, ele sunt adăugate într-un bazin de tranzacții neverificate, menținut de fiecare nod. Pe măsură ce minerii construiesc un nou bloc, ei adaugă tranzacții neverificate din acest bazin la noul bloc și apoi încearcă să dovedească validitatea acestui nou bloc, cu algoritmul de minerit (Dovadă-de-Lucru). Procesul de minerit este explicat în detaliu în  <<mining>>.
+
+Tranzacții sunt adăugate la noul bloc, prioritizate descrescător după valoarea comisionului și după alte câteva criterii. Fiecare miner începe procesul de minerit a unui nou bloc imediat ce primește blocul precedent de la rețea, conștient că a pierdut precedenta rundă a competiției. El creează imediat un nou bloc, îl umple cu tranzacții și cu cu amprenta blocului precedent, și începe să calculeze Dovada-de-Lucru pentru noul bloc. Fiecare miner include o tranzacție specială în blocul lui, una care efectuează o plată la propria sa adresă bitcoin recompensa blocului (în prezent 12,5 bitcoin nou creați) plus suma comisioanelor de tranzacție de la toate tranzacțiile incluse în bloc. Dacă găsește o soluție care face blocul valid, el ”câștigă” recompensa pentru că blocul lui este adăugat la lanțul de blocuri global și tranzacția recompensă pe care a inclus-o devine cheltuibilă. ((("bazine de minerit", "operațiune de")))Jing, care participă într-un bazin de minerit, și-a configurat software-ul să creeze noi blocuri care atribuie recompensa unei adrese a bazinului. De acolo, o parte din recompensă este distribuită lui Jing și altor mineri în proporție cu cantitatea de lucru cu care au contribuit la runda precedentă.
+
+((("blocuri candidat")))((("blockuri", "blocuri candidat")))Tranzacția lui Alice a fost preluată de rețea și inclusă în bazinul de tranzacții neverificate. Odată validată de software-ul de minerit, aceasta a fost inclusă într-un bloc nou, numit _bloc candidat_, generat de bazinul de minerit a lui Jing. Toți minerii care participă în acel bazin de minerit au început imediat să calculeze Dovada-de-Lucru pentru blocul candidat. La aproximativ cinci minute după ce tranzacția a fost transmisă de portofelul lui Alice, unul din minerii ASIC a lui Jing a găsit o soluție pentru blocul candidat și l-a anunțat în rețea. Odată ce ceilalți mineri au validat blocul câștigător, ei încep cursa să genereze blocul următor.
+
+Blocul câștigător a lui Jing a devenit parte din lanțul de blocuri ca fiind blocul #277316, conținând 419 tranzacții, inclusiv tranzacția lui Alice. Blocul care conține tranzacția lui Alice este socotit ca o (una) ”confirmare” a acelei tranzacții.
+
+[Sfat]
+====
+Puteți vedea blocul care include https://blockchain.info/btc/block/277316[tranzacția lui Alice].
+====
+
+((("confirmări", "role in transactions")))Aproximativ 19 minute mai târziu, un nou bloc,  #277317, este minat de un alt miner. Pentru că acest nou bloc este construit peste blocul #277316 care conținea tranzacția lui Alice, a adăugat și mai multă putere de calcul la lanțul de blocuri, consolidând astfel încrederea în acele tranzacții. Fiecare bloc minat peste cel care conține tranzacția se numără ca o confirmare pentru tranazacția lui Alice. Pe măsură ce blocurile se acumulează unul peste altul, devine exponențial mai greu inversarea tranzacției, facând-o astfel din ce în ce mai de încredere pentru rețea. 
+
+((("blocul geneză")))((("blocuri", "blocul geneză")))((("lanț(ul) de blocuri", "blocul geneză")))În diagrama <<block-alice1>>, putem vedea blocul #277316, care conține tranzacția lui Alice. Sub acesta sunt 277316 de blocuri (incluzând blocul #0), legat unul de altul într-un lanț de blocuri (blockchain) până la blocul #0, cunoscut ca _blocul geneză_. Cu timpul, pe măsură ce ”înalțmea” blocurilor crește, la fel se întâmplă și cu dificultatea de calcul pentru fiecare bloc și pentru lanț ca întreg. Blocurile minate după cel care conține tranzacția lui Alice acționează ca o asigurare suplimentară, deoarece acumuleaza mai mult calcul intr-un lanț din ce în ce mai lung. Prin convenție, orice bloc cu mai mult de șase confirmări este considerat irevocabil, pentru că ar necesita o cantitate imensă de calcul pentru a invalida și recalcula șase blocuri. Vom examina procesul de minerit și modul în care creează încredere mai în detaliu in <<mining>>.((("", startref="BToverview02")))((("", startref="MACover02")))
 
 [[block-alice1]]
-.Alice's transaction included in block #277316
-image::images/mbc2_0209.png["Alice's transaction included in a block"]
+.Tranzacția lui Alice inclusă în blocul #277316
+image::images/mbc2_0209.png["Tranzacția lui Alice inclusă într-un bloc"]
 
-=== Spending the Transaction
+=== Cheltuirea Tranzacției
 
-((("spending bitcoin", "simple-payment-verification (SPV)")))((("simple-payment-verification (SPV)")))Now that Alice's transaction has been embedded in the blockchain as part of a block, it is part of the distributed ledger of bitcoin and visible to all bitcoin applications. Each bitcoin client can independently verify the transaction as valid and spendable. Full-node clients can track the source of the funds from the moment the bitcoin were first generated in a block, incrementally from transaction to transaction, until they reach Bob's address. Lightweight clients can do what is called a simplified payment verification (see <<spv_nodes>>) by confirming that the transaction is in the blockchain and has several blocks mined after it, thus providing assurance that the miners accepted it as valid.
+((("cheltuirea bitcon", "verificarea-simplă-a-plății (SPV)")))((("verificarea-simplă-a-plății (SPV)")))Acum că tranzacția lui Alice a fost încorporată ca parte a unui bloc în lanțul de blocuri, este parte a registrului distribuit al bitcoin și este vizibilă tuturor aplicațiilor bitcoin. Fiecare client bitcoin poate verifica independent tranzacția ca fiind validă și cheltuibilă. Clienții nod-complet pot urmări sursa fondurilor de la momentul în care monedele bitcoin au fost generate pentru prima dată într-un bloc, treptat, de la tranzacție la tranzacție, până când ajung la adresa lui Bob. Clienții supli (lightweight) pot efectua ceea ce se numește o verificare simplă a plății (vezi <<spv_nodes>>) confirmând că tranzacția se află în lanțul de blocuri și are câteva blocuri minate după ea, oferind astfel siguranța că minerii au acceptat-o ca fiind validă.
 
-Bob can now spend the output from this and other transactions. For example, Bob can pay a contractor or supplier by transferring value from Alice's coffee cup payment to these new owners. Most likely, Bob's bitcoin software will aggregate many small payments into a larger payment, perhaps concentrating all the day's bitcoin revenue into a single transaction. This would aggregate the various payments into a single output (and a single address). For a diagram of an aggregating transaction, see <<transaction-aggregating>>.
+Bob poate acum să cheltuiască ieșirea acestei și a altor tranzacții. De exemplu, Bob poate să plătească un contractor sau un furnizor transferând valoare de la plata pe care Alice a făcut-o pentru ceașca de cafea, către acești noi proprietari. Cel mai probabil, software-ul bitcoin a lui Bob va agrega multe plăți mici într-o plată mai mare, concentrând probabil toate încasările zilei intr-o singură tranzacție. Aceasta ar agrega diferite plăți intr-o singură ieșire (și o singură adresă). Pentru diagrama unei tranzacții de agregare vezi <<transaction-aggregating>>.
 
-As Bob spends the payments received from Alice and other customers, he extends the chain of transactions. Let's assume that Bob pays his web designer Gopesh((("use cases", "offshore contract services"))) in Bangalore for a new web page. Now the chain of transactions will look like <<block-alice2>>.
+Pe măsură ce Bob cheltuiețste plățile primite de la Alice și de la alți clienți, el extinde lanțul de tranzacții. Să presupunem că Bob îl plătește pe designer-ul său web Gopesh((("utilizări", "servicii contractuale offshore"))) din Bangalore pentru o noua pagină web. Acum lanțul de tranzacții va arăta ca în <<block-alice2>>.
 
 [[block-alice2]]
-.Alice's transaction as part of a transaction chain from Joe to Gopesh
-image::images/mbc2_0210.png["Alice's transaction as part of a transaction chain"]
+.Tranzacția lui Alice ca parte a unui lanț de tranzacții de la Joe la Gopesh
+image::images/mbc2_0210.png["Tranacția lui Alice ca parte a unui lanț de tranzacții"]
 
-In this chapter, we saw how transactions build a chain that moves value from owner to owner. We also tracked Alice's transaction, from the moment it was created in her wallet, through the bitcoin network and to the miners who recorded it on the blockchain. In the rest of this book, we will examine the specific technologies behind wallets, addresses, signatures, transactions, the network, and finally mining.((("", startref="BCover02")))((("", startref="DCSover02"))) ((("", startref="UCcoffee02")))
+În acest capitol, am cu tranzacțiile formează un lanț care mută valoare de la un proprietar la altul. Am urmărit de asemenea tranzacția lui Alice, din momentul când a fost creată în protofelul ei, print rețeaua bitcoin și până la minerii care au înregistrat-o în lanțul de blocuri. În restul acestei cărți vom examina tehnologiile specifice din spatele portofelelor, adreselor, semnăturilor, tranzacțiilor, rețelei, și în final mineritul.((("", startref="BCover02")))((("", startref="DCSover02"))) ((("", startref="UCcoffee02")))
