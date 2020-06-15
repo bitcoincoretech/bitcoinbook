@@ -1,90 +1,90 @@
 [[blockchain]]
-== The Blockchain
+== Lanțul-de-Blocuri
 
-=== Introduction
+== Introducere
 
-((("blockchain (the)", "overview of")))The blockchain data structure is an ordered, back-linked list of blocks of transactions. The blockchain can be stored as a flat file, or in a simple database. The Bitcoin Core client stores the blockchain metadata using Google's LevelDB database. Blocks are linked "back," each referring to the previous block in the chain. ((("blocks", "block height")))The blockchain is often visualized as a vertical stack, with blocks layered on top of each other and the first block serving as the foundation of the stack. The visualization of blocks stacked on top of each other results in the use of terms such as "height" to refer to the distance from the first block, and "top" or "tip" to refer to the most recently added block.
+((("lanțul-de-blocuri", "prezentare generală")))Structura de date lanț-de-blocuri este o listă ordonată, înlănțuită înapoi de blocuri de tranzacții. Lanțul-de-blocuri poate fi stocat ca un fișier plat sau într-o bază de date simplă. Clientul Bitcoin Core stochează metadata lanțului-de-blocuri folosind baza de date LevelDB de la Google. Blocurile sunt legate ”înapoi”, fiecare având o referință la blocul anterior din lanț. ((("blocuri", "înălțimea blocurilor")))Lanțul-de-blocuri este adesea vizualizat ca o stivă verticală, cu blocuri stratificate unul peste altul iar primul bloc servește ca temelie a stivei. Vizualizarea blocurilor stivuite unul peste altul are ca rezultat folosirea unor termeni precum ”înălțime” pentru a face referire la distanța față de primul bloc și ”sus” sau ”vârf” pentru a face referire la cel mai recent bloc adăugat.
 
-((("blocks", "block hash")))((("blocks", "genesis block")))((("blocks", "parent blocks")))((("genesis block")))((("parent blocks")))Each block within the blockchain is identified by a hash, generated using the SHA256 cryptographic hash algorithm on the header of the block. Each block also references a previous block, known as the _parent_ block, through the "previous block hash" field in the block header. In other words, each block contains the hash of its parent inside its own header. The sequence of hashes linking each block to its parent creates a chain going back all the way to the first block ever created, known as the _genesis block_.
+((("blocuri", "rezumat bloc")))((("blocuri", "blocul geneză")))((("blocuri", "blocuri părinte")))((("blocul geneză")))((("blocuri părinte")))Fiecare bloc din lanțul-de-blocuri este identificat de un rezumat (hash), generat din antetul blocului folosind algoritmul de rezumare criptografic SHA256. Fiecare bloc face referire, de asemenea, la un bloc anterior, cunoscut sub numele de bloc _părinte_, folosind câmpul ”rezumat bloc anterior” (previous block hash) din antetul blocului. Cu alte cuvinte, fiecare bloc conține rezumatul părintelui său în interiorul propriului antet. Secvența de rezumate care leagă fiecare bloc cu părintele său creează un lanț care se continuă până la primul bloc creat vreodată, cunoscut sub numele de _bloc gezneză_.
 
-Although a block has just one parent, it can temporarily have multiple children. Each of the children refers to the same block as its parent and contains the same (parent) hash in the "previous block hash" field. Multiple children arise during a blockchain "fork," a temporary situation that occurs when different blocks are discovered almost simultaneously by different miners (see <<forks>>). Eventually, only one child block becomes part of the blockchain and the "fork" is resolved. Even though a block may have more than one child, each block can have only one parent. This is because a block has one single "previous block hash" field referencing its single parent.
+Deși un bloc are un singur părinte, acesta poate avea temporar mai mulți copii. Fiecare dintre copii se referă la același bloc ca fiind părintele său și conține același rezumat (părinte) în câmpul ”rezumat bloc anterior”. Mai mulți copii apar în timpul unei ”bifurcații”, o situație temporară care apare atunci când diferite blocuri sunt descoperite aproape simultan de către diferiți mineri (vezi <<forks>>). În cele din urmă, un singur bloc copil devine parte din lanțul de blocuri iar ”bifurcația” este rezolvată. Chiar dacă un bloc poate avea mai mult de un copil, fiecare bloc poate avea un singur părinte. Acest lucru se datorează faptului că un bloc are un singur câmp ”rezumat bloc anterior” care face referire la un singur părinte.
 
-The "previous block hash" field is inside the block header and thereby affects the _current_ block's hash. The child's own identity changes if the parent's identity changes. When the parent is modified in any way, the parent's hash changes. The parent's changed hash necessitates a change in the "previous block hash" pointer of the child. This in turn causes the child's hash to change, which requires a change in the pointer of the grandchild, which in turn changes the grandchild, and so on. This cascade effect ensures that once a block has many generations following it, it cannot be changed without forcing a recalculation of all subsequent blocks. Because such a recalculation would require enormous computation (and therefore energy consumption), the existence of a long chain of blocks makes the blockchain's deep history immutable, which is a key feature of bitcoin's security.
+Câmpul ”rezumat bloc anterior” se află în interiorul antetului blocului și afectează astfel rezumatul blocului _curent_. Identitatea copilului se schimbă dacă identitatea părintelui se schimbă. Când părintele este modificat în orice mod, rezumatul părintelui se schimbă. Rezumatul modificat al părintelui necesită o schimbare în câmpul ”rezumat bloc anterior” al copilului. La rândul său, cauzând modificarea rezumatului copilului, ceea ce necesită o schimbare a indicelui nepotului, care la rândul său îl schimbă pe nepot și așa mai departe. Acest efect în cascadă asigură că, odată ce un bloc are multe generații în urma lui, acesta nu poate fi schimbat fără a forța recalcularea tuturor blocurilor care îl preced. Deoarece o astfel de recalculare ar necesita un calcul enorm (și, prin urmare, un consum de energie), existența unui lanț lung de blocuri face ca istoria profundă a lanțului-de-blocuri să fie imutabilă, ceea ce este o caracteristică cheie a securității bitcoin.
 
-One way to think about the blockchain is like layers in a geological formation, or glacier core sample. The surface layers might change with the seasons, or even be blown away before they have time to settle. But once you go a few inches deep, geological layers become more and more stable. By the time you look a few hundred feet down, you are looking at a snapshot of the past that has remained undisturbed for millions of years. In the blockchain, the most recent few blocks might be revised if there is a chain recalculation due to a fork. The top six blocks are like a few inches of topsoil. But once you go more deeply into the blockchain, beyond six blocks, blocks are less and less likely to change. ((("transactions", "coinbase transactions")))((("coinbase transactions")))After 100 blocks back, there is so much stability that the coinbase transaction—the transaction containing newly mined bitcoin—can be spent. A few thousand blocks back (a month) and the blockchain is settled history, for all practical purposes. While the protocol always allows a chain to be undone by a longer chain and while the possibility of any block being reversed always exists, the probability of such an event decreases as time passes until it becomes infinitesimal.
+O modalitate de a ne gândi la lanțul-de-blocuri este ca straturile dintr-o formațiune geologică sau un eșantion de miez de ghețar. Straturile de suprafață s-ar putea schimba odată cu anotimpurile, sau pot fi chiar spulberate înainte de a avea timp să se stabilească. Dar odată ce mergeți câțiva centimetri adâncime, straturile geologice devin din ce în ce mai stabile. În momentul în care priviți câteva sute de metri în jos, vă uitați la o imagine a trecutului care a rămas netulburată de milioane de ani. În lanțul-de-blocuri, cele mai recente câteva blocuri ar putea fi revizuite dacă există o recalculare a lanțului din cauza unei bifurcații. Cele șase blocuri din vârf sunt ca câțiva centimetri de pământ. Dar, odată ce intrați mai adânc în lanțul-de-blocuri, dincolo de șase blocuri, este din ce în ce mai puțin probabil ca blocurile să fie modificate. ((("tranzacții", "tranzacții coinbase")))((("tranzacții coinbase")))După 100 de blocuri, există atât de multă stabilitate încât tranzacția coinbase - tranzacția care conține bitcoin recent minat - poate fi cheltuită. Câteva mii de blocuri înapoi (o lună) și lanțul-de-blocuri are un istoric stabilit, pentru toate scopurile practice. În timp ce protocolul permite întotdeauna unui lanț să fie anulat de un lanț mai lung și în timp ce există posibilitatea ca orice bloc să fie inversat, probabilitatea unui astfel de eveniment scade pe măsură ce trece timpul până devine infimă.
 
-=== Structure of a Block
+=== Structura unui Bloc
 
-((("blocks", "structure of")))((("blockchain (the)", "block structure")))A block is a container data structure that aggregates transactions for inclusion in the public ledger, the blockchain. The block is made of a header, containing metadata, followed by a long list of transactions that make up the bulk of its size. The block header is 80 bytes, whereas the average transaction is at least 400 bytes and the average block contains more than 1900 transactions. A complete block, with all transactions, is therefore 10,000 times larger than the block header. <<block_structure1>> describes the structure of a block.
+(("blocuri", "structura")))((("lanțul-de-blocuri", "structura blocului")))Un bloc este o structură de date container care agregă tranzacțiile pentru a le include în registrul public, lanțul-de-blocuri (blockchain). Blocul este format dintr-un antet, care conține metadate, urmat de o lungă listă de tranzacții care constituie cea mai mare parte a dimensiunii sale. Antetul blocului este de 80 de octeți, în timp ce tranzacția medie este de cel puțin 400 de octeți, iar un bloc mediu conține mai mult de 1900 de tranzacții. Prin urmare, un bloc complet, cu toate tranzacțiile, este de 10.000 de ori mai mare decât antetul blocului. <<block_structure1>> descrie structura unui bloc.
 
 [[block_structure1]]
 [role="pagebreak-before"]
-.The structure of a block
+.Structura unui bloc
 [options="header"]
 |=======
-|Size| Field | Description
-| 4 bytes | Block Size | The size of the block, in bytes, following this field
-| 80 bytes | Block Header | Several fields form the block header
-| 1&#x2013;9 bytes (VarInt) | Transaction Counter | How many transactions follow
-| Variable | Transactions | The transactions recorded in this block
+| Dimensiune | Câmp | Descriere
+| 4 octeți | Dimensiunea Blocului | Mărimea blocului, în octeți, care urmează după acest câmp
+| 80 octeți | Antetul Blocului | Mai multe câmpuri formează antetul blocului
+| 1–9 octeți (VarInt) | Contor Tranzacții | Câte tranzacții urmează
+| Variabilă | Tranzacții | Tranzacțiile înregistrate în acest bloc
 |=======
 
 [[block_header]]
-=== Block Header
+=== Antetul Blocului
 
-((("blocks", "headers")))((("blockchain (the)", "block headers")))((("headers")))The block header consists of three sets of block metadata. First, there is a reference to a previous block hash, which connects this block to the previous block in the blockchain. The second set of metadata, namely the _difficulty_, _timestamp_, and _nonce_, relate to the mining competition, as detailed in <<mining>>. The third piece of metadata is the merkle tree root, a data structure used to efficiently summarize all the transactions in the block. <<block_header_structure_ch09>> describes the structure of a block header.
+((("blocuri", "antete")))((("lanțul-de-blocuri", "antetele blocurilor")))((("antete")))Antetul blocului este format din trei seturi de metadate de blocuri. În primul rând, există o referire la un rezumat de bloc anterior, care conectează acest bloc la blocul anterior din lanțul-de-blocuri. Al doilea set de metadate, și anume _dificultatea_, _marca de timp_ și _nonce_, se referă la competiția minieră, așa cum este detaliat în <<mining>>. A treia parte de metadate este rădăcina arborelui merkle, o structură de date utilizată pentru a rezuma eficient toate tranzacțiile din bloc. <<block_header_structure_ch09>> descrie structura unui antet de bloc.
 
 
 [[block_header_structure_ch09]]
-.The structure of the block header
+.Structura antetului blocului
 [options="header"]
 |=======
-|Size| Field | Description
-| 4 bytes | Version | A version number to track software/protocol upgrades
-| 32 bytes | Previous Block Hash | A reference to the hash of the previous (parent) block in the chain
-| 32 bytes | Merkle Root | A hash of the root of the merkle tree of this block's transactions
-| 4 bytes | Timestamp | The approximate creation time of this block (seconds from Unix Epoch)
-| 4 bytes | Difficulty Target | The Proof-of-Work algorithm difficulty target for this block
-| 4 bytes | Nonce | A counter used for the Proof-of-Work algorithm
+| Dimensiune | Câmp | Descriere
+| 4 octeți | Versiunea | Un număr de versiune pentru urmărirea actualizărilor de software/protocol
+| 32 octeți | Rezumatul Blocului Anterior | O referință la rezumatul blocului anterior (părinte) din lanț
+| 32 octeți | Rădăcina Merkle | Un rezumat din rădăcina arborelui merkle a tranzacțiilor acestui bloc
+| 4 octeți | Marca de timp | Timpul aproximativ de creare al acestui bloc (secunde de la Unix Epoch)
+| 4 octeți | Tinta de Dificultate | Tinta de dificultate a algoritmului Dovadă-de-Lucru pentru acest bloc
+| 4 octeți | Nonce | Un contor folosit pentru algoritmul Dovadă-de-Lucru
 |=======
 
-The nonce, difficulty target, and timestamp are used in the mining process and will be discussed in more detail in <<mining>>.
+Nonce-ul, ținta de dificultate și marca de timp sunt utilizate în procesul minier și vor fi discutate mai detaliat în <<mining>>.
 
 [[block_hash]]
-=== Block Identifiers: Block Header Hash and Block Height
+=== Identificatorii Blocului: Rezumatul Antetului Blocului și Înălțimea Blocului
 
-((("blockchain (the)", "block identifiers")))((("blocks", "block height")))((("blocks", "block hash")))The primary identifier of a block is its cryptographic hash, a digital fingerprint, made by hashing the block header twice through the SHA256 algorithm. The resulting 32-byte hash is called the _block hash_ but is more accurately the _block header hash_, pass:[<span role="keep-together">because only the block header is used to compute it. For example,</span>] +000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f+ is the block hash of the first bitcoin block ever created. The block hash identifies a block uniquely and unambiguously and can be independently derived by any node by simply hashing the block header.
+((("lanțul-de-blocuri", "identificatori bloc")))((("blocuri", "înălțime bloc")))((("blocuri", "rezumat bloc")))Identificatorul principal al unui blocul este rezumatul său criptografic, o amprentă digitală, realizat prin rezumarea de două ori a antetului blocului cu algoritmul SHA256. Rezumatul de 32 de octeți rezultat este denumit _rezumat bloc_, dar mai precis este _rezumat antet bloc_, pass:[<span role="keep-together">pentru că este folosit doar antetul blocului pentru calcule. De exemplu,</span>] +000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f+ este rezumatul primului bloc bitcoin creat vreodată. Rezumatul blocului identifică un bloc în mod unic și fără ambiguitate și poate fi derivat independent de orice nod prin simpla rezumare a antetului blocului.
 
-Note that the block hash is not actually included inside the block's data structure, neither when the block is transmitted on the network, nor when it is stored on a node's persistence storage as part of the blockchain. Instead, the block's hash is computed by each node as the block is received from the network. The block hash might be stored in a separate database table as part of the block's metadata, to facilitate indexing and faster retrieval of blocks from disk.
+Rețineți că rezumatul blocului nu este de fapt inclus în structura de date a blocului, nici atunci când blocul este transmis în rețea și nici atunci când este stocat de către un nod pe disc ca parte a lanțului de blocuri. În schimb, rezumatul blocului este calculat de fiecare nod pe măsură ce blocul este primit de la rețea. Rezumatul blocului ar putea fi stocat într-o tabelă de baze de date separată ca parte a metadatelor blocului, pentru a facilita indexarea și găsirea mai rapidă a blocurilor de pe disc.
 
-A second way to identify a block is by its position in the blockchain, called the pass:[<span role="keep-together"><em>block height</em>. The first block ever created is at block height 0 (zero) and is the</span>] pass:[<span role="keep-together">same block that was previously referenced by the following block hash</span>] +000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f+. A block can thus be identified in two ways: by referencing the block hash or by referencing the block height. Each subsequent block added "on top" of that first block is one position "higher" in the blockchain, like boxes stacked one on top of the other. The block height on January 1, 2017 was approximately 446,000, meaning there were 446,000 blocks stacked on top of the first block created in January 2009.
+O a doua modalitate de a identifica un bloc este prin poziția sa în lanțul-de-blocuri, numită pass:[<span role="keep-together"><em>înălțimea blocului</em>. Primul bloc creat vreodată este la înălțimea 0 (zero) și este</span> pass:[<span role="keep-together">același bloc care a fost referențiat anterior cu următorul rezumat de bloc</span>] +000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f+. Un bloc poate fi astfel identificat în două moduri: prin referire la rezumatul blocului sau prin raportarea înălțimii blocului. Fiecare bloc ulterior adăugat ”deasupra”  primului bloc este o poziție ”mai sus” în lanțul-de-blocuri, ca niște cutii stivuite una peste alta. Înălțimea blocului la 1 ianuarie 2017 a fost de aproximativ 446.000, ceea ce înseamnă că erau 446.000 de blocuri stivuite în partea superioară a primului bloc creat în ianuarie 2009.
 
-Unlike the block hash, the block height is not a unique identifier. Although a single block will always have a specific and invariant block height, the reverse is not true—the block height does not always identify a single block. Two or more blocks might have the same block height, competing for the same position in the blockchain. This scenario is discussed in detail in the section <<forks>>. The block height is also not a part of the block's data structure; it is not stored within the block. Each node dynamically identifies a block's position (height) in the blockchain when it is received from the bitcoin network. The block height might also be stored as metadata in an indexed database table for faster retrieval.
+Spre deosebire de rezumatul blocului, înălțimea blocului nu este un identificator unic. Deși un singur bloc va avea întotdeauna o înălțime specifică și invariabilă, inversul nu este adevărat - înălțimea blocului nu identifică întotdeauna un singur bloc. Două sau mai multe blocuri ar putea avea aceeași înălțime a blocului, concurând pentru aceeași poziție în lanțul-de-blocuri. Acest scenariu este discutat în detaliu în secțiunea <<forks>>. Înălțimea blocului nu face parte, din structura de date a blocului; nu este stocată în bloc. Fiecare nod identifică dinamic poziția (înălțimea) unui bloc în lanțul-de-blocuri atunci când este primit de la rețeaua bitcoin. Înălțimea blocului ar putea fi, de asemenea, stocată sub formă de metadate într-un tabel indexat al bazei de date pentru o recuperare mai rapidă.
 
-[TIP]
+[SFAT]
 ====
-A block's _block hash_ always identifies a single block uniquely. A block also always has a specific _block height_. However, it is not always the case that a specific block height can identify a single block. Rather, two or more blocks might compete for a single position in the blockchain.
+_Rezumatul unui bloc_ identifică întotdeauna un singur bloc în mod unic. De asemenea, un bloc are întotdeauna o _înălțime de bloc_ specifică. Cu toate acestea, nu este întotdeauna cazul ca o înălțime specifică a blocului să poată identifica un singur bloc. Mai degrabă, două sau mai multe blocuri ar putea concura pentru o singură poziție în lanțul-de-blocuri.
 ====
 
-=== The Genesis Block
+=== Blocul Geneză
 
-((("blocks", "genesis block")))((("blockchain (the)", "genesis block")))The first block in the blockchain is called the genesis block and was created in 2009. It is the common ancestor of all the blocks in the blockchain, meaning that if you start at any block and follow the chain backward in time, you will eventually arrive at the genesis block.
+((("blocuri", "blocul geneză")))((("lanțul-de-blocuri", "blocul-geneză")))Primul bloc din lanțul-de-blocuri se numește blocul geneză și a fost creat în 2009. Este strămoșul comun al tuturor blocurilor din lanțul-de-blocuri, ceea ce înseamnă că dacă porniți de la orice bloc și urmați lanțul înapoi în timp, veți ajunge în cele din urmă la blocul geneză.
 
-Every node always starts with a blockchain of at least one block because the genesis block is statically encoded within the bitcoin client software, such that it cannot be altered. Every node always "knows" the genesis block's hash and structure, the fixed time it was created, and even the single transaction within. Thus, every node has the starting point for the blockchain, a secure "root" from which to build a trusted blockchain.
+Fiecare nod începe întotdeauna cu un lanț-de-blocuri de cel puțin un bloc, deoarece blocul geneză este codat static în software-ul clientului bitcoin, astfel încât acesta nu poate fi modificat. Fiecare nod ”cunoaște” întotdeauna rezumatul și structura blocului geneză, timpul exact la care a fost creat și chiar singura tranzacție din interior. Astfel, fiecare nod are punctul de plecare pentru lanțul-de-blocuri, o ”rădăcină” sigură din care să construiască un lanț-de-blocuri de încredere.
 
-See the statically encoded genesis block inside the Bitcoin Core client, in http://bit.ly/1x6rcwP[_chainparams.cpp_].
+Puteți vedea blocul geneză codat static în clientul Bitcoin Core, la http://bit.ly/1x6rcwP[_chainparams.cpp_].
 
-The following identifier hash belongs to the genesis block:
+Următorul identificator rezumat aparține blocului geneză:
 
 ----
 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f
 ----
 
-You can search for that block hash in any block explorer website, such as _blockchain.info_, and you will find a page describing the contents of this block, with a URL containing that hash:
+Puteți căuta rezumatul respectiv pe orice site  explorator de blocuri, cum ar fi _blockchain.info_, și veți găsi o pagină care descrie conținutul acestui bloc, cu o adresă URL care conține rezumatul:
 
 https://blockchain.info/block/000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f
 
-Using the Bitcoin Core reference client on the command line:
+Folosind clientul referință Bitcoin Core de la linia de comandă:
 
 ----
 $ bitcoin-cli getblock 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f
@@ -109,19 +109,19 @@ $ bitcoin-cli getblock 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60
 }
 ----
 
-The genesis block contains a hidden message within it. The coinbase transaction input contains the text "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks." This message was intended to offer proof of the earliest date this block was created, by referencing the headline of the British newspaper _The Times_. It also serves as a tongue-in-cheek reminder of the importance of an independent monetary system, with bitcoin's launch occurring at the same time as an unprecedented worldwide monetary crisis. The message was embedded in the first block by Satoshi Nakamoto, bitcoin's creator.
+Blocul geneză conține un mesaj ascuns în el. Intrarea tranzacției coinbase conține textul ”The Times 03/Jan/2009 Chancellor on brink of second bailout for banks”. Acest mesaj a fost menit să ofere dovada celei mai vechi date la care a fost creat acest bloc, prin referirea la titlul ziarului britanic _The Times_. De asemenea, servește ca o amintire ironică a importanței unui sistem monetar independent, lansarea bitcoin având loc în același timp cu o criză monetară mondială fără precedent. Mesajul a fost încorporat în primul bloc de către Satoshi Nakamoto, creatorul bitcoin.
 
-=== Linking Blocks in the Blockchain
+=== Legarea Blocurilor în Lanțul-de-Blocuri
 
-((("blocks", "linking blocks in the blockchain")))((("blockchain (the)", "linking blocks in the blockchain")))Bitcoin full nodes maintain a local copy of the blockchain, starting at the genesis block. The local copy of the blockchain is constantly updated as new blocks are found and used to extend the chain. As a node receives incoming blocks from the network, it will validate these blocks and then link them to the existing blockchain. To establish a link, a node will examine the incoming block header and look for the "previous block hash."
+((("blocuri", "legarea blocurilor în lanțul-de-blocuri")))((("lanțul-de-blocuri", "legarea blocurilor în lanțul-de-blocuri")))Nodurile bitcoin complete păstrează o copie locală a lanțului-de-blocuri, începând de la blocul geneză. Copia locală a lanțului-de-blocuri este actualizată constant, deoarece blocuri noi sunt găsite și folosite pentru a extinde lanțul. Pe măsură ce un nod primește blocuri de la rețea, acesta va valida aceste blocuri și apoi le va lega de lanțul-de-blocuri existent. Pentru a stabili o legătură, un nod va examina antetul blocului primit și va căuta ”rezumatul blocului anterior”.
 
-Let's assume, for example, that a node has 277,314 blocks in the local copy of the blockchain. The last block the node knows about is block 277,314, with a block header hash of:
+Să presupunem, de exemplu, că un nod are 277.314 blocuri în copia locală a lanțului-de-blocuri. Ultimul bloc despre care știe nodul este blocul 277.314, cu un rezumat de antet de bloc de:
 
 ----
 00000000000000027e7ba6fe7bad39faf3b5a83daed765f05f7d1b71a1632249
 ----
 
-The bitcoin node then receives a new block from the network, which it parses as follows:
+Nodul bitcoin primește apoi un nou bloc din rețea, pe care îl parcurge după cum urmează:
 
 [source,json]
 ----
@@ -145,26 +145,26 @@ The bitcoin node then receives a new block from the network, which it parses as 
 }
 ----
 
-Looking at this new block, the node finds the +previousblockhash+ field, which contains the hash of its parent block. It is a hash known to the node, that of the last block on the chain at height 277,314. Therefore, this new block is a child of the last block on the chain and extends the existing blockchain. The node adds this new block to the end of the chain, making the blockchain longer with a new height of 277,315. <<chain_of_blocks>> shows the chain of three blocks, linked by references in the +previousblockhash+ field.
+Privind acest nou bloc, nodul găsește câmpul +previousblockhash+, care conține rezumatul blocului său părinte. Este un rezumat cunoscut nodului, cel al ultimului bloc de pe lanț, la înălțimea de 277.314. Prin urmare, acest nou bloc este un copil al ultimului bloc din lanț și extinde lanțul-de-blocuri existent. Nodul adaugă acest nou bloc la capătul lanțului, ceea ce face ca lanțul-de-blocuri să fie mai lung, cu o nouă înălțime de 277.315. <<chain_of_blocks>> arată lanțul a trei blocuri, legate prin referințe în câmpul +previousblockhash+.
 
 
 [[merkle_trees]]
-=== Merkle Trees
+=== Arbori Merkle
 
-((("merkle trees", id="merkle09")))((("blockchain (the)", "merkle trees", id="BCTmerkle09")))Each block in the bitcoin blockchain contains a summary of all the transactions in the block using a _merkle tree_.
+((("arbori merkel", id="merkle09")))((("lan'ul-de-blocuri", "arbori merkel", id="BCTmerkle09")))Fiecare bloc din lanțul-de-blocuri bitcoin conține un rezumat al tuturor tranzacțiile din bloc folosind un _arbore merkle_.
 
-((("binary hash trees", see="merkle trees")))A _merkle tree_, also known as a _binary hash tree_, is a data structure used for efficiently summarizing and verifying the integrity of large sets of data. Merkle trees are binary trees containing cryptographic hashes. The term "tree" is used in computer science to describe a branching data structure, but these trees are usually displayed upside down with the "root" at the top and the "leaves" at the bottom of a diagram, as you will see in the examples that follow.
+((("arbori binari de rezumate", see="merkle trees")))Un _arbore merkle_, cunoscut și sub denumirea de _arbore binar de rezumate_, este o structură de date utilizată pentru rezumarea și verificarea eficientă a integrității unor seturi mari de date. Arborii merkle sunt arbori binari care conțin rezumate criptografice. Termenul ”arbore” este utilizat în informatică pentru a descrie o structură de date ramnificată, dar acești arbori sunt de obicei afișați cu susul în jos cu ”rădăcina” din partea de sus și ”frunzele” din partea de jos a unei diagrame, așa cum veți vedea în exemplele care urmează.
 
 [[chain_of_blocks]]
 [role="smallerfourtyfive"]
-.Blocks linked in a chain by reference to the previous block header hash
+.Blocuri legate într-un lanț prin referință la rezumatul antetului blocului anterior
 image::images/mbc2_0901.png[]
 
-Merkle trees are used in bitcoin to summarize all the transactions in a block, producing an overall digital fingerprint of the entire set of transactions, providing a very efficient process to verify whether a transaction is included in a block. A merkle tree is constructed by recursively hashing pairs of nodes until there is only one hash, called the _root_, or _merkle root_. The cryptographic hash algorithm used in bitcoin's merkle trees is SHA256 applied twice, also known as double-SHA256.
+Arborii merkle sunt folosiți în bitcoin pentru a rezuma toate tranzacțiile dintr-un bloc, producând o amprentă digitală generală a întregului set de tranzacții, oferind un proces foarte eficient pentru a verifica dacă o tranzacție este inclusă într-un bloc. Un arbore merkle este construit prin rezumarea recursivă a perechilor de noduri până când există un singur rezumat, denumit _rădăcină_, sau _rădăcină merkle (merkle root)_. Algoritmul de rezumare criptografic utilizat în arborele merkle bitcoin constă din aplicarea SHA256 de două ori, cunoscut și sub numele de dublu-SHA256.
 
-When N data elements are hashed and summarized in a merkle tree, you can check to see if any one data element is included in the tree with at most +2*log~2~(N)+ calculations, making this a very efficient data structure.
+Când N elemente sunt rezumate și agregate într-un arbore merkle, puteți verifica dacă vreun element de date este inclus în arbore cu cel mult +2*log~2~(N)+ operații, făcând arborele binar o structură de date foarte eficientă.
 
-The merkle tree is constructed bottom-up. In the following example, we start with four transactions, A, B, C, and D, which form the _leaves_ of the merkle tree, as shown in <<simple_merkle>>. The transactions are not stored in the merkle tree; rather, their data is hashed and the resulting hash is stored in each leaf node as H~A~, H~B~, H~C~, and H~D~:
+Arborele merkle este construit de jos în sus. În exemplul următor, începem cu patru tranzacții, A, B, C și D, care formează _frunzele_ din arborele merkle, așa cum se arată în <<simple_merkle>>. Tranzacțiile nu sunt stocate în arborele merkle; mai degrabă, datele lor sunt rezumate iar rezumatul rezultat este stocat în fiecare nod frunză sub forma H~A~, H~B~, H~C~, and H~D~:
 
 ++++
 <pre data-type="codelisting">
@@ -172,7 +172,7 @@ H<sub>A</sub> = SHA256(SHA256(Transaction A))
 </pre>
 ++++
 
-Consecutive pairs of leaf nodes are then summarized in a parent node, by concatenating the two hashes and hashing them together. For example, to construct the parent node H~AB~, the two 32-byte hashes of the children are concatenated to create a 64-byte string. That string is then double-hashed to produce the parent node's hash:
+Perechile consecutive de noduri frunze sunt apoi rezumate într-un nod părinte, concatenând cele două rezumate și îmbinându-le împreună. De exemplu, pentru a construi nodul părinte H~AB~, cele două rezumate de 32 de octeți ale copiilor sunt concatenate și crează un șir de 64 de octeți. Acest șir este apoi dublu-rezumat pentru a produce rezumatul nodului părinte:
 
 ++++
 <pre data-type="codelisting">
@@ -180,38 +180,38 @@ H<sub>AB</sub> = SHA256(SHA256(H<sub>A</sub> + H<sub>B</sub>))
 </pre>
 ++++
 
-The process continues until there is only one node at the top, the node known as the merkle root. That 32-byte hash is stored in the block header and summarizes all the data in all four transactions. <<simple_merkle>> shows how the root is calculated by pair-wise hashes of the nodes.
+Procesul continuă până când există un singur nod în partea de sus, nod cunoscut sub numele de rădăcina merkle. Acest rezumat de 32 de octeți este stocat în antetul blocului și rezumă toate datele din cele patru tranzacții. <<simple_merkle>> arată modul în care rădăcina este calculată prin rezumarea perechilor de noduri.
 
 [[simple_merkle]]
-.Calculating the nodes in a merkle tree
+.Calcularea nodurilor dintr-un arbore merkle
 image::images/mbc2_0902.png["merkle_tree"]
 
-((("balanced trees")))Because the merkle tree is a binary tree, it needs an even number of leaf nodes. If there is an odd number of transactions to summarize, the last transaction hash will be duplicated to create an even number of leaf nodes, also known as a _balanced tree_. This is shown in <<merkle_tree_odd>>, where transaction C is duplicated.
+(((”arbori echilibrați”))Deoarece arborele merkle este un arbore binar, are nevoie de un număr par de noduri de frunze. Dacă există un număr impar de tranzacții de sumarizat, ultimul rezumat al tranzacției va fi duplicat pentru a crea un număr egal de noduri de frunze, cunoscut și sub denumirea de _arbore echilibrat_. Acest lucru este arătat în<<merkle_tree_odd>>, unde tranzacția C este duplicată.
 
 [[merkle_tree_odd]]
-.Duplicating one data element achieves an even number of data elements
+.Duplicarea unui element rezultă intr-un număr par de elemente
 image::images/mbc2_0903.png["merkle_tree_odd"]
 
-The same method for constructing a tree from four transactions can be generalized to construct trees of any size. In bitcoin it is common to have several hundred to more than a thousand transactions in a single block, which are summarized in exactly the same way, producing just 32 bytes of data as the single merkle root. In <<merkle_tree_large>>, you will see a tree built from 16 transactions. Note that although the root looks bigger than the leaf nodes in the diagram, it is the exact same size, just 32 bytes. Whether there is one transaction or a hundred thousand transactions in the block, the merkle root always summarizes them into 32 bytes.
+Aceeași metodă pentru construirea unui arbore din patru tranzacții poate fi generalizată pentru a construi arbori de orice dimensiune. În bitcoin de obicei există câteva sute până la mai mult de o mie de tranzacții într-un singur bloc, care sunt rezumate exact în același mod, producând doar 32 de octeți de date ca rădăcină merkle unică. În <<merkle_tree_large>>, veți vedea un arbore construit din 16 tranzacții. Rețineți că, deși rădăcina pare mai mare decât nodurile frunzelor din diagramă, este exact aceeași dimensiune, de doar 32 de octeți. Fie că există o tranzacție sau o sută de mii de tranzacții în bloc, rădăcina merkle le rezumă întotdeauna în 32 de octeți.
 
-((("authentication paths")))To prove that a specific transaction is included in a block, a node only needs to produce +log~2~(N)+ 32-byte hashes, constituting an _authentication path_ or _merkle path_ connecting the specific transaction to the root of the tree. This is especially important as the number of transactions increases, because the base-2 logarithm of the number of transactions increases much more slowly. This allows bitcoin nodes to efficiently produce paths of 10 or 12 hashes (320–384 bytes), which can provide proof of a single transaction out of more than a thousand transactions in a megabyte-sized block.
+(((”căi de autentificare”)))Pentru a dovedi că o tranzacție specifică este inclusă într-un bloc, un nod trebuie să producă +log~2~(N)+ rezumate pe 32 de octeți, constituind o _cale de autentificare_ sau _cale merkle_ conectând tranzacția specifică cu rădăcina arborelui. Acest lucru este deosebit de important pe măsură ce numărul tranzacțiilor crește, deoarece logaritmul în baza 2 al numărului de tranzacții crește mult mai lent. Acest lucru permite nodurilor bitcoin să producă în mod eficient căi de 10 sau 12 de rezumate (320-384 octeți), ceea ce poate oferi dovada unei singure tranzacții din mai mult de o mie de tranzacții într-un bloc de un megabyte.
 
 [[merkle_tree_large]]
-.A merkle tree summarizing many data elements
+.Un arbore merkle care sumarizează mai multe elemente
 image::images/mbc2_0904.png["merkle_tree_large"]
 
-In <<merkle_tree_path>>, a node can prove that a transaction K is included in the block by producing a merkle path that is only four 32-byte hashes long (128 bytes total). The path consists of the four hashes (shown with a shaded background in <<merkle_tree_path>>) H~L~, H~IJ~, H~MNOP~, and H~ABCDEFGH~. With those four hashes provided as an authentication path, any node can prove that H~K~ (with a black background at the bottom of the diagram) is included in the merkle root by computing four additional pair-wise hashes H~KL~, H~IJKL~, H~IJKLMNOP~, and the merkle tree root (outlined in a dashed line in the diagram).
+În <<merkle_tree_path>>, un nod poate dovedi că o tranzacție K este inclusă în bloc prin producerea unei căi merkle care are doar patru rezumate pe 32 de octeți (128 octeți în total). Calea este formată din cele patru rezumate (prezentate cu un fundal umbrit în <<merkle_tree_path>>)  H~L~, H~IJ~, H~MNOP~, și H~ABCDEFGH~. Cu cele patru rezumate furnizate ca o cale de autentificare, orice nod poate dovedi că H~K~ (cu fundal negru în partea de jos a diagramei) este inclus în rădăcina merkle, calculând patru rezumate adiționale H~KL~, H~IJKL~, H~IJKLMNOP~ și rădăcina arborelui merkle (conturată într-o linie punctată în diagramă).
 
 [[merkle_tree_path]]
-.A merkle path used to prove inclusion of a data element
+.O cale merkle folosită pentru a dovedi incluziunea unui element
 image::images/mbc2_0905.png["merkle_tree_path"]
 
 
-The code in <<merkle_example>> demonstrates the process of creating a merkle tree from the leaf-node hashes up to the root, using the libbitcoin library for some helper functions.
+Codul de la <<merkle_example>> demonstrează procesul de creare a unui arbore merkle din rezumatele de noduri frunze până la rădăcină, folosind biblioteca libbitcoin pentru unele funcții auxiliare.
 
 [[merkle_example]]
 [role="pagebreak-before"]
-.Building a merkle tree
+.Crearea unui arbore merkle
 ====
 [source, cpp]
 ----
@@ -219,10 +219,10 @@ include::code/merkle.cpp[]
 ----
 ====
 
-<<merkle_example_run>> shows the result of compiling and running the merkle code.
+<<merkle_example_run>> arată rezultatul compilării și rulării codului merkle.
 
 [[merkle_example_run]]
-.Compiling and running the merkle example code
+.Compilarea și rularea codului exemplului merkle
 ====
 [source,bash]
 ----
@@ -242,61 +242,61 @@ Result: d47780c084bad3830bcdaf6eace035e4c6cbf646d103795d22104fb105014ba3
 ----
 ====
 
-The efficiency of merkle trees becomes obvious as the scale increases. <<block_structure2>> shows the amount of data that needs to be exchanged as a merkle path to prove that a transaction is part of a block.
+Eficiența arborilor merkle devine evidentă odată cu creșterea dimensiunii. <<block_structure2>> arată cantitatea de date care trebuie schimbate sub forma de cale merkle pentru a dovedi că o tranzacție face parte dintr-un bloc.
 
 [[block_structure2]]
-.Merkle tree efficiency
+.Eficiența arborelui merkel
 [options="header"]
 |=======
-|Number of transactions| Approx. size of block | Path size (hashes) | Path size (bytes)
-| 16 transactions | 4 kilobytes | 4 hashes | 128 bytes
-| 512 transactions | 128 kilobytes | 9 hashes | 288 bytes
-| 2048 transactions | 512 kilobytes | 11 hashes | 352 bytes
-| 65,535 transactions | 16 megabytes | 16 hashes | 512 bytes
+| Număr de tranzacții | Dimensiunea aproximativă a blocului | Mărimea căii (rezumate) | Mărimea căii (octeți)
+| 16 tranzacții | 4 kilobytes | 4 rezumate | 128 octeți
+| 512 tranzacții | 128 kilobytes | 9 rezumate | 288 octeți
+| 2048 tranzacții | 512 kilobytes | 11 rezumate | 352 octeți
+| 65.535 tranzacții | 16 megabytes | 16 rezumate | 512 octeți
 |=======
 
-As you can see from the table, while the block size increases rapidly, from 4 KB with 16 transactions to a block size of 16 MB to fit 65,535 transactions, the merkle path required to prove the inclusion of a transaction increases much more slowly, from 128 bytes to only 512 bytes. With merkle trees, a node can download just the block headers (80 bytes per block) and still be able to identify a transaction's inclusion in a block by retrieving a small merkle path from a full node, without storing or transmitting the vast majority of the blockchain, which might be several gigabytes in size. Nodes that do not maintain a full blockchain, called simplified payment verification (SPV) nodes, use merkle paths to verify transactions without downloading full blocks.
+După cum puteți vedea din tabel, în timp ce dimensiunea blocului crește rapid, de la 4 KB cu 16 tranzacții la o dimensiune de 16 MB cu 65.535 tranzacții, calea merkle necesară pentru a dovedi includerea unei tranzacții crește mult mai lent, de la 128 octeți la numai 512 octeți. Folosind arbori merkle, un nod poate descărca doar anteturile blocurilor (80 de octeți per bloc) și poate fi în continuare capabil să identifice includerea unei tranzacții într-un bloc, obținând o cale mică merkle dintr-un nod complet, fără să stocheze sau să transmită marea majoritate a lanțului-de-blocuri, care poate avea mai mulți GB în dimensiune. Nodurile care nu mențin un lanț-de-blocuri complet, numite noduri de verificare simplificată a plăților (SPV), utilizează căi merkle pentru a verifica tranzacțiile fără a descărca blocuri complete.
 
-=== Merkle Trees and Simplified Payment Verification (SPV)
+=== Arbori Merkle și verificarea simplificată a plății (SPV)
 
-((("simple-payment-verification (SPV)")))((("bitcoin nodes", "SPV nodes")))Merkle trees are used extensively by SPV nodes. SPV nodes don't have all transactions and do not download full blocks, just block headers. In order to verify that a transaction is included in a block, without having to download all the transactions in the block, they use an authentication path, or merkle path.
+((("verificarea-simplificată-a-plății (SPV)")))((("noduri bitcoin", "noduri SPV")))Arborii Merkle sunt utilizați pe scară largă de nodurile SPV. Nodurile SPV nu au toate tranzacțiile și nu descarcă blocuri complete, ci doar anteturile blocurilor. Pentru a verifica dacă o tranzacție este inclusă într-un bloc, fără a fi nevoie să descarce toate tranzacțiile din bloc, folosesc o cale de autentificare sau o cale merkle.
 
-Consider, for example, an SPV node that is interested in incoming payments to an address contained in its wallet. The SPV node will establish a bloom filter (see <<bloom_filters>>) on its connections to peers to limit the transactions received to only those containing addresses of interest. When a peer sees a transaction that matches the bloom filter, it will send that block using a +merkleblock+ message. The +merkleblock+ message contains the block header as well as a merkle path that links the transaction of interest to the merkle root in the block. The SPV node can use this merkle path to connect the transaction to the block and verify that the transaction is included in the block. The SPV node also uses the block header to link the block to the rest of the blockchain. The combination of these two links, between the transaction and block, and between the block and blockchain, proves that the transaction is recorded in the blockchain. All in all, the SPV node will have received less than a kilobyte of data for the block header and merkle path, an amount of data that is more than a thousand times less than a full block (about 1 megabyte currently).((("", startref="BCTmerkle09")))((("", startref="merkle09")))
+Luați în considerare, de exemplu, un nod SPV care este interesat de plățile primite către o adresă conținută în portofelul său. Nodul SPV va stabili un filtru bloom (vezi <<bloom_filters>>) pe conexiunile sale cu semenii, pentru a limita tranzacțiile primite doar la cele care conțin adresele de interes. Când un seamăn vede o tranzacție care se potrivește cu filtrul bloom, acesta va trimite acel bloc folosind un mesaj +merkleblock+. Mesajul +merkleblock+ conține antetul blocului, precum și o cale merkle care leagă tranzacția de interes de rădăcina merkle din bloc. Nodul SPV poate folosi această cale merkle pentru a conecta tranzacția la bloc și a verifica dacă tranzacția este inclusă în bloc. Nodul SPV folosește, de asemenea, antetul blocului pentru a conecta blocul la restul lanțului-de-blocuri. Combinația dintre aceste două legături, între tranzacție și bloc, și între bloc și lanțul-de-blocuri, dovedește că tranzacția este înregistrată în lanțul-de-blocuri. În total, nodul SPV va fi primit mai puțin de un kilobyte de date pentru antetul blocului și calea merkle, o cantitate de date care este de peste o mie de ori mai mică decât un bloc complet (aproximativ 1 megabyte în prezent).((("", startref="BCTmerkle09")))((("", startref="merkle09")))
 
-=== Bitcoin's Test Blockchains
+=== Lanțurile-de-blocuri Bitcoin pentru Teste
 
-((("blockchain (the)", "test blockchains", id="BCTtest09")))((("mainnet", seealso="blockchain (the)")))You might be surprised to learn that there is more than one bitcoin blockchain. The "main" bitcoin blockchain, the one created by Satoshi Nakamoto on January 3rd, 2009, the one with the genesis block we studied in this chapter, is called _mainnet_.  There are other bitcoin blockchains that are used for testing purposes: at this time _testnet_, _segnet_, and _regtest_. Let's look at each in turn.((("testnet", id="testnet09")))
+((("lanțul-de-blocuri", lanțuri-de-blocuri de test", id="BCTtest09")))((("mainnet", seealso="blockchain (the)")))S-ar putea să fiți surprins să aflați că există mai multe lanțuri-de-blocuri bitcoin. Lanțul-de-blocuri ”principal” bitcoin, cel creat de Satoshi Nakamoto pe 3 ianuarie 2009, cel cu blocul de geneză pe care l-am studiat la acest capitol, se numește _mainnet_. Există și alte lanțuri-de-blocuri bitcoin utilizate în scopuri de testare: în acest moment _testnet_, _segnet_ și _regtest_. Să ne uităm la fiecare pe rând. ((("testnet", id="testnet09")))
 
 
-==== Testnet&#x2014;Bitcoin's Testing Playground
+==== Testnet - locul de joacă pentru testarea Bitcoin
 
-Testnet is the name of the test blockchain, network, and currency that is used for testing purposes. The testnet is a fully featured live P2P network, with wallets, test bitcoins (testnet coins), mining, and all the other features of mainnet.  There are really only two differences: testnet coins are meant to be worthless and mining difficulty should be low enough that anyone can mine testnet coins relatively easily (keeping them worthless).
+Testnet este numele lanțului-de-blocuri, rețelei și monedei utilizate în scopuri de testare. Testnet este o rețea P2P completă, cu portofele, bitcoin de test (monede testnet), minerit și toate celelalte caracteristici ale mainnet-ului. Există într-adevăr doar două diferențe: monedele testnet sunt inutile, iar dificultatea de minerit ar trebui să fie suficient de scazută astfel încât oricine să poată mina monede de testnet relativ ușor (ramânând fără valoare).
 
-Any software development that is intended for production use on bitcoin's mainnet should first be tested on testnet with test coins. This protects both the developers from monetary losses due to bugs and the network from unintended behavior due to bugs.
+Orice aplicație software destinată utilizării în producției în rețeaua bitcoin ar trebui testată mai întâi pe testnet cu monede de test. Acest lucru protejează atât dezvoltatorii împotriva pierderilor banilor din cauza erorilor, cât și a rețelei împotriva funcționalităților nedorite cauzate de defecte.
 
-Keeping the coins worthless and the mining easy, however, is not easy. Despite pleas from developers, some people use advanced mining equipment (GPUs and ASICs) to mine on testnet. This increases the difficulty, makes it impossible to mine with a CPU, and eventually makes it difficult enough to get test coins that people start valuing them, so they're not worthless. As a result, every now and then, the testnet has to be scrapped and restarted from a new genesis block, resetting the difficulty.
+Nu este ușor să păstrezi monedele fără valoare și mineritul la o dificultate scăzută. În ciuda cererilor din partea dezvoltatorilor, unii oameni utilizează echipamente de minerit avansate (GPU și ASIC) pentru a mina pe testnet. Acest lucru crește dificultatea, face imposibilă minarea cu un CPU și, în cele din urmă, devine suficient de dificil pentru a obține monede de test astfel încât acestea încep să nu mai fie fără valoare. Drept urmare, din când în când, testnet-ul trebuie curățat și repornit dintr-un nou bloc de geneză, resetând dificultatea.
 
-The current testnet is called _testnet3_, the third iteration of testnet, restarted in February 2011 to reset the difficulty from the previous testnet.
+Testnet-ul curent se numește _testnet3_, a treia iterație a testnet-ului, a fost repornit în februarie 2011 pentru a reseta dificultatea testnet-ului anterior.
 
-Keep in mind that testnet3 is a large blockchain, in excess of 20 GB in early 2017. It will take a day or so to sync fully and use up resources on your computer. Not as much as mainnet, but not exactly "lightweight" either. One good way to run a testnet node is as a virtual machine image (e.g., VirtualBox, Docker, Cloud Server, etc.) dedicated for that purpose.
+Rețineți că testnet3 este un lanț-de-blocuri mare, care depășea 20 GB la începutul lui 2017. Va dura cam o zi pentru a vă sincroniza complet și a utiliza resursele de pe calculatorul dumneavoastră. Nu la fel de mult ca și rețeaua principală, dar nici chiar ”rapid”. O modalitate bună de a rula un nod testnet este folosind o imagine a mașinii virtuale (de exemplu, VirtualBox, Docker, Cloud Server, etc.) dedicată acestui scop.
 
-===== Using testnet
+===== Utilizarea testnet-ului
 
-Bitcoin Core, like almost all other bitcoin software, has full support for operation on testnet instead of mainnet. All of Bitcoin Core's functions work on testnet, including the wallet, mining testnet coins, and syncing a full testnet node.
+Bitcoin Core, ca aproape toate celelalte software-uri bitcoin, are suport complet pentru operarea pe testnet în loc de mainnet. Toate funcțiile Bitcoin Core funcționează pe testnet, inclusiv portofelul, mineritul de monede testnet și sincronizarea unui nod complet de testnet.
 
-To start Bitcoin Core on testnet instead of mainnet you use the +testnet+ switch:
+Pentru a porni Bitcoin Core pe testnet în loc de mainnet, utilizați opțiunea +testnet+:
 
 ----
 $ bitcoind -testnet
 ----
 
-In the logs you should see that bitcoind is building a new blockchain in the +testnet3+ subdirectory of the default bitcoind directory:
+În loguri ar trebui să vedeți că bitcoind creează o nou lanț-de-blocuri în subdirectorul +testnet3+ al directorului implicit bitcoind:
 
 ----
 bitcoind: Using data directory /home/username/.bitcoin/testnet3
 ----
 
-To connect to bitcoind, you use the +bitcoin-cli+ command-line tool, but you must also switch it to testnet mode:
+Pentru a vă conecta la bitcoind, utilizați +bitcoin-cli+ de la linia de comandă, dar trebuie să folosiți de asemenea opțiunea testnet:
 
 ----
 $ bitcoin-cli -testnet getblockchaininfo
@@ -315,36 +315,36 @@ $ bitcoin-cli -testnet getblockchaininfo
   [...]
 ----
 
-You can also run on testnet3 with other full-node implementations, such as +btcd+ (written in Go) and +bcoin+ (written in JavaScript), to experiment and learn in other programming languages and frameworks.
+De asemenea, puteți rula pe testnet3 cu alte implementări de noduri complete, cum ar fi +btcd+ (scris în Go) și +bcoin+ (scris cu JavaScript), pentru a experimenta și a învăța în alte limbaje de programare și framework-uri.
 
-In early 2017, testnet3 supports all the features of mainnet, including Segregated Witness (see <<segwit>>). Therefore, testnet3 can also be used to test Segregated Witness features.((("", startref="testnet09")))
+De la începutul anului 2017, testnet3 acceptă toate caracteristicile rețelei principale, inclusiv Martor Segregat (vezi <<segwit>>). Prin urmare, testnet3 poate fi utilizat și pentru testarea caracteristicilor Martor Segregat.((("", startref="testnet09")))
 
-==== Segnet&#x2014;The Segregated Witness Testnet
+==== Segnet - Testnet-ul pentru Martor Segregat
 
 
-((("segnet")))In 2016, a special-purpose testnet was launched to aid in development and testing of Segregated Witness (aka segwit; see <<segwit>>). This test blockchain is called +segnet+ and can be joined by running a special version (branch) of Bitcoin Core.
+((("segnet")))În 2016, a fost lansat un testnet cu scop special pentru a ajuta la dezvoltarea și testarea Martor Segregat (aka segwit; vezi <<segwit>>). Acest lanț-de-blocuri de testare se numește +segnet+ și poate fi folosit rulând o versiune specială (branch) a Bitcoin Core.
 
-((("segwit (Segregated Witness)")))Since segwit was added to testnet3, it is no longer necessary to use segnet for testing of segwit features.
+((("segwit (Martor Segregat)")))Deoarece segwit a fost adăugat la testnet3, nu mai este necesar să utilizați segnet pentru testarea funcțiilor segwit.
 
-In the future it is likely we will see other testnet blockchains that are specifically designed to test a single feature or major architectural change, like segnet.
+În viitor, este probabil să vedem și alte lanțuri-de-blocuri testnet care sunt concepute special pentru a testa o singură caracteristică sau schimbări arhitecturale majore, cum ar fi segnet.
 
-==== Regtest&#x2014;The Local Blockchain
+==== Regtest - Lanțul-de-blocuri Local
 
-((("regtest (Regression Testing)")))Regtest, which stands for "Regression Testing," is a Bitcoin Core feature that allows you to create a local blockchain for testing purposes. Unlike testnet3, which is a public and shared test blockchain, the regtest blockchains are intended to be run as closed systems for local testing. You launch a regtest blockchain from scratch, creating a local genesis block. You may add other nodes to the network, or run it with a single node only to test the Bitcoin Core software.
+((("regtest (Testarea de Regresie)")))Regtest, care înseamnă ”Regression Testing” este o caracteristică Bitcoin Core care vă permite să creați un lanț-de-blocuri local pentru testare. Spre deosebire de testnet3, care este un lanț-de-blocuri public  de testare, lanțurile-de-blocuri regtest sunt destinate să fie rulate ca sisteme închise pentru testarea locală. Puteți lansa de la zero un lanț-de-blocuri regtest, creând un bloc local de geneză. Puteți adăuga alte noduri în rețea sau puteți rula cu un singur nod numai pentru a testa software-ul Bitcoin Core.
 
-To start Bitcoin Core in regtest mode, you use the +regtest+ flag:
+Pentru a porni Bitcoin Core în modul regtest, utilizați indicatorul +regtest+:
 
 ----
 $ bitcoind -regtest
 ----
 
-Just like with testnet, Bitcoin Core will initialize a new blockchain under the _regtest_ subdirectory of your bitcoind default directory:
+La fel ca în cazul testnet-ului, Bitcoin Core va inițializa un nou lanț-de-blocuri în subdirectorul _regtest_ al directorului implicit bitcoind:
 
 ----
 bitcoind: Using data directory /home/username/.bitcoin/regtest
 ----
 
-To use the command-line tool, you need to specify the +regtest+ flag too. Let's try the +getblockchaininfo+ command to inspect the regtest blockchain:
+Când folosiți linia de comandă, trebuie să specificați și indicatorul +regtest+. Să încercăm comanda +getblockchaininfo+ pentru a inspecta lanțul-de-blocuri regtest:
 
 ----
 $ bitcoin-cli -regtest getblockchaininfo
@@ -361,7 +361,7 @@ $ bitcoin-cli -regtest getblockchaininfo
   [...]
 ----
 
-As you can see, there are no blocks yet. Let's mine some (500 blocks) and earn the reward:
+După cum puteți vedea, nu există încă blocuri. Haideți să minăm câteva (500 blocuri) și să obținem recompensa:
 
 ----
 $ bitcoin-cli -regtest generate 500
@@ -376,15 +376,15 @@ $ bitcoin-cli -regtest generate 500
 ]
 ----
 
-It will only take a few seconds to mine all these blocks, which certainly makes it easy for testing. If you check your wallet balance, you will see that you earned reward for the first 400 blocks (coinbase rewards must be 100 blocks deep before you can spend them):
+Va dura doar câteva secunde pentru a mina toate aceste blocuri, ceea ce face cu siguranță testarea ușoară. Dacă verificați soldul portofelului, veți vedea că ați câștigat recompense pentru primele 400 de blocuri (recompensele coinbase trebuie să fie mai vechi de 100 de blocuri înainte de a le putea cheltui):
 
 ----
 $ bitcoin-cli -regtest getbalance
 12462.50000000
 ----
 
-=== Using Test Blockchains for Development
+=== Utilizarea Lanțurilor-de-Blocuri de Test pentru Programare
 
-((("development environment", "test blockchains and")))Bitcoin's various blockchains (+regtest+, +segnet+, +testnet3+, +mainnet+) offer a range of testing environments for bitcoin development. Use the test blockchains whether you are developing for Bitcoin Core, or another full-node consensus client; an application such as a wallet, exchange, ecommerce site; or even developing novel smart contracts and complex scripts.
+((("mediu de dezvoltare", "lanțuri-de-blocuri de test și")))Diversele lanțuri-de-blocuri bitcoin (+regtest+, +segnet+, +testnet3+, +mainnet+) oferă o serie de medii de testare pentru programarea bitcoin. Utilizați lanțurile-de-blocuri de testare dacă dezvoltați pentru Bitcoin Core sau un alt client nod-complet de consens; o aplicație cum ar fi portofelul, bursa de schimb, site-ul de comerț electronic; sau chiar dezvoltarea de noi contracte inteligente și scripturi complexe.
 
-You can use the test blockchains to establish a development pipeline. Test your code locally on a +regtest+ as you develop it. Once you are ready to try it on a public network, switch to +testnet+ to expose your code to a more dynamic environment with more diversity of code and applications. Finally, once you are confident your code works as expected, switch to +mainnet+ to deploy it in production. As you make changes, improvements, bug fixes, etc., start the pipeline again, deploying each change first on +regtest+, then on +testnet+, and finally into production.((("", startref="BCTtest09")))
+Puteți utiliza lanțurile-de-blocuri de testare pentru a stabili un proces de dezvoltare a software-ului. Testați-vă codul local pe un +regtest+ pe măsură ce îl dezvoltați. După ce sunteți gata să îl încercați într-o rețea publică, treceți la +testnet+ pentru a expune codul într-un mediu mai dinamic, cu mai multă diversitate de aplicații. În cele din urmă, după ce sunteți sigur că codul dumneavoasră funcționează așa cum vă așteptați, treceți la +mainnet+ pentru a-l implementa în producție. Pe măsură ce efectuați modificări, îmbunătățiri, corecții de erori etc., începeți din nou procesul, implementând fiecare modificare mai întâi pe +regtest+, apoi pe +testnet+ și în final în producție.((("", startref="BCTtest09")))
