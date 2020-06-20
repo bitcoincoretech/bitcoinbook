@@ -4,30 +4,30 @@ Exemple de Cod: ![travis_ci](https://travis-ci.org/bitcoinbook/bitcoinbook.svg?b
 
 Mastering Bitcoin este o carte pentru programatori, deși primele două capitole acoperă bitcoin la un nivel care este, de asemenea, accesibil și non-programatorilor. Oricine are o înțelegere de bază a tehnologiei poate citi primele două capitole pentru a obține o înțelegere excelentă a bitcoin.
 
-Acest repo conține [prima ediție, a doua tipărire](https://github.com/bitcoinbook/bitcoinbook/releases/tag/Edition1Print2), publicat în decembrie 2014 și complet [ediția a doua, a doua tipărire](https://github.com/bitcoinbook/bitcoinbook/releases/tag/second_edition_print2), publicat în iulie 2017, publicat de  O'Reilly  Media în formate de broșură și ebook.
+Acest repo conține în întregime [prima ediție, a doua tipărire](https://github.com/bitcoinbook/bitcoinbook/releases/tag/Edition1Print2), publicată în decembrie 2014 și în întregime [ediția a doua, a doua tipărire](https://github.com/bitcoinbook/bitcoinbook/releases/tag/second_edition_print2), publicată în iulie 2017, publicată de  O'Reilly  Media în format tipărit și ebook.
 
 # Probleme, Erori, Comentarii, Contribuții
 
-Dacă știți să faceți un Pull Request pentru a contribui cu o soluționare, vă rugăm să scrieți corecția și să utilizați un Pull Request pentru a o trimite spre examinare [develop branch](https://github.com/bitcoinbook/bitcoinbook/tree/develop ). Dacă efectuați mai multe modificări, utilizați un commit separat pentru fiecare pentru a ușura selectarea sau rezolvarea conflictelor. În caz contrar, vă rugăm să creați un issue, explicând eroarea sau pentru a comenta. Dacă doriți să contribuiți la schimbări ample sau materiale noi, vă rugăm să vă coordonați mai întâi cu autorul; informațiile de contact pot fi găsite pe site-ul său: https://antonopoulos.com/
+Dacă știți să faceți un Pull Request pentru a contribui cu o soluționare, vă rugăm să scrieți corecția și să utilizați un Pull Request pentru a o trimite spre examinare la [develop branch](https://github.com/bitcoinbook/bitcoinbook/tree/develop ). Dacă efectuați mai multe modificări, utilizați un commit separat pentru fiecare, pentru a ușura selectarea sau rezolvarea conflictelor. În caz contrar, vă rugăm să creați un issue, explicând eroarea sau pentru a comenta. Dacă doriți să contribuiți la schimbări ample sau materiale noi, vă rugăm să vă coordonați mai întâi cu autorul; informațiile de contact pot fi găsite pe site-ul său: https://antonopoulos.com/
 
 # Citirea acestei cărți
 
-Pentru a citi această carte, consultați [book.asciidoc] (https://github.com/bitcoinbook/bitcoinbook/blob/develop/book.asciidoc). Dați clic pe fiecare capitol pentru a citi în browser. Alte părți pot alege să publice  versiunea PDF a cărții online.
+Pentru a citi această carte, consultați [book.asciidoc](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/book.asciidoc). Dați clic pe fiecare capitol pentru a citi în browser. Alte părți pot alege să publice  versiunea PDF a cărții online.
 
-## Capitolele
+## Capitole
 
-+ Capitolul 1:  '[Introducere](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch01.asciidoc)'
-+ Capitolul 2: '[Cum Funcționează Bitcoin](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch02.asciidoc)'
-+ Capitolul 3: '[Bitcoin Core: Implementarea Referință](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch03.asciidoc)'
-+ Capitolul 4: '[Chei, Adrese](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch04.asciidoc)'
-+ Capitolul 5: '[Portofele](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch05.asciidoc)'
-+ Capitolul 6: '[Tranzacții](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06.asciidoc)'
-+ Capitolul 7: '[Tranzacții Avansate și Scripturi](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch07.asciidoc)'
-+ Capitolul 8: '[Rețeaua Bitcoin](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch08.asciidoc)'
-+ Capitolul 9: '[Lanțul-de-Blocuri](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch09.asciidoc)'
-+ Capitolul 10: '[Minerit și Consens](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch10.asciidoc)'
-+ Capitolul 11: '[Securitatea Bitcoin](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch11.asciidoc)'
-+ Capitolul 12: '[Aplicații Lanț-de-Blocuri](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch12.asciidoc)'
++ Capitolul 1:  '[Introducere](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch01.asciidoc)'
++ Capitolul 2: '[Cum Funcționează Bitcoin](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch02.asciidoc)'
++ Capitolul 3: '[Bitcoin Core: Implementarea Referință](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch03.asciidoc)'
++ Capitolul 4: '[Chei, Adrese](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch04.asciidoc)'
++ Capitolul 5: '[Portofele](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch05.asciidoc)'
++ Capitolul 6: '[Tranzacții](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch06.asciidoc)'
++ Capitolul 7: '[Tranzacții Avansate și Scripturi](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch07.asciidoc)'
++ Capitolul 8: '[Rețeaua Bitcoin](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch08.asciidoc)'
++ Capitolul 9: '[Lanțul-de-Blocuri](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch09.asciidoc)'
++ Capitolul 10: '[Minerit și Consens](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch10.asciidoc)'
++ Capitolul 11: '[Securitatea Bitcoin](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch11.asciidoc)'
++ Capitolul 12: '[Aplicații Lanț-de-Blocuri](https://github.com/bitcoincoretech/bitcoinbook/blob/develop-ro/ch12.asciidoc)'
 
 # Publicare
 
