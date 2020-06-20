@@ -1,66 +1,66 @@
-Code Examples: ![travis_ci](https://travis-ci.org/bitcoinbook/bitcoinbook.svg?branch=develop)
+Exemple de Cod: ![travis_ci](https://travis-ci.org/bitcoinbook/bitcoinbook.svg?branch=develop)
 
 # Mastering Bitcoin
 
-Mastering Bitcoin is a book for developers, although the first two chapters cover bitcoin at a level that is also approachable to non-programmers. Anyone with a basic understanding of technology can read the first two chapters to get a great understanding of bitcoin.
+Mastering Bitcoin este o carte pentru programatori, deși primele două capitole acoperă bitcoin la un nivel care este, de asemenea, accesibil și non-programatorilor. Oricine are o înțelegere de bază a tehnologiei poate citi primele două capitole pentru a obține o înțelegere excelentă a bitcoin.
 
-This repository contains the complete [first edition, second print](https://github.com/bitcoinbook/bitcoinbook/releases/tag/Edition1Print2), published in December 2014, and the complete [second edition, second print](https://github.com/bitcoinbook/bitcoinbook/releases/tag/second_edition_print2), published in July 2017, as published by O'Reilly Media in paperback and ebook formats.
+Acest repo conține [prima ediție, a doua tipărire] (https://github.com/bitcoinbook/bitcoinbook/releases/tag/Edition1Print2), publicat în decembrie 2014 și complet [ediția a doua, a doua tipărire] (https: (https://github.com/bitcoinbook/bitcoinbook/releases/tag/second_edition_print2), publicat în iulie 2017, publicat de  O'Reilly  Media în formate de broșură și ebook.
 
-# Issues, Errors, Comments, Contributions
+# Probleme, Erori, Comentarii, Contribuții
 
-If you know how to make a pull request to contribute a fix, please write the correction and use a pull request to submit it for consideration against the [develop branch](https://github.com/bitcoinbook/bitcoinbook/tree/develop). If you are making several changes, please use a separate commit for each to make it easier to cherry-pick or resolve conflicts. Otherwise, please submit an issue, explaining the error or comment. If you would like to contribute extensive changes or new material, please coordinate with the author first; contact information can be found on his website: https://antonopoulos.com/
+Dacă știți să faceți un Pull Request pentru a contribui cu o soluționare, vă rugăm să scrieți corecția și să utilizați un Pull Request pentru a o trimite spre examinare [develop branch](https://github.com/bitcoinbook/bitcoinbook/tree/develop ). Dacă efectuați mai multe modificări, utilizați un commit separat pentru fiecare pentru a ușura selectarea sau rezolvarea conflictelor. În caz contrar, vă rugăm să creați un issue, explicând eroarea sau pentru a comenta. Dacă doriți să contribuiți la schimbări ample sau materiale noi, vă rugăm să vă coordonați mai întâi cu autorul; informațiile de contact pot fi găsite pe site-ul său: https://antonopoulos.com/
 
-# Reading this book
+# Citirea acestei cărți
 
-To read this book, see [book.asciidoc](https://github.com/bitcoinbook/bitcoinbook/blob/develop/book.asciidoc). Click on each of the chapters to read in your browser. Other parties may choose to release PDFs of the book online.
+Pentru a citi această carte, consultați [book.asciidoc] (https://github.com/bitcoinbook/bitcoinbook/blob/develop/book.asciidoc). Dați clic pe fiecare capitol pentru a citi în browser. Alte părți pot alege să publice  versiunea PDF a cărții online.
 
-## Chapters
+## Capitolele
 
-+ Chapter 1: '[Introduction](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch01.asciidoc)'
-+ Chapter 2: '[How Bitcoin Works](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch02.asciidoc)'
-+ Chapter 3: '[Bitcoin Core: The Reference Implementation](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch03.asciidoc)'
-+ Chapter 4: '[Keys, Addresses](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch04.asciidoc)'
-+ Chapter 5: '[Wallets](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch05.asciidoc)'
-+ Chapter 6: '[Transactions](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06.asciidoc)'
-+ Chapter 7: '[Advanced Transactions and Scripting](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch07.asciidoc)'
-+ Chapter 8: '[The Bitcoin Network](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch08.asciidoc)'
-+ Chapter 9: '[The Blockchain](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch09.asciidoc)'
-+ Chapter 10: '[Mining and Consensus](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch10.asciidoc)'
-+ Chapter 11: '[Bitcoin Security](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch11.asciidoc)'
-+ Chapter 12: '[Blockchain Applications](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch12.asciidoc)'
++ Capitolul 1: '[Introducere](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch01.asciidoc)'
++ Capitolul 2: '[Cum Funcționează Bitcoin](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch02.asciidoc)'
++ Capitolul 3: '[Bitcoin Core: Implementarea Referință](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch03.asciidoc)'
++ Capitolul 4: '[Chei, Adrese](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch04.asciidoc)'
++ Capitolul 5: '[Portofele](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch05.asciidoc)'
++ Capitolul 6: '[Tranzacții](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06.asciidoc)'
++ Capitolul 7: '[Tranzacții Avansate și Scripturi](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch07.asciidoc)'
++ Capitolul 8: '[Rețeaua Bitcoin](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch08.asciidoc)'
++ Capitolul 9: '[Lanțul-de-Blocuri](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch09.asciidoc)'
++ Capitolul 10: '[Minerit și Consens](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch10.asciidoc)'
++ Capitolul 11: '[Securitatea Bitcoin](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch11.asciidoc)'
++ Capitolul 12: '[Aplicații Lanț-de-Blocuri](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch12.asciidoc)'
 
-# Published
+# Publicare
 
-"Mastering Bitcoin (Second Edition, Second Print): Programming the Open Blockchain" is now available in paperback and ebook formats by many booksellers worldwide:
+"Mastering Bitcoin (Second Edition, Second Print): Programming the Open Blockchain" este acum oferită în format tipărit și carte electronică de către mulți distribuitori din toată lumea:
 
 * [Amazon](https://www.amazon.com/Mastering-Bitcoin-Programming-Open-Blockchain/dp/1491954388)
 
-Mastering Bitcoin (First Edition Second Print) is also published in Japanese, Korean, and Chinese (Simplified) by publishers in the respective countries.
+Mastering Bitcoin (Prima ediție a doua tipărire) este publicată și în japoneză, coreeană și chineză (simplificată) de editori din țările respective.
 
-Mastering Bitcoin (Open Edition), based on the First Edition, has been translated by volunteers into more than a dozen languages. Translations are available for free under CC-BY-SA license at: https://bitcoinbook.info
+Mastering Bitcoin (Open Edition), bazată pe Prima ediție, a fost tradus de voluntari în mai mult de zeci de limbi. Traducerile sunt disponibile gratuit sub licența CC-BY-SA la: https://bitcoinbook.info
 
-# Source
+# Codul Sursă
 
-The book's source code, found in this repository, is kept synchronized with the print and ebook editions.
+Codul sursă al cărții, găsit în acest repo, este sincronizat cu edițiile tipărite și electronice.
 
-## Mastering Bitcoin - First Edition
+## Mastering Bitcoin - Prima Ediție
 
-The tags [Edition1Print1](https://github.com/bitcoinbook/bitcoinbook/releases/tag/Edition1Print1), [Edition1Print2](https://github.com/bitcoinbook/bitcoinbook/releases/tag/Edition1Print2) correspond to the two existing prints of Mastering Bitcoin (First Edition) as published by O'Reilly Media.
+Etichetele [Edition1Print1](https://github.com/bitcoinbook/bitcoinbook/releases/tag/Edition1Print1), [Edition1Print2](https://github.com/bitcoinbook/bitcoinbook/releases/tag/Edition1Print2) corespund celor două versiuni tipărite ale Mastering Bitcoin (First Edition) publicate de O'Reilly Media.
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">Mastering Bitcoin - First Edition</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://antonopoulos.com/" property="cc:attributionName" rel="cc:attributionURL">Andreas M. Antonopoulos LLC</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">Mastering Bitcoin - First Edition</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://antonopoulos.com/" property="cc:attributionName" rel="cc:attributionURL">Andreas M. Antonopoulos LLC</a> este licențiată sub <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 
-This "Free Culture" compliant license was approved by my publisher O'Reilly Media (http://oreilly.com), who understands the value of open source. O'Reilly Media is not just the world's best publisher of technical books, but is also a strong supporter of this open culture and the sharing of knowledge.
+Această licență conform "Free Culture" (culturii gratuite) a fost aprobată de editorul meu  O'ReillyMedia (http://oreilly.com), care înțelege valoarea open source. O'Reilly nu este doar cel mai bun editor mondial de cărți tehnice, ci este și un susținător puternic al acestei culturi deschise și a schimbului de cunoștințe.
 
-Thank you O'Reilly Media!
+Mulțumesc O'Reilly Media!
 
-## Mastering Bitcoin - Second Edition
+## Mastering Bitcoin - Ediția a Doua
 
-The tags, [second_edition_print_1](https://github.com/bitcoinbook/bitcoinbook/releases/tag/second_edition_print_1) and  [second_edition_print2](https://github.com/bitcoinbook/bitcoinbook/releases/tag/second_edition_print2), correspond to the first (June 8th, 2017) and second (July 20th, 2017) print of Mastering Bitcoin (Second Edition), as published by O'Reilly Media.
+Etichetele, [second_edition_print_1](https://github.com/bitcoinbook/bitcoinbook/releases/tag/second_edition_print_1) and  [second_edition_print2](https://github.com/bitcoinbook/bitcoinbook/releases/tag/second_edition_print2), corespund primei (June 8th, 2017) și celei de-a doua (July 20th, 2017) ediții tipărite a Mastering Bitcoin (Second Edition), publicate de O'Reilly Media.
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">Mastering Bitcoin - Second Edition</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://antonopoulos.com/" property="cc:attributionName" rel="cc:attributionURL">Andreas M. Antonopoulos LLC</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">Mastering Bitcoin - Second Edition</span> de <a xmlns:cc="http://creativecommons.org/ns#" href="https://antonopoulos.com/" property="cc:attributionName" rel="cc:attributionURL">Andreas M. Antonopoulos LLC</a> este licențiată sub <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 
-# Translations
+# Traduceri
 
-If you are interested in translating this book, please join our team of volunteers at: https://www.transifex.com/aantonop/mastering-bitcoin
+Dacă sunteți interesat să traduceți această carte, vă rugăm să vă alăturați echipei noastre de voluntari la adresa: https://www.transifex.com/aantonop/mastering-bitcoin
 
-Free copies of "Mastering Bitcoin Open Edition," translated in many languages, can be downloaded from: https://bitcoinbook.info
+Copii gratuite ale ”Mastering Bitcoin Open Edition”, traduse în mai multe limbi, pot fi descărcate la: https://bitcoinbook.info
