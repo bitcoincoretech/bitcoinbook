@@ -12,16 +12,16 @@
 * Explorator de blocuri (insight)
 * Utilitare pentru blocuri, tranzacții, și portofel (bitcore-lib)
 * Comunicarea directă cu rețeaua de-la-egal-la-egal bitcoin (bitcore-p2p)
-* Generare mnemonică sămânță entropie (bitcore-mnemonic)
+* Generare entropie pentru sămânță mnemonică (bitcore-mnemonic)
 * Protocol de plată (bitcore-payment-protocol)
 * Verificarea și semnarea mesajelor (bitcore-message)
-* Schemă de Criptare Integrată pentru Curbă Eliptică (bitcore-ecies)
+* Schemă de Criptare Integrată pentru Curba Eliptică (bitcore-ecies)
 * Serviciu portofel (bitcoin-wallet-service)
 * Client portofel (bitcore-wallet-client)
 * Playground (bitcore-playground)
-* Integrarea serviciilor direct cu Bitcoin Core (bitcore-nod)
+* Integrarea serviciilor direct cu Bitcoin Core (bitcore-node)
 
-=== Exemple din Bibliotecă Bitcore
+=== Exemple din Biblioteca Bitcore
 
 ==== Cerințe Preliminare
 
