@@ -1,17 +1,17 @@
 [[appdx-pycoin]]
 [appendix]
-== pycoin, ku, and tx
+== pycoin, ku, și tx
 
 
-((("pycoin library")))The Python library http://github.com/richardkiss/pycoin[+pycoin+], originally written and maintained by Richard Kiss, is a Python-based library that supports manipulation of bitcoin keys and transactions, even supporting the scripting language enough to properly deal with nonstandard transactions.
+((("biblioteca pycoin")))Biblioteca Python http://github.com/richardkiss/pycoin[+pycoin+], scrisă inițial și întreținută de Richard Kiss, este o bibliotecă bazată pe Python care acceptă manipularea cheilor bitcoin și a tranzacțiilor, chiar și suportarea limbajului de script suficient pentru a face față corect tranzacțiilor non standard.
 
-The pycoin library supports both Python 2 (2.7.x) and Python 3 (3.3 and later) and comes with some handy command-line utilities, +ku+ and +tx+.
+Biblioteca pycoin acceptă atât Python 2 (2.7.x) cât și Python 3 (3.3 și ulterioare) și vine cu câteva utilitare pentru linia de comandă, +ku+ și +tx+.
 
-=== Key Utility (KU)
+=== Utilitar pentru Chei (Key Utility - KU)
 
-((("key utility (ku)", id="keyutil17")))The command-line utility +ku+ ("key utility") is a Swiss Army knife for manipulating keys. It supports BIP-32 keys, WIF, and addresses (bitcoin and alt coins). Following are some examples.
+((("utilitare pentru chei (ku)", id="keyutil17")))Utilitarul din linia de comandă +ku+ ("key utility") este ca un cuțit elvețian pentru manipularea cheilor. Acceptă cheile BIP-32, WIF și adrese (monede bitcoin și altcoin). Urmează câteva exemple.
 
-Create a BIP-32 key using the default entropy sources of GPG and _/dev/random_:
+Crează o cheie BIP-32 folosind sursele de entropie implicite ale GPG și _/dev/random_:
 
 
 ----
@@ -47,11 +47,11 @@ Bitcoin address : 1FNNRQ5fSv1wBi5gyfVBs2rkNheMGt86sp
  uncompressed   : 1DSS5isnH4FsVaLVjeVXewVSpfqktdiQAM
 ----
 
-Create a BIP-32 key from a passphrase:
+Crează o cheie BIP-32 dintr-o frază de acces:
 
-[WARNING]
+[ATENȚIE]
 ====
-The passphrase in this example is way too easy to guess.
+Fraza de acces din acest exemplu este mult prea ușor de ghicit.
 ====
 
 ----
@@ -61,7 +61,7 @@ input           : P:foo
 network         : Bitcoin
 wallet key      : xprv9s21ZrQH143K31AgNK5pyVvW23gHnkBq2wh5aEk6g1s496M8ZMjxncCKZKgb5j
                     ZoY5eSJMJ2Vbyvi2hbmQnCuHBujZ2WXGTux1X2k9Krdtq
-public version  : xpub661MyMwAqRbcFVF9ULcqLdsEa5WnCCugQAcgNd9iEMQ31tgH6u4DLQWoQayvtS
+versiune publică  : xpub661MyMwAqRbcFVF9ULcqLdsEa5WnCCugQAcgNd9iEMQ31tgH6u4DLQWoQayvtS
                     VYFvXz2vPPpbXE1qpjoUFidhjFj82pVShWu9curWmb2zy
 tree depth      : 0
 fingerprint     : 5d353a2e
@@ -88,7 +88,7 @@ Bitcoin address : 19Vqc8uLTfUonmxUEZac7fz1M5c5ZZbAii
 ----
 
 
-Get info as JSON:
+Obține informația în format JSON:
 
 
 ----
@@ -120,21 +120,21 @@ $ ku P:foo -P -j
 }
 ----
 
-Public BIP32 key:
+Cheie Publică BIP32:
 
 ----
 $ ku -w -P P:foo
 xpub661MyMwAqRbcFVF9ULcqLdsEa5WnCCugQAcgNd9iEMQ31tgH6u4DLQWoQayvtSVYFvXz2vPPpbXE1qpjoUFidhjFj82pVShWu9curWmb2zy
 ----
 
-Generate a subkey:
+Genereză o sub-cheie:
 
 ----
 $ ku -w -s3/2 P:foo
 xprv9wTErTSkjVyJa1v4cUTFMFkWMe5eu8ErbQcs9xajnsUzCBT7ykHAwdrxvG3g3f6BFk7ms5hHBvmbdutNmyg6iogWKxx6mefEw4M8EroLgKj
 ----
 
-Hardened subkey:
+Subcheie întărită:
 
 ----
 $ ku -w -s3/2H P:foo
@@ -148,7 +148,7 @@ $ ku -W P:foo
 L26c3H6jEPVSqAr1usXUp9qtQJw6NHgApq6Ls4ncyqtsvcq2MwKH
 ----
 
-Address:
+Adresă:
 
 
 ----
@@ -158,7 +158,7 @@ $ ku -a P:foo
 
 
 
-Generate a bunch of subkeys:
+Genereaza o grămadă de subchei:
 
 
 ----
@@ -172,7 +172,7 @@ xprv9xWkBDfyBXmZw4jEYXUHYc9fT25k9irP87n2RqfJ5bqbjKdT84Mm7Wtc2xmzFuKg7iYf7XFHKkSs
 ----
 
 [role="pagebreak-before"]
-Generate the corresponding addresses:
+Genereaza adresele corespunzătoare:
 
 
 ----
@@ -186,7 +186,7 @@ $ ku P:foo -s 0/0-5 -a
 ----
 
 
-Generate the corresponding WIFs:
+Generarea de WIFs corespunzătoare:
 
 
 ----
@@ -201,7 +201,7 @@ KzChTbc3kZFxUSJ3Kt54cxsogeFAD9CCM4zGB22si8nfKcThQn8C
 
 
 
-Check that it works by choosing a BIP32 string (the one corresponding to subkey 0/3):
+Verificați dacă funcționează prin alegerea unui șir BIP32 (cel corespunzător subcheiei 0/3):
 
 
 
@@ -213,9 +213,9 @@ $ ku -a xprv9xWkBDfyBXmZsA85GyWj9uYPyoQv826YAadKWMaaEosNrFBKgj2TqWuiWY3zuqxYGpHf
 ----
 
 
-Yep, looks familiar.
+Da, pare familiar.
 
-From secret exponent:
+Din exponentul secret:
 
 
 ----
@@ -242,7 +242,7 @@ Bitcoin address : 1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH
 ----
 
 
-Litecoin version:
+Versiunea Litecoin:
 
 
 ----
@@ -278,7 +278,7 @@ QNcdLVw8fHkixm6NNyN6nVwxKek4u7qrioRbQmjxac5TVoTtZuot
 ----
 
 
-From public pair (on Testnet):
+Din perechea publică (pe Testnet):
 
 
 ----
@@ -302,7 +302,7 @@ Bitcoin testnet address : mrCDrCybB6J1vRfbwM5hemdJz73FwDBC8r
 ----
 
 
-From hash160:
+Din hash160:
 
 
 ----
@@ -315,7 +315,7 @@ Bitcoin address : 1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH
 ----
 
 
-((("", startref="pycoin library")))As a Dogecoin address:
+((("", startref="pycoin library")))Ca adresă Dogecoin:
 
 
 ----
@@ -327,15 +327,15 @@ hash160          : 751e76e8199196d454941c45d1b3a323f1433bd6
 Dogecoin address : DFpN6QqFfUm3gKNaxN6tNcab1FArL9cZLE
 ----
 
-==== Transaction Utility (TX)
+==== Utilitar pentru Tranzacții (TX)
 
-((("transaction utility (TX)", id="TX17")))
-The command-line utility +tx+ will display transactions in human-readable form, fetch base transactions from pycoin's transaction cache or from web services (blockchain.info, blockcypher.com, blockr.io and chain.so are currently supported), merge transactions, add or delete inputs or outputs, and sign transactions.
+((("utilitar pentru tranzacții (TX)", id="TX17")))
+Utilitarul de la linia de comandă +tx+ va afișa tranzacții sub o formă care poate fi citită de oameni, va prelua tranzacțiile de bază din cache-ul Pycoin sau de la servicii web (blockchain.info, blockcypher.com, blockr.io și chain.so sunt acceptate în prezent), va uni tranzacțiile , va adăuga sau șterge intrări sau ieșiri și va semna tranzacțiile tranzacțiile.
 
-Following are some examples.
+În continuare sunt prezentate câteva exemple
 
 
-View the famous "pizza" transaction:
+Vizualizați celebra tranzacție pentru ”pizza”:
 
 
 ----
@@ -352,7 +352,7 @@ tx: error: can't find Tx with id 49d2adb6e476fa46d8357babf78b1b501fd39e177ac7833
 ----
 
 
-Oops! We don't have web services set up. Let's do that now:
+Ups! Nu avem servicii web setate. Să facem asta acum:
 
 
 [source,bash]
@@ -363,9 +363,9 @@ $ export PYCOIN_CACHE_DIR PYCOIN_BTC_PROVIDERS
 ----
 
 
-It's not done automatically so a command-line tool won't leak potentially private information about what transactions you're interested in to a third-party website. If you don't care, you could put these lines into your _.profile_.
+Nu se face automat, astfel încât un instrument de linie de comandă nu va scurge informații potențial private despre tranzacțiile care vă interesează pe un site terț. Dacă nu vă pasă, puteți introduce aceste rânduri în _.profile_.
 
-Let's try again:
+Să încercăm din nou:
 
 ----
 $ tx 49d2adb6e476fa46d8357babf78b1b501fd39e177ac7833124b3f67b17c40c2a
@@ -377,13 +377,13 @@ Input:
 Output:
   0: 1CZDM6oTttND6WPdt3D6bydo7DYKzd9Qik receives 10000000.00000 mBTC
 Total output 10000000.00000 mBTC
-including unspents in hex dump since transaction not fully signed
+includem unspents în hex deoarece tranzacția nu este total semnată
 010000000141045e0ab2b0b82cdefaf9e9a8ca9ec9df17673d6a74e274d0c73ae77d3f131e000000004a493046022100a7f26eda874931999c90f87f01ff1ffc76bcd058fe16137e0e63fdb6a35c2d78022100a61e9199238eb73f07c8f209504c84b80f03e30ed8169edd44f80ed17ddf451901ffffffff010010a5d4e80000001976a9147ec1003336542cae8bded8909cdd6b5e48ba0ab688ac00000000
 
 ** can't validate transaction as source transactions missing
 ----
 
-The final line appears because to validate the transactions' signatures, you technically need the source transactions. So let's add +-a+ to augment the transactions with source information:
+Linia finală apare pentru că pentru a valida semnăturile tranzacțiilor, aveți tehnic nevoie de tranzacțiile sursă. Deci, să adăugăm +-a+ pentru a augmenta tranzacțiile cu informații sursă:
 
 ----
 $ tx -a 49d2adb6e476fa46d8357babf78b1b501fd39e177ac7833124b3f67b17c40c2a
@@ -405,7 +405,7 @@ Total fees        0.00000 mBTC
 all incoming transaction values validated
 ----
 
-((("", startref="TX17")))Now, let's look at unspent outputs for a specific address (UTXO). In block #1, we see a coinbase transaction to +12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX+. Let's use +fetch_unspent+ to find all coins in this address:
+((("", startref="TX17")))Acum, să ne uităm la ieșirile necheltuite pentru o anumită adresă (UTXO). În blocul #1, vedem o tranzacție coinbase la +12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX+. Să folosim +fetch_unspent+ pentru a găsi toate monedele de la această adresă:
 
 ----
 $ fetch_unspent 12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX
