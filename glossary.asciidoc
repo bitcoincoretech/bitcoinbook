@@ -1,250 +1,250 @@
 [preface]
-== Quick Glossary
+== Glosar Rapid
 
-This quick glossary contains many of the terms used in relation to bitcoin. These terms are used throughout the book, so bookmark this for a quick reference.
+Aceasta secțiune conține mulți dintre termenii utilizați în raport cu Bitcoin. Acești termeni sunt utilizați în întreaga carte, deci puneți un semn aici pentru o referință rapidă.
 
-address::
-    A bitcoin address looks like +1DSrfJdB2AnWaFNgSbv3MZC2m74996JafV+. It consists of a string of letters and numbers. It's really an encoded base58check version of a public key 160-bit hash. Just as you ask others to send an email to your email address, you would ask others to send you bitcoin to one of your bitcoin addresses.
+adresă::
+    O adresă bitcoin este de forma +1DSrfJdB2AnWaFNgSbv3MZC2m74996JafV+. Este compusă dintr-un șir de litere și numere. Este o versiune base58check a unui rezumat de cheie publică pe 160 de biți. La fel cum cereți cuiva să trimită un e-mail la adresa dumneavoastră de e-mail, la fel puteți solicita cuiva să vă trimită bitcoin la una dintre adresele dumneavoastră bitcoin.
 
 bip::
-    Bitcoin Improvement Proposals.  A set of proposals that members of the bitcoin community have submitted to improve bitcoin. For example, BIP-21 is a proposal to improve the bitcoin uniform resource identifier (URI) scheme.
+    Propuneri de Îmbunătățire bitcoin. Un set de propuneri pe care membrii comunității bitcoin le-au depus pentru îmbunătățirea bitcoin. De exemplu, BIP-21 este o propunere de îmbunătățire a identificatorului uniform al resurselor (uniform resource identifier - URI) bitcoin.
 
 bitcoin::
-    The name of the currency unit (the coin), the network, and the software.
+    Numele unității valutare (moneda), al rețelei și al software-ului.
 
-block::
-    A grouping of transactions, marked with a timestamp, and a fingerprint of the previous block. The block header is hashed to produce a proof of work, thereby validating the transactions. Valid blocks are added to the main blockchain by network consensus.
+bloc::
+    O grupare de tranzacții, marcată cu o marcă de timp și o amprentă a blocului anterior. Antetul blocului este rezumat pentru a produce o dovadă de lucru, validând astfel tranzacțiile. Blocurile valide sunt adăugate la lanțul-de-blocuri principal prin consensul rețelei.
 
-blockchain::
-	A list of validated blocks, each linking to its predecessor all the way to the genesis block.
+lanț-de-blocuri (blockchain)::
+	O listă de blocuri validate, fiecare legat de predecesorul său până la blocul geneză.
 
-Byzantine Generals Problem::
-    A reliable computer system must be able to cope with the failure of one or more of its components. A failed component may exhibit a type of behavior that is often overlooked--namely, sending conflicting information to different parts of the system. The problem of coping with this type of failure is expressed abstractly as the Byzantine Generals Problem.
+Problema Generalilor Bizantini::
+    Un sistem informatic fiabil trebuie să poată face față defecțiunii uneia sau mai multor componente ale sale. O componentă defectă poate prezenta un tip de comportament care este adesea ignorat - și anume, trimiterea de informații conflictuale la diferite părți ale sistemului. Problema de a face față acestui tip de defect este exprimată abstract ca Problema generalilor bizantini.
 
 coinbase::
-	A special field used as the sole input for coinbase transactions. The coinbase allows claiming the block reward and provides up to 100 bytes for arbitrary data.
-	Not to be confused with Coinbase transaction.
+	Un câmp special folosit ca unică intrare pentru tranzacțiile coinbase. Coinbase permite revendicare recompensei pentru bloc și oferă până la 100 de octeți pentru date arbitrare.
+	Nu trebuie confundat cu tranzacția Coinbase.
 
-coinbase transaction::
-	The first transaction in a block. Always created by a miner, it includes a single coinbase.
-	Not to be confused with Coinbase.
+tranzacția coinbase::
+	Prima tranzacție dintr-un bloc. Creată întotdeauna de un miner, include o singură coinbase.
+	Nu trebuie confundată cu Coinbase.
 
-cold storage::
-	Refers to keeping a reserve of bitcoin offline. Cold storage is achieved when Bitcoin private keys are created and stored in a secure offline environment. Cold storage is important for anyone with bitcoin holdings. Online computers are vulnerable to hackers and should not be used to store a significant amount of bitcoin.
+stocare la rece::
+	Se referă la păstrarea unei rezerve de bitcoin offline. Stocarea la rece se realizează atunci când cheile private Bitcoin sunt create și stocate într-un mediu offline sigur. Stocarea la rece este importantă pentru oricine deține bitcoin. Calculatoarele online sunt vulnerabile la  atacul hackerilor și nu ar trebui utilizate pentru a stoca o cantitate semnificativă de bitcoin.
 
-confirmations::
-	Once a transaction is included in a block, it has one confirmation. As soon as _another_ block is mined on the same blockchain, the transaction has two confirmations, and so on. Six or more confirmations is considered sufficient proof that a transaction cannot be reversed.
+confirmări::
+	Odată ce tranzacția este inclusă într-un bloc, aceasta are o confirmare. De îndată ce _un alt_ bloc este minat pe același lanț-de-blocuri, tranzacția are două confirmări, etc. Șase sau mai multe confirmări sunt considerate suficiente pentru ca o tranzacție nu poate fi inversată.
 
-consensus::
-    When several nodes, usually most nodes on the network, all have the same blocks in their locally-validated best block chain.
-    Not to be confused with consensus rules.
+consens::
+    Când mai multe noduri, de obicei majoritatea nodurilor din rețea, au aceleași blocuri în lanțul lor de blocuri validat local.
+    Nu trebuie confundat cu regulile de consens.
 
-consensus rules::
-    The block validation rules that full nodes follow to stay in consensus with other nodes.
-    Not to be confused with consensus.
+reguli de consens::
+    Regulile de validare a blocurilor pe care le urmează nodurile complete pentru a rămâne în consens cu alte noduri.
+    Nu trebuie confundat cu consensul.
 
-difficulty::
-	A network-wide setting that controls how much computation is required to produce a proof of work.
+dificultate::
+	O setare la nivel de rețea care controlează cât de multă putere de calcul este necesară pentru a produce o dovadă-de-lucru.
 
-difficulty retargeting::
-	A network-wide recalculation of the difficulty that occurs once every 2,016 blocks and considers the hashing power of the previous 2,016 blocks.
+reajustarea dificultății::
+	O recalculare la nivel de rețea a dificultății care apare o dată la 2.016 blocuri și ia în considerare puterea de rezumare a celor 2.016 blocuri anterioare.
 
-difficulty target::
-    A difficulty at which all the computation in the network will find blocks approximately every 10 minutes.
+ținta de dificultate::
+    O dificultate la care toate calculele din rețea vor găsi blocuri la aproximativ fiecare 10 minute.
 
-double-spending::
-    Double spending is the result of successfully spending some money more than once. Bitcoin protects against double-spending by verifying each transaction added to the block chain to ensure that the inputs for the transaction had not previously already been spent.
+cheltuire-dublă::
+    Cheltuirea dublă este rezultatul cheltuirii cu succes a unor bani de mai multe ori. Bitcoin protejează împotriva cheltuirii duble prin verificarea fiecărei tranzacții adăugate în lanțul-de-blocuri pentru a se asigura că intrările pentru tranzacție nu au fost deja cheltuite anterior.
 
 ECDSA::
-    Elliptic Curve Digital Signature Algorithm or ECDSA is a cryptographic algorithm used by Bitcoin to ensure that funds can only be spent by their rightful owners.
+    Algoritmul de Semnătură Digitală Curbă Eliptică (Elliptic Curve Digital Signature Algorithm ) sau ECDSA este un algoritm criptografic utilizat de bitcoin pentru a se asigura că fondurile pot fi cheltuite doar de către proprietarii lor.
 
-extra nonce::
-    As difficulty increased, miners often cycled through all 4 billion values of the nonce without finding a block. Because the coinbase script can store between 2 and 100 bytes of data, miners started using that space as extra nonce space, allowing them to explore a much larger range of block header values to find valid blocks.
+nonce extra::
+    Pe măsură ce dificultatea a crescut, minerii au parcurs adesea toate cele 4 miliarde de valori ale nonce-ului fără a găsi un bloc. Deoarece scriptul coinbase poate stoca între 2 și 100 de octeți de date, minerii au început să folosească acel spațiu ca spațiu nonce extra, permițându-le să exploreze o gamă mult mai mare de valori ale antetului blocului pentru a găsi blocuri valide.
 
-fees::
-	The sender of a transaction often includes a fee to the network for processing the requested transaction.  Most transactions require a minimum fee of 0.5 mBTC.
+comision::
+	Expeditorul unei tranzacții include adesea un comision pentru rețea pentru procesarea tranzacției solicitate. Majoritatea tranzacțiilor necesită un comision minim de 0,5 mBTC.
 
-fork::
-    Fork, also known as accidental fork, occurs when two or more blocks have the same block height, forking the block chain. Typically occurs when two or more miners find blocks at nearly the same time. Can also happen as part of an attack.
+bifurcare::
+    Bifurcare, cunoscută și sub numele de bifurcare accidentală, apare atunci când două sau mai multe blocuri au aceeași înălțime, bifurcând lanțul-de-blocuri. De obicei apare atunci când doi sau mai mulți mineri găsesc blocuri aproape în același timp. Se poate întâmpla și ca parte a unui atac.
 
-genesis block::
-	The first block in the blockchain, used to initialize the cryptocurrency.
+block geneză::
+	Primul bloc din lanțul-de-blocuri, folosit pentru inițializarea criptomonedei.
 
-hard fork::
-    Hard fork, also known as Hard-Forking Change, is a permanent divergence in the blockchain, commonly occurs when non-upgraded nodes can’t validate blocks created by upgraded nodes that follow newer consensus rules.
-    Not to be confused with fork, soft fork, software fork or Git fork.
+bifurcare hard::
+    Bifurcare hard, cunoscută și sub numele de Schimbare folosind Bifurcare Hard (Hard-Forking Change), este o divergență permanentă în lanțul-de-blocuri, apare frecvent când nodurile neactualizate nu pot valida blocurile create de nodurile actualizate care respectă reguli de consens mai noi.
+    Nu trebuie confundată cu bifurcare, bifurcare soft, bifurcare software sau bifurcare Git.
 
-hardware wallet::
-    A hardware wallet is a special type of bitcoin wallet which stores the user's private keys in a secure hardware device.
+portofel hardware::
+    Un portofel hardware este un tip special de portofel bitcoin care stochează cheile private ale utilizatorului într-un dispozitiv hardware securizat.
 
-hash::
-    A digital fingerprint of some binary input.
+rezumat::
+    O amprentă digitală a unor intrări binare.
 
-hashlocks::
-    A hashlock is a type of encumbrance that restricts the spending of an output until a specified piece of data is publicly revealed. Hashlocks have the useful property that once any hashlock is opened publicly, any other hashlock secured using the same key can also be opened. This makes it possible to create multiple outputs that are all encumbered by the same hashlock and which all become spendable at the same time.
+blocări-pe-rezumat (hashlocks)::
+    O blocare-pe-rezumat (hashlock) este un tip de restricție care limitează cheltuirea unei ieșiri până când o informație specificată este dezvăluită public. Blocările-pe-rezumat au proprietatea utilă că, odată ce orice blocare-pe-rezumat este deschisă public, orice altă blocare-pe-rezumat securizată folosind aceeași cheie poate fi, de asemenea, deschisă. Acest lucru face posibilă crearea de ieșiri multiple, care sunt toate restricționate de aceeași blocare-pe-rezumat și care devin cheltuibile în același timp.
 
-HD protocol::
-    The Hierarchical Deterministic (HD) key creation and transfer protocol (BIP32), which allows creating child keys from parent keys in a hierarchy.
+Protocol HD (Determinist Ierarhic)::
+    Protocolul Determinist Ierarhic (Hierarchical Deterministic - HD) de creare și transfer de chei  (BIP32), care permite crearea de chei copil din cheile părinte într-o ierarhie.
 
-HD wallet::
-    Wallets using the Hierarchical Deterministic (HD Protocol) key creation and transfer protocol (BIP32).
+Portofel HD (Determinist Ierarhic)::
+    Portofelele care utilizează protocolul Determinist Ierarhic (Protocol HD) de creare și transfer de chei (BIP32).
 
-HD wallet seed::
-    HD wallet seed or root seed is a potentially-short value used as a seed to generate the master private key and master chain code for an HD wallet.
+Semințe de portofel HD::
+    Sămânța de portofel HD sau sămânța rădăcină este o valoare potențial scurtă folosită ca sămânță pentru a genera cheia privată principală și codul de lanț principal pentru un portofel HD.
 
 HTLC::
-    A Hashed TimeLock Contract or HTLC is a class of payments that use hashlocks and timelocks to require that the receiver of a payment either acknowledge receiving the payment prior to a deadline by generating cryptographic proof of payment or forfeit the ability to claim the payment, returning it to the payer.
+    Un contract cu timp de blocare (Hashed TimeLock Contract - HTLC) este o clasă de plăți care utilizează blocări-pe-rezumat și timpi-de-blocare pentru a solicita ca destinatarul unei plăți să confirme primirea plății înainte de o dată limită, prin generarea de dovezi criptografice de plată sau sau să piardă capacitatea de a solicita plata, returnând-o către plătitor.
 
 KYC::
-    Know your customer (KYC) is the process of a business, identifying and verifying the identity of its clients. The term is also used to refer to the bank regulation which governs these activities.
+    Cunoașteți-vă clientul (Know your customer - KYC) este procesul unei afaceri de identificare și verificare a identității clienților săi. Termenul este folosit și pentru a face referire la regulamentul bancar care reglementează aceste activități.
 
 LevelDB::
-    LevelDB is an open source on-disk key-value store. LevelDB is a light-weight, single-purpose library for persistence with bindings to many platforms.
+    LevelDB este soft de stocare pe disc a unor perechi chei-valoare. LevelDB este o bibliotecă suplă, care are ca singur scop persistența pe mai multe platforme.
 
-Lightning Networks::
-    Lightning Network is an implementation of Hashed Timelock Contracts (HTLCs) with bi-directional payment channels which allows payments to be securely routed across multiple peer-to-peer payment channels. This allows the formation of a network where any peer on the network can pay any other peer even if they don't directly have a channel open between each other.
+Rețele Lightning::
+    Lightning Network este o implementare a contractelor cu timpi de blocare (HTLC) cu canale bi-direcționale de plată, care permite direcționarea în siguranță a plăților pe mai multe canale de plată de-la-egal-la-egal. Acest lucru permite formarea unei rețele în care orice seamăn (peer) din rețea poate plăti orice alt seamăn (peer), chiar dacă nu au un canal direct deschis între ei.
 
-Locktime::
-    Locktime, or more technically nLockTime, is the part of a transaction which indicates the earliest time or earliest block when that transaction may be added to the block chain.
+Timp-de-blocare::
+    Timp-de-blocare, sau mai mult tehnic nLockTime, este partea unei tranzacții care indică cea mai devreme dată sau cel mai devreme bloc când această tranzacție poate fi adăugată la lanțul-de-blocuri.
 
 mempool::
-    The bitcoin Mempool (memory pool) is a collection of all transaction data in a block that have been verified by bitcoin nodes, but are not yet confirmed.
+    Mempool-ul bitcoin (bazin de memorie) este o colecție a tuturor datelor de tranzacții dintr-un bloc care au fost verificate de nodurile bitcoin, dar încă nu sunt confirmate.
 
-merkle root::
-    The root node of a merkle tree, a descendant of all the hashed pairs in the tree. Block headers must include a valid merkle root descended from all transactions in that block.
+rădăcină merkle::
+    Nodul rădăcină al unui arbore merkle, descendent al tuturor perechilor de rezumate din arbore. Anteturile blocului trebuie să includă o rădăcină de merkle valabilă descendentă din toate tranzacțiile din acel bloc.
 
-merkle tree::
-    A tree constructed by hashing paired data (the leaves), then pairing and hashing the results until a single hash remains, the merkle root. In Bitcoin, the leaves are almost always transactions from a single block.
+arbore merkle::
+    Un arbore construit prin rezumarea datelor (frunzelor) în perechi, apoi prin crearea de perechi din rezumatele obținute, și tot așa până când rămâne un singur rezumat, rădăcina merkle. În bitcoin, frunzele sunt aproape întotdeauna tranzacții dintr-un singur bloc.
 
 miner::
-    A network node that finds valid proof of work for new blocks, by repeated hashing.
+    Un nod de rețea care găsește o dovadă-de-lucru validă pentru blocuri noi, prin rezumări repetate.
 
-multisignature::
-    Multisignature (multisig) refers to requiring more than one key to authorize a bitcoin transaction.
+multisemnătură::
+    Multisemnătură (multisig) se referă la solicitarea a mai mult de o cheie pentru autorizarea unei tranzacții bitcoin.
 
-network::
-    A peer-to-peer network that propagates transactions and blocks to every bitcoin node on the network.
+rețea::
+    O rețea de-la-egal-lalegal care propagă tranzacțiile și blocurile la fiecare nod bitcoin din rețea.
 
 nonce::
-    The "nonce" in a bitcoin block is a 32-bit (4-byte) field whose value is set so that the hash of the block will contain a run of leading zeros. The rest of the fields may not be changed, as they have a defined meaning.
+    ”Nonce-ul” dintr-un bloc bitcoin este un câmp pe 32 de biți (4 octeți) a cărui valoare este setată astfel încât rezumatul blocului va conține o serie de zerouri la început. Restul câmpurilor nu pot fi modificate, deoarece au un scop anume.
 
-off-chain transactions::
-    An off-chain transaction is the movement of value outside of the block chain. While an on-chain transaction&#x2014;usually referred to as simply __a transaction__&#x2014;modifies the blockchain and depends on the blockchain to determine its validity an off-chain transaction relies on other methods to record and validate the transaction.
+tranzacții în-afara-lanțului::
+    O tranzacție în-afara-lanțului este circulația valorii în afara lanțului-de-blocuri. În timp ce o tranzacție pe-lanț denumită de obicei simplu __o tranzacție__  modifică lanțul-de-blocuri și depinde de lanțul-de-blocuri pentru a determina validitatea acesteia, o tranzacție în-afara-lanțului se bazează pe alte metode de înregistrare și validare a tranzacției.
 
-opcode::
-    Operation codes from the Bitcoin Script language which push data or perform functions within a pubkey script or signature script.
+operator (opcode)::
+    Operatori (coduri de operare) din limbajul Bitcoin Script care împing date sau îndeplinesc funcții într-un script pubkey sau într-un script semnătură.
 
-Open Assets protocol::
-    The Open Assets Protocol is a simple and powerful protocol built on top of the bitcoin blockchain. It allows issuance and transfer of user-created assets.
+Protocolul Open Assets::
+    Protocolul Open Assets este un protocol simplu și puternic, construit peste lanțul-de-blocuri bitcoin. Permite emiterea și transferul de active create de utilizator.
 
 OP_RETURN::
-    An opcode used in one of the outputs in an OP_RETURN transaction. Not to be confused with OP_RETURN transaction.
+    Un operator utilizat într-una dintre ieșirile dintr-o tranzacție OP_RETURN. Nu trebuie confundat cu tranzacția OP_RETURN.
 
-OP_RETURN transaction::
-    A transaction type that adds arbitrary data to a provably unspendable pubkey script that full nodes don’t have to store in their UTXO database. Not to be confused with OP_RETURN opcode.
+Tranzacție OP_RETURN::
+    Un tip de tranzacție care adaugă date arbitrare la un script pubkey (necheltuibil) pe care nodurile complete nu trebuie să le stocheze în baza lor de date UTXO. Nu trebuie confundat cu operatorul OP_RETURN.
 
-orphan block::
-    Blocks whose parent block has not been processed by the local node, so they can’t be fully validated yet. Not to be confused with stale block.
+bloc orfan::
+    Blocurile al căror bloc părinte nu a fost procesat de nodul local, deci nu pot fi validate complet. Nu trebuie confundat cu bloc învechit.
 
-orphan transactions::
-    Transactions that can't go into the pool due to one or more missing input transactions.
+tranzacții orfane::
+    Tranzacții care nu pot intra în bazin din cauza uneia sau a mai multor tranzacții de intrare lipsă.
 
-output::
-    Output, transaction output, or TxOut is an output in a transaction which contains two fields: a value field for transferring zero or more satoshis and a pubkey script for indicating what conditions must be fulfilled for those satoshis to be further spent.
+ieșire::
+    Ieșire, ieșire de tranzacție sau TxOut este o ieșire într-o tranzacție care conține două câmpuri: un câmp valoric pentru transferul a zero sau mai mulți satoshi și un script pubkey pentru a indica ce condiții trebuie îndeplinite pentru ca acei satoshi să poată fi cheltuiți în continuare.
 
 P2PKH::
-    Transactions that pay a bitcoin address contain P2PKH or Pay To PubKey Hash scripts. An output locked by a P2PKH script can be unlocked (spent) by presenting a public key and a digital signature created by the corresponding private key.
+    Tranzacțiile care plătesc o adresă bitcoin conțin scripturi P2PKH sau Plată-către-Cheie-Publică (Pay To PubKey Hash). O ieșire blocată de un script P2PKH poate fi deblocată (cheltuită) prin prezentarea unei chei publice și a unei semnături digitale create de cheia privată corespunzătoare.
 
 P2SH::
-    P2SH or Pay-to-Script-Hash is a powerful new type of transaction that greatly simplifies the use of complex transaction scripts. With P2SH the complex script that details the conditions for spending the output (redeem script) is not presented in the locking script. Instead, only a hash of it is in the locking script.
+    P2SH sau Plată-către-Rezumat-Script (Pay-to-Script-Hash) este un nou tip puternic de tranzacție care simplifică mult utilizarea scripturilor complexe de tranzacții. Cu P2SH scriptul complex care detaliază condițiile de cheltuire a ieșirii (script de răscumpărare) nu este prezentat în scriptul de blocare. În schimb, doar un rezumat al acestuia este în scriptul de blocare.
 
-P2SH address::
-    P2SH addresses are Base58Check encodings of the 20-byte hash of a script, P2SH addresses use the version prefix "5", which results in Base58Check-encoded addresses that start with a "3". P2SH addresses hide all of the complexity, so that the person making a payment does not see the script.
+Adresă P2SH::
+    Adresele P2SH sunt codificări Base58Check ale rezumatului de 20 de octeți ale unui script, adresele P2SH folosesc prefixul versiunii ”5”, ceea ce are ca rezultat adrese codificate Base58Check care încep cu un ”3”. Adresele P2SH ascund toată complexitatea, astfel încât persoana care efectuează o plată să nu vadă scriptul.
 
 P2WPKH::
-    The signature of a P2WPKH (Pay-to-Witness-Public-Key-Hash) contains the same information as a P2PKH spending, but is located in the witness field instead of the scriptSig field. The scriptPubKey is also modified.
+    Semnătura unui P2WPKH Plată-către-Martor-Rezumat-Cheie-Publică (Pay-to-Witness-Public-Key-Hash) conține aceleași informații ca o cheltuire P2PKH, dar este localizată în câmpul martor și nu în câmpul scriptSig. scriptPubKey este de asemenea modificat.
 
 P2WSH::
-    The difference between P2SH and P2WSH (Pay-to-Witness-Script-Hash) is about the cryptographic proof location change from the scriptSig field to the witness field and the scriptPubKey that is also modified.
+    Diferența dintre P2SH și P2WSH (Pay-to-Witness-Script-Hash) se referă la schimbarea locației dovezii criptografice din câmpul scriptSig în câmpul martor și scriptPubKey care este, de asemenea, modificat.
 
-paper wallet::
-    In the most specific sense, a paper wallet is a document containing all of the data necessary to generate any number of Bitcoin private keys, forming a wallet of keys. However, people often use the term to mean any way of storing bitcoin offline as a physical document. This second definition also includes paper keys and redeemable codes.
+portofel de hârtie::
+    În sensul cel mai specific, un portofel de hârtie este un document care conține toate datele necesare pentru a genera orice număr de chei private bitcoin, formând un portofel de chei. Cu toate acestea, oamenii folosesc adesea termenul pentru a însemna orice mod de stocare offline a bitcoin ca document fizic. Această a doua definiție include de asemenea chei de hârtie și coduri de răscumpărare.
 
-payment channels::
-    A micropayment channel or payment channel is class of techniques designed to allow users to make multiple bitcoin transactions without committing all of the transactions to the bitcoin blockchain. In a typical payment channel, only two transactions are added to the block chain but an unlimited or nearly unlimited number of payments can be made between the participants.
+canale de plată::
+    Un canal de microplată sau un canal de plată este o clasă de tehnici concepute pentru a permite utilizatorilor să efectueze mai multe tranzacții bitcoin fără a transmite toate tranzacțiile către lanțul-de-blocuri bitcoin. Într-un canal de plată tipic, doar două tranzacții sunt adăugate în lanțul-de-blocuri, dar un număr nelimitat sau aproape nelimitat de plăți poate fi făcut între participanți.
 
-pooled mining::
-    Pooled mining is a mining approach where multiple generating clients contribute to the generation of a block, and then split the block reward according the contributed processing power.
+minerit în bazin::
+    Mineritul în bazin este o abordare minieră în care mai mulți clienți contribuie la generarea unui bloc, apoi împart recompensa blocului în funcție de puterea de procesare cu care au contribuit.
 
-Proof-of-Stake::
-    Proof-of-Stake (PoS) is a method by which a cryptocurrency blockchain network aims to achieve distributed consensus. Proof-of-Stake asks users to prove ownership of a certain amount of currency (their "stake" in the currency).
+Dovadă-a-Mizei::
+    Dovadă-a-Mizei (PoS) este o metodă prin care o rețea lanț-de-blocuri de criptomonedă își propune să obțină un consens distribuit. Dovada-Mizei solicită utilizatorilor să demonstreze deținerea unei anumite sume de monedă (”miza” lor în monedă).
 
-Proof-of-Work::
-    A piece of data that requires significant computation to find. In bitcoin, miners must find a numeric solution to the SHA256 algorithm that meets a network-wide target, the difficulty target.
+Dovadă-de-Lucru::
+    Un fragment de date care necesită calcul semnificativ pentru a fi găsi. În bitcoin, minerii trebuie să găsească o soluție numerică la algoritmul SHA256 care îndeplinește o țintă la nivelul întregii rețele, ținta de dificultate.
 
-reward::
-    An amount included in each new block as a reward by the network to the miner who found the Proof-of-Work solution. It is currently 12.5 BTC per block.
+recompensă::
+    Suma inclusă în fiecare nou bloc ca recompensă de către rețea pentru minerul care a găsit soluția Dovadă-de-Lucru. În prezent este 12,5 BTC pe bloc.
 
 RIPEMD-160::
-    RIPEMD-160 is a 160-bit cryptographic hash function. RIPEMD-160 is a strengthened version of RIPEMD with a 160-bit hash result, and is expected to be secure for the next ten years or more.
+    RIPEMD-160 este o funcție de rezumare criptografică pe 160 de biți. RIPEMD-160 este o versiune consolidată a RIPEMD cu un rezumat pe 160 de biți și este de așteptat să fie sigură pentru următorii zece ani sau mai mult.
 
 satoshi::
-    A satoshi is the smallest denomination of bitcoin that can be recorded on the blockchain. It is the equivalent of 0.00000001 bitcoin and is named after the creator of Bitcoin, Satoshi Nakamoto. ((("satoshi")))
+    Un satoshi este cea mai mică denominare în bitcoin care poate fi înregistrată pe lanțul-de-blocuri. Este echivalentul a 0.00000001 bitcoin și poartă numele creatorului Bitcoin, Satoshi Nakamoto.((("satoshi")))
 
 Satoshi Nakamoto::
-    Satoshi Nakamoto is the name used by the person or people who designed Bitcoin and created its original reference implementation, Bitcoin Core. As a part of the implementation, they also devised the first blockchain database. In the process they were the first to solve the double-spending problem for digital currency. Their real identity remains unknown.
+    Satoshi Nakamoto este numele folosit de persoana sau persoanele care au conceput Bitcoin și au creat implementarea sa de referință inițială, Bitcoin Core. Ca parte a implementării, au conceput și prima bază de date lanț-de-blocuri. În acest proces, ei au fost primii care au rezolvat problema dublei cheltuiri pentru monede digitale. Identitatea lor reală rămâne necunoscută.
 
 Script::
-    Bitcoin uses a scripting system for transactions. Forth-like, Script is simple, stack-based, and processed from left to right. It is purposefully not Turing-complete, with no loops.
+    Bitcoin utilizează un sistem de scriptare pentru tranzacții. Asemănător cu Forth, Script este simplu, bazat pe stivă și procesat de la stânga la dreapta. În mod intenționat nu este Turing-complet, fără bucle.
 
-ScriptPubKey (aka pubkey script)::
-    ScriptPubKey or pubkey script, is a script included in outputs which sets the conditions that must be fulfilled for those satoshis to be spent. Data for fulfilling the conditions can be provided in a signature script.
+ScriptPubKey (sau pubkey script)::
+    ScriptPubKey sau script pubkey, este un script inclus în ieșiri care stabilește condițiile care trebuie îndeplinite pentru ca satoshii să poată să fie cheltuiți. Datele pentru îndeplinirea condițiilor pot fi furnizate într-un script semnătură.
 
-ScriptSig (aka signature script)::
-    ScriptSig or signature script, is the data generated by a spender which is almost always used as variables to satisfy a pubkey script.
+ScriptSig (sau script semnătură)::
+    ScriptSig sau script semnătură, sunt datele generate de către cel care cheltuiește care sunt aproape întotdeauna folosite ca variabile pentru a satisface un script pubkey.
 
-secret key (aka private key)::
-	The secret number that unlocks bitcoin sent to the corresponding address.  pass:[<span class="keep-together">A secret</span>] key looks like the following:
+cheie secretă (sau cheie privată)::
+	Numărul secret care deblochează bitcoin trimis la adresa corespunzătoare. pass:[<span class="keep-together">O cheie secretă</span>] arata astfel:
 +
 ----
 5J76sF8L5jTtzE96r66Sf8cka9y44wdpJjMwCxR3tzLh3ibVPxh
 ----
 
-Segregated Witness::
-    Segregated Witness is an upgrade to the Bitcoin protocol in which signature ("witness") data is separated from sender/receiver data to further optimize the structure of transactions. Segregated Witness was implemented as a soft fork; a change that technically makes Bitcoin’s protocol rules more restrictive.
+Martor Segregat::
+    Martorul Segregat este o actualizarea protocolului Bitcoin în care datele de semnătură (”martor”) sunt separate de datele expeditorului/receptorului pentru a optimiza și mai mult structura tranzacțiilor. Martorul segregat a fost implementat ca o bifurcare soft; o schimbare care, din punct de vedere tehnic, face ca regulile protocolului bitcoin să fie mai restrictive.
 
 SHA::
-    The Secure Hash Algorithm or SHA is a family of cryptographic hash functions published by the National Institute of Standards and Technology (NIST).
+    Algoritmul de Rezumare Sigur (Secure Hash Algorithm ) sau SHA este o familie de funcții de rezumare criptografice publicate de Institutul Național de Standarde și Tehnologie (NIST) din SUA.
 
-Simplified Payment Verification (SPV)::
-    SPV or simplified payment verification is a method for verifying that particular transactions were included in a block, without downloading the entire block. This method of verification is often used by lightweight Bitcoin clients.
+Verificare simplificată a Plății (SPV)::
+    SPV (Simplified Payment Verification) sau Verificarea simplificată a Plății este o metodă pentru a verifica dacă anumite tranzacții au fost incluse într-un bloc, fără a descărca întregul bloc. Această metodă de verificare este adesea folosită de clienții supli bitcoin.
 
-soft fork::
-    soft fork or Soft-Forking Change is a temporary fork in the blockchain which commonly occurs when miners using non-upgraded nodes don't follow a new consensus rule their nodes don’t know about.
-    Not to be confused with fork, hard fork, software fork or Git fork.
+bifurcare soft::
+    Bifurcarea Soft sau Schimbare prin Bifurcare Soft este o bifurcare temporară din lanțul-de-blocuri, care apare în mod obișnuit când minerii folosesc noduri neactualizate și nu respectă o nouă regulă de consens despre care nodurile lor nu știe.
+    Nu trebuie confundat cu bifurcare, bifurcare hard, bifurcare software sau bifurcare Git
 
-stale block::
-    Block that was successfully mined but that isn’t included on the current best block chain, likely because some other block at the same height had its chain extended first. Not to be confused with orphan block.
+bloc învechit::
+    Blocul care a fost minat cu succes, dar care nu este inclus în cel mai bun lanț-de-blocuri actual, probabil pentru că un alt bloc la aceeași înălțime și-a extins primul lanț. Nu trebuie confundat cu blocul orfan.
 
-timelocks::
-    A timelock is a type of encumbrance that restricts the spending of some bitcoin until a specified future time or block height. Timelocks feature prominently in many Bitcoin contracts, including payment channels and hashed timelock contracts.
+timpi-de-blocare::
+    Un timp-de-blocare este un tip de limitare care restricționează cheltuirea bitcoin până la o dată viitoare sau o anumită înălțime a blocului. Timpii-de-blocare au o caracteristică importantă în multe contracte bitcoin, inclusiv canale de plată și contracte cu timp-de-blocare.
 
-transaction::
-    In simple terms, a transfer of bitcoin from one address to another. More precisely, a transaction is a signed data structure expressing a transfer of value. Transactions are transmitted over the bitcoin network, collected by miners, and included into blocks, made permanent on the blockchain.
+tranzacție::
+    În termeni simpli, un transfer de bitcoin de la o adresă la alta. Mai precis, o tranzacție este o structură de date semnată care exprimă un transfer de valoare. Tranzacțiile sunt transmise prin rețeaua bitcoin, colectate de către mineri și incluse în blocuri, devenind permanente pe lanțul-de-blocuri.
 
-transaction pool::
-    An unordered collection of transactions that are not in blocks in the main chain, but for which we have input transactions.
+bazin de tranzacții::
+    O colecție neordonată de tranzacții care nu se află în blocurile din lanțul principal, dar pentru care avem tranzacții de intrare.
 
-Turing completeness::
-    A programming language is called "Turing complete" if it can run any program that a Turing machine can run, given enough time and memory.
+Turing complet::
+    Un limbaj de programare se numește ”Turing complet” dacă poate rula orice program pe care îl poate rula o mașină Turing, având suficient timp și memorie.
 
-unspent transaction output (UTXO)::
-    UTXO is an unspent transaction output that can be spent as an input in a new transaction.
+ieșire de tranzacție necheltuită (UTXO) ::
+    UTXO este o ieșire a unei tranzacții care poate fi utilizată ca o intrare într-o nouă tranzacție.
 
-wallet::
-    Software that holds all your bitcoin addresses and secret keys. Use it to send, receive, and store your bitcoin.
+portofel::
+    Software care conține toate adresele dumneavoastră. bitcoin și cheile secrete. Folosiți-l pentru a trimite, primi și stoca bitcoinul dumneavoastră.
 
-Wallet Import Format (WIF)::
-    WIF or Wallet Import Format is a data interchange format designed to allow exporting and importing a single private key with a flag indicating whether or not it uses a compressed public key.
+Format de Import Portofel (WIF) ::
+    Formatul WIF sau Wallet Import Format este un format de schimb de date conceput pentru a permite exportul și importul unei singure chei private cu un indicator care indică dacă folosește sau nu o cheie publică comprimată.
 
-Some contributed definitions have been sourced under a CC-BY license from the https://en.bitcoin.it/wiki/Main_Page[bitcoin Wiki] or from other open source documentation sources.
+Unele definiții contribuite au fost obținute sub licența CC-BY de la https://en.bitcoin.it/wiki/Main_Page[bitcoin Wiki] sau din alte surse de documentare open source.
