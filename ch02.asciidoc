@@ -3,20 +3,20 @@
 
 === Tranzacții, Blocuri, Minerit si Blockchain
 
-((("bitcoin", "prezentare generală a", id="BCover02")))((("autoritate centrală de încredere")))((("sisteme descentralizate", "prezentare generală a bitcoin", id="DCSover02")))Sistemul bitcoin, spre deosebire de sistemele tradiționale bancare și de plăți, se bazează pe o încredere descentralizată. În locul unei autorități centrale de încredere, în bitcoin, încrederea este obținută ca o proprietate emergentă din interacțiunile diferiților participanți în sistemul bitcoin. În acest capitol, vom examina bitcoin de la un nivel ridicat urmărind o singură tranzacție prin sistemul bitcoin și vom urmări cum devine ”de încredere” și acceptată de către mecanismul bitcoin de consens distribuit și în final înregistrată pe blockchain (lanțul-de-blocuri), registrul distribuit al tuturor tranzacțiilor.  Capitolele ulterioare vor aprofunda tehnologia din spatele tranzacțiilor, rețelei și mineritului.
+((("bitcoin", "prezentare generală a", id="BCover02")))((("autoritate centrală de încredere")))((("sisteme descentralizate", "prezentare generală a bitcoin", id="DCSover02")))Sistemul bitcoin, spre deosebire de sistemele tradiționale bancare și de plăți, se bazează pe o încredere descentralizată. În locul unei autorități centrale de încredere, în bitcoin, încrederea este obținută ca o proprietate emergentă din interacțiunile diferiților participanți în sistemul bitcoin. În acest capitol, vom examina bitcoin de la un nivel ridicat urmărind o singură tranzacție prin sistemul bitcoin și vom urmări cum devine ”de încredere” și acceptată de către mecanismul bitcoin de consens distribuit și în final înregistrată pe lanțul-de-blocuri (blockchain), registrul distribuit al tuturor tranzacțiilor.  Capitolele ulterioare vor aprofunda tehnologia din spatele tranzacțiilor, rețelei și mineritului.
 
 ==== Prezentare Generală a Bitcoin
 
-În diagrama de ansamblu prezentată în <<bitcoin-overview>>, vedem că sistemul bitcoin este format din utilizatori cu portofele care conțin chei, tranzacții care sunt propagate în rețea și mineri care produc (prin calcul competitiv) lanțul de blocuri (blockchain-ul) consensual, care este registrul autoritar a tuturor tranzacțiilor.
+În diagrama de ansamblu prezentată în <<bitcoin-overview>>, vedem că sistemul bitcoin este format din utilizatori cu portofele care conțin chei, tranzacții care sunt propagate în rețea și mineri care produc (prin calcul competitiv) lanțul-de-blocuri (blockchain-ul) consensual, care este registrul autoritar a tuturor tranzacțiilor.
 
 
-((("site-uri de explorare a lantului de blocuri")))Fiecare exemplu din acest capitol se bazează pe o tranzacție reală realizată în rețeaua bitcoin, simulând interacțiunile dintre utilizatori (Joe, Alice, Bob și Gopesh) prin trimiterea de fonduri dintr-un portofel în altul. În timp ce urmărim o tranzacție prin rețeaua bitcoin către blockchain, vom folosi un site _blockchain explorer_ (explorator pentru lanțul de blocuri) pentru a vizualiza fiecare pas. Un blockchain explorer este o aplicație web care funcționează ca un motor de căutare bitcoin, prin faptul că vă permite să căutați adrese, tranzacții și blocuri și să vedeți relațiile și fluxurile dintre ele.
+((("site-uri de explorare a lantului de blocuri")))Fiecare exemplu din acest capitol se bazează pe o tranzacție reală realizată în rețeaua bitcoin, simulând interacțiunile dintre utilizatori (Joe, Alice, Bob și Gopesh) prin trimiterea de fonduri dintr-un portofel în altul. În timp ce urmărim o tranzacție prin rețeaua bitcoin către lanțul-de-blocuri, vom folosi un site _blockchain explorer_ (explorator pentru lanțul-de-blocuri) pentru a vizualiza fiecare pas. Un explorator pentru lanțul-de-blocuri este o aplicație web care funcționează ca un motor de căutare bitcoin, prin faptul că vă permite să căutați adrese, tranzacții și blocuri și să vedeți relațiile și fluxurile dintre ele.
 
 [[bitcoin-overview]]
 .Prezentare generală bitcoin
 image::images/mbc2_0201.png["Prezentare generală bitcoin"]
 
-((("Explorator de Bloc Bitcoin")))((("Explorator BlockCypher")))((("blockchain.info")))((("BitPay Insight")))Exploratorii populari pentru lanțul de blocuri (blockchain) includ:
+((("Explorator de Bloc Bitcoin")))((("Explorator BlockCypher")))((("blockchain.info")))((("BitPay Insight")))Exploratorii populari pentru lanțul-de-blocuri (blockchain) includ:
 
 * https://live.blockcypher.com[BlockCypher Explorer]
 * https://blockchain.info[blockchain.info]
@@ -42,7 +42,7 @@ $1.50 USD
 
 ((("milibits")))Bob spune: „Costă un dolar-cincizeci sau cincisprezece milibiți”.
 
-((("solicitare de plată")))((("coduri QR", "cereri de plată")))Deasemenea, sistemul de vânzări al lui Bob va crea automat un cod QR special care conține o _solicitare de plată_ (vezi <<payment-request-QR>>).
+((("solicitare de plată")))((("coduri QR", "cereri de plată")))De asemenea, sistemul de vânzări al lui Bob va crea automat un cod QR special care conține o _solicitare de plată_ (vezi <<payment-request-QR>>).
 
 Spre deosebire de un codul QR care conține doar o adresă bitcoin de destinație, o solicitare de plată este o adresă URL codificată în codul QR care conține o adresă de destinație, o sumă de plată și o descriere generică, cum ar fi ”Cafeneaua lui Bob”. Acest lucru permite unei aplicații portofel bitcoin să completeze automat informațiile utilizate pentru a trimite plata și în același timp să arate o descriere care poate fi citită cu ușurință de către utilizator. Puteți scana codul QR cu o aplicație portofel bitcoin pentru a observa ce va vedea Alice.
 
@@ -51,12 +51,12 @@ Spre deosebire de un codul QR care conține doar o adresă bitcoin de destinați
 .Cod QR pentru solicitare de plată
 image::images/mbc2_0202.png["payment-request"]
 
-[Sfat]
+[TIP]
 ====
 ((("coduri QRs", "avertismente și precauții")))((("tranzacții", "avertismente și precauții")))((("avertismente și precauții", "evitați să trimiteți bani către adresele care apar în carte")))Încercați să scanați acest cod cu portofelul pentru a vedea adresa și suma, dar NU TRIMITEȚI BANI.
 ====
 [[payment-request-URL]]
-Codul QR al solicitării de plată codifică următoarea adresă URL, definită în BIP-21:
+.Codul QR al solicitării de plată codifică următoarea adresă URL, definită în BIP-21:
 ----
 bitcoin:1GdK9UzpHBzqzX2A9JFP3Di4weBwqgmoQA?
 amount=0.015&
@@ -75,7 +75,7 @@ Alice folosește smartphone-ul pentru a scana codul de bare afișat. Smartphone-
 
 În secțiunile următoare, vom examina această tranzacție mai detaliat. Vom vedea cum portofelul lui Alice a construit-o, cum a fost propagată în rețea, cum a fost verificată și, în final, cum Bob poate cheltui suma respectivă în tranzacții ulterioare.
 
-[NOTĂ]
+[NOTE]
 ====
 ((("valori fracționale")))((("mili-bitcoin")))((("satoshi-uri")))Rețeaua bitcoin poate tranzacționa în valori fracționale, de exemplu, de la milibitcoin (1/1000 dintr-un bitcoin) până la 1/100.000.000 de bitcoin, care este cunoscut sub numele de satoshi. De-a lungul acestei cărți, vom folosi termenul ”bitcoin” pentru a ne referi la orice cantitate de monedă bitcoin, de la cea mai mică unitate (1 satoshi) la numărul total (21.000.000) de bitcoin care poate fi minerit vreodată.
 ====
@@ -94,9 +94,9 @@ https://blockchain.info/tx/0627052b6f28912f2703066a912ea577f2ce4da4caa5a5fbd8a57
 
 ((("tranzacții", "definit")))În termeni simpli, o tranzacție spune rețelei că deținătorul unei anumite valori bitcoin a autorizat transferul acelei valori către un alt proprietar. Noul proprietar poate acum cheltui bitcoin prin crearea unei alte tranzacții care autorizează transferul către un alt proprietar și așa mai departe, într-un lanț de proprietate.
 
-==== Intrările și Ieșirile unei tranzacții
+==== Intrările și Ieșirile unei Tranzacții
 
-((("tranzacții", "prezentare generalaă a", id="Tover02")))((("ieșiri și intrări", "bazele")))Tranzacțiile sunt ca niște linii într-un registru de evidență cu două intrări. Fiecare tranzacție conține una sau mai multe ”intrări”, care sunt precum debiturile pentru un cont bitcoin. De cealaltă parte a tranzacției, există una sau mai multe ”ieșiri”, care sunt precum creditele adăugate într-un cont bitcoin. ((("comisioane", "comisioane de tranzacție")))Intrările și ieșirile (debite și credite) nu însumează neapărat aceeași sumă. În schimb, ieșirile însumează mai puțin decât intrarile, iar diferența reprezintă un _comision de tranzacție_ implicit, care este o mică plată colectată de către minerul care include tranzacția în registru. O tranzacție bitcoin este prezentată ca o înregistrare în evidența contabilă în <<transaction-double-entry>>.
+((("tranzacții", "prezentare generalaă a", id="Tover02")))((("ieșiri și intrări", "bazele")))Tranzacțiile sunt ca niște linii într-un registru de evidență cu două intrări. Fiecare tranzacție conține una sau mai multe ”intrări”, care sunt precum debiturile pentru un cont bitcoin. De cealaltă parte a tranzacției, există una sau mai multe ”ieșiri”, care sunt precum creditele adăugate într-un cont bitcoin. ((("comisioane", "comisioane de tranzacție")))Intrările și ieșirile (debite și credite) nu însumează neapărat aceeași sumă. În schimb, ieșirile însumează mai puțin decât intrările, iar diferența reprezintă un _comision de tranzacție_ implicit, care este o mică plată colectată de către minerul care include tranzacția în registru. O tranzacție bitcoin este prezentată ca o înregistrare în evidența contabilă în <<transaction-double-entry>>.
 
 Tranzacția conține, de asemenea, dovada dreptului de proprietate pentru fiecare sumă de bitcoin (intrări) a cărei valoare este cheltuită, sub forma unei semnături digitale de la proprietar, care poate fi validată independent de către oricine. ((("cheltuirea bitcoin", "definit")))În termeni bitcoin ”a cheltui” înseamnă a semna o tranzacție care transferă valoare de la o tranzacție anterioară către un nou proprietar identificat printr-o adresă bitcoin. 
 
@@ -106,7 +106,7 @@ image::images/mbc2_0203.png["Tranzacție Dublă-Intrare"]
 
 ==== Lanțuri de Tranzacție
 
-((("lanț de tranzacții")))Plata lui Alice către Cafeneaua lui Bob utilizează ca intrare o ieșire a unei tranzacții anterioare. În capitolul precedent, Alice a primit bitcoin de la prietenul ei Joe în schimbul dolarilor. Acea tranzacție a creat o valoare bitcoin blocată de cheia lui Alice. Noua ei tranzacție cu Cafeneaua lui Bob face referire la tranzacția anterioară drept intrare și creează noi ieșiri pentru a plăti cana de cafea și pentru a primi restul. Tranzacțiile formează un lanț, în care intrările din ultima tranzacție corespund ieșirilor tranzacțiilor anterioare. Cheia lui Alice furnizează semnătura care deblochează acele ieșiri ale tranzacțiilor anterioare, dovedind astfel rețelei bitcoin că ea deține fondurile. Ea atașează plata pentru cafea la adresa lui Bob, ”încărcând” acea ieșire cu cerința ca Bob să producă o semnătură pentru a cheltui acea sumă. Acesta reprezintă un transfer de valoare între Alice și Bob. Acest lanț de tranzacții, de la Joe la Alice până la Bob, este ilustrat în <<blockchain-mnemonic>>.
+((("lanț de tranzacții")))Plata lui Alice către Cafeneaua lui Bob utilizează ca intrare o ieșire a unei tranzacții anterioare. În capitolul precedent, Alice a primit bitcoin de la prietenul ei Joe în schimbul dolarilor. Acea tranzacție a creat o valoare bitcoin blocată de cheia lui Alice. Noua ei tranzacție cu Cafeneaua lui Bob face referire la tranzacția anterioară drept intrare și creează noi ieșiri pentru a plăti ceașca de cafea și pentru a primi restul. Tranzacțiile formează un lanț, în care intrările din ultima tranzacție corespund ieșirilor tranzacțiilor anterioare. Cheia lui Alice furnizează semnătura care deblochează acele ieșiri ale tranzacțiilor anterioare, dovedind astfel rețelei bitcoin că ea deține fondurile. Ea atașează plata pentru cafea la adresa lui Bob, ”restricționând” acea ieșire cu cerința ca Bob să producă o semnătură pentru a cheltui acea sumă. Acesta reprezintă un transfer de valoare între Alice și Bob. Acest lanț de tranzacții, de la Joe la Alice până la Bob, este ilustrat în <<blockchain-mnemonic>>.
 
 [[blockchain-mnemonic]]
 .Un lanț de tranzacții, în care ieșirea unei tranzacții este intrarea următoarei tranzacții
@@ -182,7 +182,7 @@ $ curl https://blockchain.info/unspent?active=1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK
 
 Răspunsul la  <<example_2-2>> arată o ieșire necheltuită (una care nu a fost încă folosită) în proprietatea adresei lui Alice +1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK+. Răspunsul include referința la tranzacția în care este conținută această ieșire necheltuită (plata de la Joe) și valoarea ei în statoshi, la 10 milioane, echivalentul a 0,10 bitcoin. Cu aceste informații aplicația portofel a lui Alice poate construi o tranzacție pentru a transfera acea valoare la adresa noului proprietar.
 
-[Sfat]
+[TIP]
 ====
 Vedeți https://www.blockchain.com/btc/tx/7957a35fe64f80d234d76d83a2a8f1a0d8149a41d81de548f0a65a8a999f6f18[tranzacție de la Joe la Alice].
 ====
@@ -206,7 +206,7 @@ Tranzacția rezultată poate fi văzută folosind o aplicație web ca explorator
 image::images/mbc2_0208.png["Tranzacția cu cafea a lui Alice"]
 
 [[transaction-alice-url]]
-[Sfat]
+[TIP]
 ====
 Vedeți  https://www.blockchain.com/btc/tx/0627052b6f28912f2703066a912ea577f2ce4da4caa5a5fbd8a57286c345c2f2[tranzacția lui Alice către Cafeneaua lui Bob].
 ====
@@ -227,7 +227,7 @@ Tranzacția creată de aplicația portofel a lui Alice are o lungime de 258 octe
 
 Dacă aplicația portofel a lui Bob este conectată direct la aplicația portofel a lui Alice, este posibil ca aplicația portofel a lui Bob să fie primul nod care primește tranzacția. Totuși, chiar dacă portofelul lui Alice trimite tranzacția prin alte noduri, aceasta va ajunge la portofelul lui Bob în câteva secunde. Portofelul lui Bob va identifica imediat tranzacția lui Alice ca o plată de intrare deoarece conține ieșiri care pot fi încasate cu cheile lui Bob. Aplicația portofel a lui Bob poate și să verifice independent că tranzacția este formată corect, că folosește ieșiri anterioare necheltuite, și că conține un comision de tranzacție suficient de mare pentru a fi inclusă în următorul bloc. În acest moment, Bob poate presupune, cu un risc scăzut, că tranzacția va fi inclusă în scurt timp într-un bloc si apoi confirmată.
 
-[Sfat]
+[TIP]
 ====
 ((("confirmări", "de valoare mică tranzacții", secondary-sortas="tranzacții de valoare mică")))O concepție greșită despre tranzacțiile bitcoin este că ele trebui să fie ”confirmate” așteptând 10 minute pentru un bloc nou, sau până la 60 de minute pentru șase confirmări complete. Deși confirmările asigură că tranzacția a fost acceptată de către toată rețeaua, o asemenea întârziere nu este necesară pentru articole de valoare mică cum ar fi o ceașcă de cafea. Un comerciant poate accepta o tranzacție de valoare mică fără nici o confirmare, fară a avea un risc mai mare decât o plată cu cardul de credit fară un act de identificare sau semnătură, cum comercianții acceptă in mod curent astăzi.((("", startref="Tconstruct02")))
 ====
@@ -260,7 +260,7 @@ Tranzacțiile sunt adăugate la noul bloc, prioritizate descrescător după valo
 
 Blocul câștigător a lui Jing a devenit parte din lanțul de blocuri ca fiind blocul #277316, conținând 419 tranzacții, inclusiv tranzacția lui Alice. Blocul care conține tranzacția lui Alice este socotit ca o (una) ”confirmare” a acelei tranzacții.
 
-[Sfat]
+[TIP]
 ====
 Puteți vedea blocul care include https://blockchain.info/btc/block/277316[tranzacția lui Alice].
 ====
