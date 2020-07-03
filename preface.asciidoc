@@ -3,7 +3,7 @@
 
 === Scrierea Cărții Bitcoin
 
-((("bitcoin", "beneficii ale", id="BCbasicbenefits0")))((("sisteme descentralizate", "bitcoin ca")))Am dat prima dată peste bitcoin la mijlocul anului 2011. Reacția mea imediată a fost mai mult sau mai puțin ”Pfft! Bani pentru tocilari!” și am ignorat bitcoin încă șase luni, nereușind să-i înțeleg importanța. Aceasta este o reacție pe care am văzut-o repetată printre mulți dintre cei mai deștepți oameni pe care îi cunosc, ceea ce îmi oferă oarecare consolare. A doua oară când am dat peste bitcoin, într-o discuție pe email, am decis să citesc raportul scris de Satoshi Nakamoto pentru a studia sursa autoritară și a vedea despre ce este vorba. (((”monede digitale”, ”bitcoin vs. altele”)))Îmi amintesc încă momentul în care am terminat de citit acele nouă pagini, când mi-am dat seama că bitcoin nu era pur și simplu o monedă digitală, ci o rețea de încredere care ar putea oferi baza pentru mult mai mult decât doar monede. Conștientizarea faptului că ”acest nu este bani, este o rețea de încredere descentralizată”, m-a pornit într-o călătorie de patru luni pentru a devora fiecare bucată de informații despre bitcoin pe care am putut-o găsi. Am devenit obsedat și încântat, petrecând 12 sau mai multe ore în fiecare zi lipit de un ecran, citind, scriind, codând și învățând cât am putut. Am ieșit din această stare de fugă, cu peste 20 de kilograme mai ușoar din lipsa unor mese consistente, hotărât să mă dedic lucrului cu bitcoin.
+((("bitcoin", "beneficii ale", id="BCbasicbenefits0")))((("sisteme descentralizate", "bitcoin ca")))Am dat prima dată peste bitcoin la mijlocul anului 2011. Reacția mea imediată a fost mai mult sau mai puțin ”Pfft! Bani pentru tocilari!” și am ignorat bitcoin încă șase luni, nereușind să-i înțeleg importanța. Aceasta este o reacție pe care am văzut-o repetată printre mulți dintre cei mai deștepți oameni pe care îi cunosc, ceea ce îmi oferă oarecare consolare. A doua oară când am dat peste bitcoin, într-o discuție pe email, am decis să citesc raportul scris de Satoshi Nakamoto pentru a studia sursa autoritară și a vedea despre ce este vorba. (((”monede digitale”, ”bitcoin vs. altele”)))Îmi amintesc încă momentul în care am terminat de citit acele nouă pagini, când mi-am dat seama că bitcoin nu era pur și simplu o monedă digitală, ci o rețea de încredere care ar putea oferi baza pentru mult mai mult decât doar monede. Conștientizarea faptului că ”aceasta nu este bani, este o rețea de încredere descentralizată”, m-a pornit într-o călătorie de patru luni pentru a devora fiecare bucată de informații despre bitcoin pe care am putut-o găsi. Am devenit obsedat și încântat, petrecând 12 sau mai multe ore în fiecare zi lipit de un ecran, citind, scriind, codând și învățând cât am putut. Am ieșit din această stare de fugă, cu peste 20 de kilograme mai ușor din lipsa unor mese consistente, hotărât să mă dedic lucrului cu bitcoin.
 
 Doi ani mai târziu, după ce am creat o serie de startup-uri mici pentru a explora diverse servicii și produse legate de bitcoin, am decis că este timpul să scriu prima mea carte. Bitcoin a fost subiectul care mă condusese într-o frenezie a creativității și mi-a consumat gândurile; a fost cea mai interesantă tehnologie pe care am întâlnit-o de la apariția internetului. Acum era timpul să împărtășesc pasiunea mea pentru această tehnologie uimitoare cu un public mai larg.
 
@@ -13,13 +13,13 @@ Doi ani mai târziu, după ce am creat o serie de startup-uri mici pentru a expl
 
 === De Ce Sunt Gândaci pe Copertă?
 
-(((”sisteme descentralizate”, ”în natură”)))Furnica tăietoare de frunze este o specie care prezintă un comportament extrem de complex într-un superorganism de colonie, dar fiecare furnică individuală operează pe un set de reguli simple determinate de interacțiunea socială și schimb de arome chimice (feromoni). Conform Wikipedia: ”Alături de oameni, furnicile tăietoare de frunze formează cele mai mari și mai complexe societăți de animale de pe Pământ”. Furnicile tăietoare de frunze nu mănâncă de fapt frunze, ci le folosesc pentru a dezvolta o ciupercă, care este sursa principală de hrană pentru colonie. What? Aceste furnici practică agricultura!
+(((”sisteme descentralizate”, ”în natură”)))Furnica tăietoare de frunze este o specie care prezintă un comportament extrem de complex într-un superorganism de colonie, dar fiecare furnică individuală operează conform unui set de reguli simple determinate de interacțiunea socială și schimb de arome chimice (feromoni). Conform Wikipedia: ”Alături de oameni, furnicile tăietoare de frunze formează cele mai mari și mai complexe societăți de animale de pe Pământ”. Furnicile tăietoare de frunze nu mănâncă de fapt frunze, ci le folosesc pentru a dezvolta o ciupercă, care este sursa principală de hrană pentru colonie. What? Aceste furnici practică agricultura!
 
 Deși furnicile formează o societate bazată pe caste și au o regină pentru producerea puilor, nu există nici o autoritate centrală sau lider într-o colonie de furnici. Comportamentul extrem de inteligent și sofisticat arătat de o colonie de milioane de membri este o proprietate rezultată din interacțiunea indivizilor într-o rețea socială.
 
 Natura demonstrează că sistemele descentralizate pot fi reziliente și pot produce o complexitate și sofisticare incredibilă fără a fi nevoie de o autoritate centrală, ierarhie, sau piese complexe.
 
-(((”sisteme descentralizate”, ”beneficii”)))Bitcoin este o rețea de încredere descentralizată extrem de sofisticată care poate susține numeroase procese financiare. Cu toate acestea, fiecare nod din rețeaua bitcoin respectă câteva reguli matematice simple. Interacțiunea dintre mai multe noduri este ceea ce duce la apariția unui comportament sofisticat, și nu o complexitate inerentă sau încredere într-un singur nod. Ca o colonie de furnici, rețeaua bitcoin este o de noduri simple rezistentă, care urmează reguli simple, care împreună pot face lucruri uimitoare fără nicio coordonare centrală.((("", startref="BCbasicbenefits0")))
+(((”sisteme descentralizate”, ”beneficii”)))Bitcoin este o rețea de încredere descentralizată extrem de sofisticată care poate susține numeroase procese financiare. Cu toate acestea, fiecare nod din rețeaua bitcoin respectă câteva reguli matematice simple. Interacțiunea dintre mai multe noduri este ceea ce duce la apariția unui comportament sofisticat, și nu o complexitate inerentă sau încredere într-un singur nod. Ca o colonie de furnici, rețeaua bitcoin este o rețea rezilientă formată din noduri simple, care urmează reguli simple, care împreună pot face lucruri uimitoare fără nicio coordonare centrală.((("", startref="BCbasicbenefits0")))
 
 === Convenții Utilizate în Această Carte
 
@@ -31,20 +31,20 @@ _Italic_:: Indică termeni noi, URL-uri, adrese de email, nume de fișiere și e
 
 ** `Lățime constantă bold`**:: Indică comenzi sau alt text care ar trebui să fie introdus așa cum este de către utilizator.
 
-_ ++Lățime constantă italic++ _:: Arata un text care ar trebui să fie înlocuite cu valorile furnizate de utilizator sau prin valori determinate de context.
+_ ++Lățime constantă italic++_:: Arata un text care ar trebui să fie înlocuite cu valorile furnizate de utilizator sau prin valori determinate de context.
 
 
-[SFAT]
+[TIP]
 ====
 Această pictogramă semnifică un sfat sau o sugestie.
 ====
 
-[NOTĂ]
+[NOTE]
 ====
 Această pictogramă semnifică o notă generală.
 ====
 
-[ATENȚIE]
+[WARNING]
 ====
 Această pictogramă indică un avertisment sau precauție.
 ====
@@ -57,11 +57,11 @@ Toate fragmentele de cod pot fi reproduse pe majoritatea sistemelor de operare c
 
 Unele dintre fragmentele de cod  au fost reformatate pentru tipărire. În toate aceste cazuri, liniile au fost împărțite cu un caracter backslash (\), urmat de un caracter line-nouă. Când transcrieți exemplele, eliminați cele două caractere și alăturați-le din nou și ar trebui să vedeți rezultate identice, așa cum se arată în exemplu.
 
-Toate fragmentele de cod folosesc valori reale și calcule acolo unde este posibil, astfel încât să puteți construi de la un exemplu la altul și sa vedeți aceleași rezultate pentru orice cod scrieți pentru a calcula aceleași valori. De exemplu, cheile private și cheile publice corespunzătoare și adresele sunt reale. Tranzacțiile, blocurile, si refrințele la lanțul-de-blocuri toate au fost introduse în lanțul-de-blocuri real bitcoin și fac parte din registrul public, pentru a le putea examina pe orice sistem bitcoin.
+Toate fragmentele de cod folosesc valori reale și calcule acolo unde este posibil, astfel încât să puteți construi de la un exemplu la altul și să vedeți aceleași rezultate pentru orice cod scrieți pentru a calcula aceleași valori. De exemplu, cheile private și cheile publice corespunzătoare și adresele sunt reale. Tranzacțiile, blocurile, si refrințele la lanțul-de-blocuri toate au fost introduse în lanțul-de-blocuri real bitcoin și fac parte din registrul public, pentru a le putea examina pe orice sistem bitcoin.
 
 === Utilizarea Exemplelor de Cod
 
-Aceasta carte este aici pentru a vă ajuta sa vă duceți proiectul la bun sfârșit. În general, exemplele de cod oferite cu această carte se pot folosi în programele și documentația dumneavoastră. Nu este nevoie să ne contactați pentru permisiune dacă nu reproduceți o parte semnificativă a codului. De exemplu, scriind un program care utilizează câteva bucăți de cod din această carte nu este nevoie de permisiunea noastră. Vanzarea sau distribuirea CD-ROM-ului cu exemple de la O'Reilly are nevoie de permisiune. Răspunzând unei întrebări, citând această carte și citând exemplul de cod nu are nevoie de permisiune. Încorporarea unei cantități semnificative din exemplele de cod din această carte în documentația produsului dumneavoastră are nevoie în schimb de nevoie permisiune.
+Această carte este aici pentru a vă ajuta sa vă duceți proiectul la bun sfârșit. În general, exemplele de cod oferite cu această carte se pot folosi în programele și documentația dumneavoastră. Nu este nevoie să ne contactați pentru permisiune dacă nu reproduceți o parte semnificativă a codului. De exemplu, scriind un program care utilizează câteva bucăți de cod din această carte nu este nevoie de permisiunea noastră. Vanzarea sau distribuirea CD-ROM-ului cu exemple de la O'Reilly are nevoie de permisiune. Răspunzând unei întrebări, citând această carte și citând exemplul de cod nu are nevoie de permisiune. Încorporarea unei cantități semnificative din exemplele de cod din această carte în documentația produsului dumneavoastră are nevoie în schimb de nevoie permisiune.
 
 ((("atribuție")))Apreciem, dar nu necesităm necesită, atribuire. De obicei, o atribuție include titlul, autorul, editorul și ISBN-ul. De exemplu: ”_Mastering Bitcoin_ de Andreas M. Antonopoulos (O’Reilly). Copyright 2017 Andreas M. Antonopoulos, 978-1-491-95438-6.”
 
@@ -75,7 +75,7 @@ Dacă considerați că utilizarea dumneavoastră a exemplelor de cod nu se înca
 
 Cu toate acestea, rețineți că cheile private utilizate pentru construirea adreselor sunt fie tipărite în această carte, fie au fost ”arse”. Asta înseamnă că dacă trimiteți bani la oricare dintre aceste adrese, banii vor fi pierduți pentru totdeauna, sau în unele cazuri, toți cei care pot citi cartea îi pot lua folosind cheile private tipărite aici.
 
-[ATENȚIE]
+[WARNING]
 ====
 NU TRIMITI BANI LA NICIUNA DINTRE ADRESELE DIN ACEASTĂ CARTE. Banii dumneavoastră vor fi luați de un alt cititor sau îi veți pierde pentru totdeauna.((("", startref="codeuse00")))
 ====
@@ -83,7 +83,7 @@ NU TRIMITI BANI LA NICIUNA DINTRE ADRESELE DIN ACEASTĂ CARTE. Banii dumneavoast
 === O'Reilly Safari
 
 [rol = "safarienabled"]
-[NOTĂ]
+[NOTE]
 ====
 pass:[<a href="http://oreilly.com/safari" class="orm:hideurl"><em class="hyperlink">Safari</em></a>] (fostă Safari Books Online) este o platformă de instruire și de referință  pentru întreprinderi, guverne, educatori și persoane fizice.
 ====
@@ -142,7 +142,7 @@ link:$$https://patreon.com/aantonop$$[]
 
 ((("mulțumiri", id="acknowledge0")))Această carte reprezintă eforturile și contribuțiile multor persoane. Sunt recunoscător pentru tot ajutorul pe care l-am primit de la prieteni, colegi și chiar persoane complet necunoscute, care mi s-au alăturat în acest efort de a scrie această carte tehnică despre criptomonede și bitcoin.
 
-Este imposibil să se facă o distincție între tehnologia bitcoin și comunitatea bitcoin, iar această carte este la fel de mult un produs al comunității cât și o carte despre tehnologie. Munca mea la această carte a fost încurajată, aclamată, susținută și răsplătită de către întreaga comunitate bitcoin încă de la început și până la sfârșit. Mai mult decât orice, această carte mi-a permis să fac parte dintr-o comunitate minunată timp de doi ani și nu pot mulțumi îndeajuns pentru acceptarea mea în această comunitate. Sunt prea multe persoane pentru a menționa numele acestora individual, oameni pe care i-am întâlnit la conferințe, evenimente, seminarii, meetups, întâlniri cu pizza, și adunări private mici, precum si mai mulți sunt cei cu care au comunicat cu mine pe Twitter, pe Reddit, pe bitcointalk.org, și pe GitHub și care au avut un impact asupra acestei cărți. Fiecare idee, analogie, întrebare, răspuns, și explicație veți găsi în această carte au fost la un moment dat inspirate, testate, sau îmbunătățite prin interacțiunile mele cu comunitatea. Vă mulțumesc tuturor pentru sprijinul acordat; fără voi această carte nu s-ar fi întâmplat. Sunt pentru totdeauna recunoscător.
+Este imposibil să se facă o distincție între tehnologia bitcoin și comunitatea bitcoin, iar această carte este la fel de mult un produs al comunității cât și o carte despre tehnologie. Munca mea la această carte a fost încurajată, aclamată, susținută și răsplătită de către întreaga comunitate bitcoin încă de la început și până la sfârșit. Mai mult decât orice, această carte mi-a permis să fac parte dintr-o comunitate minunată timp de doi ani și nu pot mulțumi îndeajuns pentru acceptarea mea în această comunitate. Sunt prea multe persoane pentru a menționa numele acestora individual, oameni pe care i-am întâlnit la conferințe, evenimente, seminarii, meetups, întâlniri cu pizza, și adunări private mici, precum si mai mulți sunt cei care au comunicat cu mine pe Twitter, pe Reddit, pe bitcointalk.org, și pe GitHub și care au avut un impact asupra acestei cărți. Fiecare idee, analogie, întrebare, răspuns, și explicație pe care le veți găsi în această carte au fost la un moment dat inspirate, testate, sau îmbunătățite prin interacțiunile mele cu comunitatea. Vă mulțumesc tuturor pentru sprijinul acordat; fără voi această carte nu s-ar fi întâmplat. Sunt pentru totdeauna recunoscător.
 
 Călătoria spre a deveni autor începe cu mult înainte de prima carte, desigur. Prima mea limbă (și școala) a fost limba greacă, așa că a trebuit să urmez un curs de redactare în limba engleze în primul meu an de universitate. Îi datorez mulțumiri Dianei Kordas, profesoara mea de scriere engleză, care m-a ajutat să îmi construiesc încredere și abilități în acel an. Mai târziu, ca profesionist, mi-am dezvoltat abilitățile de scriere tehnică pe tema centrelor de date, scriind pentru revista _Network World_. Îi datorez mulțumiri lui John Dix și John Gallant, care mi-au oferit primul meu post de scriitor în calitate de columnist la _Network World_ și editorului meu Michael Cooney și colegei mele Johna Till Johnson, care au editat coloanele mele și le-au făcut potrivite pentru publicare. Scrierea a 500 de cuvinte pe săptămână timp de patru ani mi-a oferit suficientă experiență pentru a avea în vedere în cele din urmă să devin autor.
 
@@ -161,150 +161,3 @@ Mai mulți dezvoltatori bitcoin au contribuit cu mostre de cod, recenzii, coment
 Datorez dragostea mea pentru cuvinte și cărți mamei mele, Theresa, care m-a crescut într-o casă cu cărți captușind fiecare perete. Mama mea mi-a cumparat de asemenea, primul meu calculator în 1982, în ciuda faptului că mă consider technofob. Tatăl meu, Menelaos, un inginer în construcții civile care tocmai a publicat prima sa carte la 80 de ani, a fost cel care m-a învățat gândirea logică și analitică și o iubire pentru știință și inginerie.
 
 Vă mulțumesc tuturor că m-ați susținut pe parcursul acestei călătorii.
-
-[[github_contrib]]
-==== Proiect de Lansare Timpurie (contribuții GitHub)
-
-Mulți participanți au oferit comentarii, corecții și completări la proiectul de lansare timpurie pe GitHub. Vă mulțumim tuturor pentru contribuțiile dumneavoastră la această carte.
-
-Următoarea este o listă de contribuabili notabili pe GitHub:
-
-* Abdussamad Abdurrazzaq (AbdussamadA)
-* Adán SDPC (aesedepece)
-* Akira Chiku (achiku)
-* Alex Waters (alexwaters)
-* Andrew Donald Kennedy (grkvlt)
-* Andrey Esaulov (andremaha)
-* Arthur O'Dwyer (Quuxplusone)
-* bargitta
-* bisqfan
-* bitcoinctf
-* blip151
-* Bryan Gmyrek (physicsdude)
-* Casey Flynn (cflynn07)
-* cclauss
-* Chapman Shoop (belovachap)
-* Christie D'Anna (avocadobreath)
-* Cihat Imamoglu (cihati)
-* Cody Scott (Siecje)
-* coinradar
-* Cragin Godley (cgodley)
-* Craig Dodd (cdodd)
-* dallyshalla
-* Dan Nolan (Dan-Nolan)
-* Darius Kramer (dkrmr)
-* Darko Janković (trulex)
-* David Huie (DavidHuie)
-* didongke
-* Diego Viola (diegoviola)
-* Dimitris Tsapakidis (dimitris-t)
-* Dirk Jäckel (biafra23)
-* Dmitry Marakasov (AMDmi3)
-* drstrangeM
-* Ed Eykholt (edeykholt)
-* Ed Leafe (EdLeafe)
-* Edward Posnak (edposnak)
-* Elias Rodrigues (elias19r)
-* Eric Voskuil (evoskuil)
-* Eric Winchell (winchell)
-* Erik Wahlström (erikwam)
-* effectsToCause (vericoin)
-* Esteban Ordano (eordano)
-* ethers
-* Evlix
-* fabienhinault
-* Fan (whiteath)
-* François Wirion (wirion)
-* Frank Höger (francyi)
-* Gaurav Rana (bitcoinsSG)
-* genjix
-* Geremia
-* Gerry Smith (Hermetic)
-* gmr81
-* Gregory Trubetskoy (grisha)
-* Gus (netpoe)
-* halseth
-* harelw
-* Harry Moreno (morenoh149)
-* Holger Schinzel (schinzelh)
-* Ioannis Cherouvim (cherouvim)
-* Ish Ot Jr. (ishotjr)
-* ivangreene
-* James Addison (jayaddison)
-* Jameson Lopp (jlopp)
-* Jason Bisterfeldt (jbisterfeldt)
-* Javier Rojas (fjrojasgarcia)
-* Jordan Baczuk (JBaczuk)
-* Jeremy Bokobza (bokobza)
-* JerJohn15
-* Jo Wo (jowo-io)
-* Joe Bauers (joebauers)
-* joflynn
-* Johnson Lau (jl2012)
-* Jonathan Cross (jonathancross)
-* Jorgeminator
-* jwbats
-* Kai Bakker (kaibakker)
-* kollokollo
-* lightningnetworkstores
-* lilianrambu
-* Liu Yue (lyhistory)
-* Lucas Betschart (lclc)
-* Magomed Aliev (30mb1)
-* Mai-Hsuan Chia (mhchia)
-* Marco Falke (MarcoFalke)
-* María Martín (mmartinbar)
-* Mark Pors (pors)
-* Martin Vseticka (MartyIX)
-* Marzig (marzig76)
-* Matt McGivney (mattmcgiv)
-* Maximilian Reichel (phramz)
-* Michalis Kargakis (kargakis)
-* Michael C. Ippolito (michaelcippolito)
-* Michael Newman (michaelbnewman)
-* Mihail Russu (MihailRussu)
-* Minh T. Nguyen (enderminh)
-* montvid
-* Morfies (morfies)
-* Nagaraj Hubli (nagarajhubli)
-* Nekomata (nekomata-3)
-* nekonenene
-* Nhan Vu (jobnomade)
-* Nicholas Chen (nickycutesc)
-* Omar Boukli-Hacene (oboukli)
-* Parzival (Parz-val)
-* Philipp Gille (philippgille)
-* Reproducibility Matters (TheCharlatan)
-* Reuben Thomas (rrthomas)
-* Robert Furse (Rfurse)
-* Roberto Mannai (robermann)
-* Richard Kiss (richardkiss)
-* rszheng
-* Ruben Alexander (hizzvizz)
-* Sam Ritchie (sritchie)
-* Sanjay Sanathanan (sanjays95)
-* Sebastian Falbesoner (theStack)
-* Sergej Kotliar (ziggamon)
-* Seiichi Uchida (topecongiro)
-* shaysw
-* Simon de la Rouviere (simondlr)
-* Stacie (staciewaleyko)
-* Stephan Oeste (Emzy)
-* Stéphane Roche (Janaka-Steph)
-* takaya-imai
-* Thiago Arrais (thiagoarrais)
-* Thomas Kerin (afk11)
-* venzen
-* Vijay Chavda (VijayChavda)
-* weinim
-* wenzhenxiang
-* Will Binns (wbnns)
-* wintercooled
-* wjx
-* Wojciech Langiewicz (wlk)
-* Yancy Ribbens (yancyribbens)
-* yjjnls
-* Yoshimasa Tanabe (emag)
-* yuntai
-* yurigeorgiev4
-* Zheng Jia (zhengjia)((("", startref="acknowledge0")))
