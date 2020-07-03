@@ -27,11 +27,11 @@ Natura demonstrează că sistemele descentralizate pot fi reziliente și pot pro
 
 _Italic_:: Indică termeni noi, URL-uri, adrese de email, nume de fișiere și extensii de fișiere.
 
-+Latime Constantă+:: folosit pentru listări de cod, precum și în cadrul paragrafelor pentru a face referiri la elemente de cod, cum ar fi variabile sau nume de funcții, baze de date, tipuri de date, variabile de mediu, declarații, și cuvintele cheie.
++Lațime constantă+:: folosit pentru listări de cod, precum și în cadrul paragrafelor pentru a face referiri la elemente de cod, cum ar fi variabile sau nume de funcții, baze de date, tipuri de date, variabile de mediu, declarații, și cuvintele cheie.
 
-** `Lățime constantă bold`**:: Indică comenzi sau alt text care ar trebui să fie introdus așa cum este de către utilizator.
+**`Lățime constantă bold`**:: Indică comenzi sau alt text care ar trebui să fie introdus așa cum este de către utilizator.
 
-_ ++Lățime constantă italic++_:: Arata un text care ar trebui să fie înlocuite cu valorile furnizate de utilizator sau prin valori determinate de context.
+_++Lățime constantă italic++_:: Arata un text care ar trebui să fie înlocuite cu valorile furnizate de utilizator sau prin valori determinate de context.
 
 
 [TIP]
