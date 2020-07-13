@@ -15,7 +15,7 @@ Majoritatea tranzacțiilor bitcoin necesită o semnătură digitală validă pen
 
 Mai întâi vom face o introducere în criptografie și vom explica matematica folosită în bitcoin. Apoi, vom analiza cum sunt generate, stocate și gestionate cheile. Vom trece în revistă diferite formate de codificare folosite pentru a reprezenta cheile private, cheile publice, adresele, și adresele de scripturi. În cele din urmă vom analiza utilizările avansate ale cheilor: vanitate, semnătură multiplă, adrese de script și portofele de hârtie.
 
-==== Criptografie cu Cheie Publică și Criptomonedă
+=== Criptografie cu Cheie Publică și Criptomonedă
 
 ((("chei și adrese", "prezenare generală a", "criptografie cu cheie publică")))((("monede digitale", "criptomonedă")))Criptografia cu cheie publică a fost inventată în anii 1970 și este baza matematică pentru securitatea calculatoarelor și a informațiilor.
 
@@ -60,7 +60,7 @@ Cheia privată bitcoin este doar un număr. Puteți să vă alegeți cheile priv
 
 Primul și cel mai important pas în generarea cheilor este găsirea unei surse sigure de entropie, sau de aleatoriu. Crerea unei chei bitcoin este în esență același lucru cu a spune: ”Alegeți un număr între 1 și 2^256^.” Metoda exactă folosită pentru a alege acel număr nu contează cât timp nu este previzibil sau repetabil. Software-ul bitcoin folosește generatorul de numere aleatoare al sistemului de operare pentru a produce 256 de biți de entropie (de aleatoriu). De obicei, generatorul de numere aleatoare al sistemului de operare este inițializat de o sursă umană de aleatoriu, de aceea s-ar putea să vi se ceară să plimbați mouse-ul pe ecran pentru câteva secunde.
 
-Mai precis, cheia privată poate fi orice număr între +0+ și +n - 1+ inclusiv, unde n este o constantă (n = 1.1578 * 10^77^, ceva mai puțin decât 2^256^) definită ca ordinea curbei eliptice folosite în bitcoin (vezi <<elliptic_curve>>). Pentru a crea o astfel de cheie, alegem la întâmplare un număr format din 256 biți și verificăm dacă este mai mic decât +n+. În materie de programare, acest lucru este de obicei obținut pasând un șir mai mare de biți aleatori, creați dintr-o sursă criptografică sigură de aleatoriu, unui algoritm SHA256, care va produce în mod convenabil un număr pe 256 de biți. Dacă rezultatul este mai mic decât +n+ atunci avem o cheie privată adecvată. În caz contrar încercăm din nou cu un alt număr aleator.
+Mai precis, cheia privată poate fi orice număr între _0_ și _n - 1_ inclusiv, unde n este o constantă (n = 1.1578 * 10^77^, ceva mai puțin decât 2^256^) definită ca ordinea curbei eliptice folosite în bitcoin (vezi <<elliptic_curve>>). Pentru a crea o astfel de cheie, alegem la întâmplare un număr format din 256 biți și verificăm dacă este mai mic decât _n_. În materie de programare, acest lucru este de obicei obținut pasând un șir mai mare de biți aleatori, creați dintr-o sursă criptografică sigură de aleatoriu, unui algoritm SHA256, care va produce în mod convenabil un număr pe 256 de biți. Dacă rezultatul este mai mic decât _n_ atunci avem o cheie privată adecvată. În caz contrar încercăm din nou cu un alt număr aleator.
 
 [WARNING]
 ====
@@ -79,7 +79,7 @@ Mai jos este o cheie privată (k) generată aleator afișată în format hexazec
 Dimenisunea spațiului (2^256^) pentru cheia privată bitcoin este un număr inexplicabil de mare. În format  zecimal este aproximativ 10^77^. Pentru comparație, este estimat că universul vizibil conține 10^80^ atomi.
 ====
 
-((("comanda dumpprivkey")))Pentru a genera o nouă cheie folosind clientul Bitcoin Core (vezi <<ch03_bitcoin_client>>), folosiți comanda +getnewaddress+. Din motive de securitate comanda afișează doar cheia publică, nu și pe cea privată. Pentru a cere +bitcoind+ să expună cheia privată, folosiți comanda  +dumpprivkey+. Comanda  +dumpprivkey+ afișează cheia privată codificată într-un format Base58 cu sumă de control numit _Formatul de Import pentru Portofel_ (Wallet Import Format - WIF), pe care îl vom examina în detaliu în <<priv_formats>>. Iată un exemplu de generare și afișare a unei chei private folosind cele două comenzi:
+((("comanda dumpprivkey")))Pentru a genera o nouă cheie folosind clientul Bitcoin Core (vezi <<ch03_bitcoin_client>>), folosiți comanda _getnewaddress_. Din motive de securitate comanda afișează doar cheia publică, nu și pe cea privată. Pentru a cere _bitcoind_ să expună cheia privată, folosiți comanda  _dumpprivkey_. Comanda  _dumpprivkey_ afișează cheia privată codificată într-un format Base58 cu sumă de control numit _Formatul de Import pentru Portofel_ (Wallet Import Format - WIF), pe care îl vom examina în detaliu în <<priv_formats>>. Iată un exemplu de generare și afișare a unei chei private folosind cele două comenzi:
 
 ----
 $ bitcoin-cli getnewaddress
@@ -88,15 +88,15 @@ $ bitcoin-cli dumpprivkey 1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy
 KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
 ----
 
-Comanda  +dumpprivkey+ deschide portofelul și extrage cheia privată care a fost generată de comanda +getnewaddress+. Nu este posibil pentru +bitcoind+ să afle cheia privată din cheia publică decât dacă ambele sunt stocate în portofel.
+Comanda  _dumpprivkey_ deschide portofelul și extrage cheia privată care a fost generată de comanda _getnewaddress_. Nu este posibil pentru _bitcoind_ să afle cheia privată din cheia publică decât dacă ambele sunt stocate în portofel.
 
 [TIP]
 =====================================================================
-Comanda +dumpprivkey+ nu generează o cheie privată dintr-o cheie publică, acest lucru fiind imposibil. Comanda pur și simplu dezvăluie cheia privată care este deja cunoscută de către portofel și care a fost generată de comanda +getnewaddress+.
+Comanda _dumpprivkey_ nu generează o cheie privată dintr-o cheie publică, acest lucru fiind imposibil. Comanda pur și simplu dezvăluie cheia privată care este deja cunoscută de către portofel și care a fost generată de comanda _getnewaddress_.
 =====================================================================
 
 [role="pagebreak-before"]
-Puteți de asemenea folosi utilitarul din linia de comandă Bitcoin Explorer  (vezi <<appdx_bx>>) pentru a genera și afișa cheile private folosind comenzile +seed+, +ec-new+, și +ec-to-wif+:
+Puteți de asemenea folosi utilitarul din linia de comandă Bitcoin Explorer  (vezi <<appdx_bx>>) pentru a genera și afișa cheile private folosind comenzile _seed_, _ec-new_, și _ec-to-wif_:
 
 ----
 $ bx seed | bx ec-new | bx ec-to-wif
@@ -125,7 +125,7 @@ $ bx seed | bx ec-new | bx ec-to-wif
 .O curbă eliptică
 image::images/mbc2_0402.png["ecc-curve"]
 
-Bitcoin folosește o anumită curbă eliptică și un set de constante matematice, după cum este definit într-un standard denumit +secp256k1+, stabilit de Institutul Național de Standarde și Tehnologie (NIST) din SUA. Curba +secp256k1+ este definită de următoarea funcție, care produce o curbă eliptică:
+Bitcoin folosește o anumită curbă eliptică și un set de constante matematice, după cum este definit într-un standard denumit _secp256k1_, stabilit de Institutul Național de Standarde și Tehnologie (NIST) din SUA. Curba _secp256k1_ este definită de următoarea funcție, care produce o curbă eliptică:
 
 [latexmath]
 ++++
@@ -145,7 +145,7 @@ sau
 
 Operația _mod p_ (modulo număr prim p) indică faptul că această curbă este definită peste un domeniu finit de ordine primă _p_, scrisă în latexmath ca [\( \mathbb{F}_p \)], unde p = 2^256^ – 2^32^ – 2^9^ – 2^8^ – 2^7^ – 2^6^ – 2^4^ – 1, un număr prim foarte mare.
 
-Deoarece această curbă este definită peste un domeniu finit de numere prime în loc să fie peste domeniul numerelor reale, arată ca un model de puncte împrăștiate într-un spațiu bidimensional, ceea ce o face greu de vizualizat. Totuși, matematica este identică cu cea a unei curbe eliptice peste domeniul numerelor reale. Ca un exemplu, <<ecc-over-F17-math>> arată aceeași curbă eliptică peste un domeniu finit mult mai mic de ordine primă 17, înfățisând un model de puncte pe o grilă. Curba eliptică bitcoin +secp256k1+ poate fi privită ca un model mult mai complex de puncte pe o grilă neimaginabil de mare.
+Deoarece această curbă este definită peste un domeniu finit de numere prime în loc să fie peste domeniul numerelor reale, arată ca un model de puncte împrăștiate într-un spațiu bidimensional, ceea ce o face greu de vizualizat. Totuși, matematica este identică cu cea a unei curbe eliptice peste domeniul numerelor reale. Ca un exemplu, <<ecc-over-F17-math>> arată aceeași curbă eliptică peste un domeniu finit mult mai mic de ordine primă 17, înfățisând un model de puncte pe o grilă. Curba eliptică bitcoin _secp256k1_ poate fi privită ca un model mult mai complex de puncte pe o grilă neimaginabil de mare.
 
 [[ecc-over-F17-math]]
 [role="smallersixty"]
@@ -197,7 +197,7 @@ Acum că am definit adunarea, putem defini înmulțirea în modul clasic în car
 [[public_key_derivation]]
 ==== Generarea unei Chei Publice
 
-((("chei și adrese", "prezentare generală a", "generarea cheii publice")))((("punct generator")))Pornind de la o cheie privată sub forma unui număr generat aleator _k_, o multiplicăm cu un punct predeterminat  _G_ pe curbă numit _punct generator_ pentru a produce un alt punct undeva pe curbă, care este cheia publică corespunzătoare _K_. Punctul generator este specificat în standardul +secp256k1+ și este tot timpul același pentru toate cheile bitcoin.
+((("chei și adrese", "prezentare generală a", "generarea cheii publice")))((("punct generator")))Pornind de la o cheie privată sub forma unui număr generat aleator _k_, o multiplicăm cu un punct predeterminat  _G_ pe curbă numit _punct generator_ pentru a produce un alt punct undeva pe curbă, care este cheia publică corespunzătoare _K_. Punctul generator este specificat în standardul _secp256k1_ și este tot timpul același pentru toate cheile bitcoin.
 
 [latexmath]
 ++++
@@ -219,7 +219,7 @@ Implementând înmulțirea curbei eliptice, luăm cheia privată _k_ generată a
 K = 1E99423A4ED27608A15A2616A2B0E9E52CED330AC530EDCC32C8FFC6A526AEDD * G
 ----
 
-Cheia publică _K_ este definită ca un punct +K = (x,y)+:
+Cheia publică _K_ este definită ca un punct _K = (x,y)_:
 
 ----
 K = (x, y)
@@ -360,7 +360,7 @@ image::images/mbc2_0406.png["Base58CheckEncoding"]
 
 Toate aceste reprezentări sunt moduri diferite de a afișa același număr, aceeași cheie privată. Arată diferit, dar oricare dintre formate poate fi convertit cu ușurință în altul. Rețineți că formatul ”binar brut” nu este prezentat în <<table_4-3>> deoarece orice codare pentru afișare nu ar fi, prin definiție, binară.
 
-Folosim comanda +wif-to-ec+ a Bitcoin Explorer (vezi  <<appdx_bx>>) pentru a arăta că ambele chei WIF reprezintă aceeași cheie privată.
+Folosim comanda _wif-to-ec_ a Bitcoin Explorer (vezi  <<appdx_bx>>) pentru a arăta că ambele chei WIF reprezintă aceeași cheie privată.
 
 ----
 $ bx wif-to-ec 5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
@@ -374,7 +374,7 @@ $ bx wif-to-ec KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
 
 Comenzile Bitcoin Explorer (vezi <<appdx_bx>>) facilitează scrierea scripturilor shell și a comenzilor înlănțuite (pipes) care manipulează cheile, adresele, și tranzacțiile bitcoin. Puteți folosi Bitcoin Explorer pentru a decoda formatul Base58Check de la linia de comandă.
 
-Folosim comanda +base58check-decode+ pentru a decoda cheia necomprimată:
+Folosim comanda _base58check-decode_ pentru a decoda cheia necomprimată:
 
 ----
 $ bx base58check-decode 5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
@@ -388,7 +388,7 @@ wrapper
 
 Rezultatul conține cheia în câmpul ”payload”, prefixul de versiune WIF, și o sumă de control.
 
-Observăm că câmpul ”payload” al cheii comprimate are adăugat la sfârșit sufixul +01+, semnalând că cheia publică trebuie să fie compactată:
+Observăm că câmpul ”payload” al cheii comprimate are adăugat la sfârșit sufixul _01_, semnalând că cheia publică trebuie să fie compactată:
 
 ----
 $ bx base58check-decode KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
@@ -402,7 +402,7 @@ wrapper
 
 ===== Codificarea de la hexa la Base58Check
 
-Pentru a codifica în Base58Check (opusul comenzii precendente), folosim comanda +base58check-encode+ din Bitcoin Explorer (vezi <<appdx_bx>>) și oferim cheia privată în hexa, urmată de prefixul de versiune WIF cu valoarea de 128:
+Pentru a codifica în Base58Check (opusul comenzii precendente), folosim comanda _base58check-encode_ din Bitcoin Explorer (vezi <<appdx_bx>>) și oferim cheia privată în hexa, urmată de prefixul de versiune WIF cu valoarea de 128:
 
 ----
 bx base58check-encode 1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a526aedd --version 128
@@ -411,7 +411,7 @@ bx base58check-encode 1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a5
 
 ===== Codificare din hexa (cheie comprimată) în Base58Check
 
-Pentru a codifica în Base58Check ca o cheie privată ”comprimată” (vezi <<comp_priv>>), adăugam sufixul +01+ cheii în hexa și apoi codificăm la fel ca în secțiunea precedentă:
+Pentru a codifica în Base58Check ca o cheie privată ”comprimată” (vezi <<comp_priv>>), adăugam sufixul _01_ cheii în hexa și apoi codificăm la fel ca în secțiunea precedentă:
 
 ----
 $ bx base58check-encode 1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a526aedd01 --version 128
@@ -424,16 +424,16 @@ Formatul WIF-comprimat începe cu un ”K.” Acest lucru indică faptul că che
 
 ((("chei publice și private", "formate de chei publice")))Cheile publice sunt, de asemenea, prezentate în moduri diferite, de obicei fie ca și chei publice _necomprimate_ sau _comprimate_.
 
-După cum am văzut anterior, cheia publică este un punct pe curba eliptică constând dintr-o pereche de coordonate +(x,y)+. De obicei este prezentată cu prefixul +04+ urmat de două numere pe 256 de biți: unul pentru coordonata de pe axa _x_, iar celălalt pentru coordonata de pe axa _y_. Prefixul +04+ este folosit pentru a deosebi cheile publice necomprimate de cheile publice comprimate care încep cu un +02+ sau un +03+.
+După cum am văzut anterior, cheia publică este un punct pe curba eliptică constând dintr-o pereche de coordonate _(x,y)_. De obicei este prezentată cu prefixul _04_ urmat de două numere pe 256 de biți: unul pentru coordonata de pe axa _x_, iar celălalt pentru coordonata de pe axa _y_. Prefixul _04_ este folosit pentru a deosebi cheile publice necomprimate de cheile publice comprimate care încep cu un _02_ sau un _03_.
 
-Iată cheia publică generată din cheia privată pe care am creat-o mai devreme, prezentată sub forma coordonatelor +x+ și +y+:
+Iată cheia publică generată din cheia privată pe care am creat-o mai devreme, prezentată sub forma coordonatelor _x_ și _y_:
 
 ----
 x = F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A
 y = 07CF33DA18BD734C600B96A72BBC4749D5141C90EC8AC328AE52DDFE2E505BDB
 ----
 
-Iată aceiași cheie publică prezentată ca un număr pe 520 de biți (130 de cifre hexa) având prefixul +04+ urmat de coordonatele +x+ și +y+, sub forma +04 x y+:
+Iată aceiași cheie publică prezentată ca un număr pe 520 de biți (130 de cifre hexa) având prefixul _04_ urmat de coordonatele _x_ și _y_, sub forma _04 x y_:
 
 ++++
 <pre data-type="programlisting">
@@ -449,15 +449,15 @@ K = 04F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A&#x21b5;
 
 După cum am văzut în secțiunea <<pubkey>>, o cheie publică este un punct (x,y) de pe o curbă eliptică. Pentru că această curbă exprimă o funcție matematică, un punct de pe curbă reprezintă o soluție a ecuației și, prin urmare, dacă știm valoare coordonatei _x_ putem calcula coordonata _y_ rezolvând ecuația y^2^ mod p = (x^3^ + 7) mod p. Acest lucru ne permite să stocăm doar coordonata _x_ a punctului cheii publice, omițând coordonata _y_ și reducând marimea cheii și spațiul necesar de stocare cu 256 de biți. O reducere de aproape 50% a dimensiunii în fiecare tranzacție înseamnă mult spațiu economisit pe termen lung.
 
-În timp ce cheile publice necomprimate au prefixul +04+, cheile publice comprimate încep fie cu un prefix de +02+ fie cu unul de +03+. Să ne uităm de ce există doua prefixe posibile: pentru că partea stângă a ecuației este  __y__^2^, soluția pentru _y_ este o rădăcină pătrată, care poate avea o valoare pozitivă sau negativă. Vizual, aceasta înseamnă că coordonata _y_ rezultată poate fi deasupra sau sub axa x. După cum puteți vedea din graficul curbei eliptice în <<ecc-curve>>, curba este simetrică, însemnând că este reflectată ca o oglindă de către axa x. Deci, chiar dacă putem omite coordonata _y_ tot trebuie să stocăm semnul lui _y_ (pozitiv sau negativ); sau în alte cuvinte, trebuie să ținem minte daca a fost deasupra sau sub axa x pentru că fiecare din aceste opțiuni reprezintă un punct diferit și o cheie publică diferită. Când calculăm curba eliptică în aritmetică binară pe domeniul finit de numere prime de ordinul p, coordonata _y_ este fie pară fie impară, care corespunde cu semnul negativ/pozitiv explicat mai devreme. Prin urmare, pentru a face distincția între cele două valori posibile ale lui _y_, stocăm o cheie publică comprimată cu prefixul +02+ dacă _y_ este par, și +03+ dacă este impar, permițând software-ului să deducă corect coordonata _y_ din coordonata _x_ și să decomprime cheia publică la coordonatele complete ale punctului. Compresia cheii publice este ilustrată în <<pubkey_compression>>.
+În timp ce cheile publice necomprimate au prefixul _04_, cheile publice comprimate încep fie cu un prefix de _02_ fie cu unul de _03_. Să ne uităm de ce există doua prefixe posibile: pentru că partea stângă a ecuației este  __y__^2^, soluția pentru _y_ este o rădăcină pătrată, care poate avea o valoare pozitivă sau negativă. Vizual, aceasta înseamnă că coordonata _y_ rezultată poate fi deasupra sau sub axa x. După cum puteți vedea din graficul curbei eliptice în <<ecc-curve>>, curba este simetrică, însemnând că este reflectată ca o oglindă de către axa x. Deci, chiar dacă putem omite coordonata _y_ tot trebuie să stocăm semnul lui _y_ (pozitiv sau negativ); sau în alte cuvinte, trebuie să ținem minte daca a fost deasupra sau sub axa x pentru că fiecare din aceste opțiuni reprezintă un punct diferit și o cheie publică diferită. Când calculăm curba eliptică în aritmetică binară pe domeniul finit de numere prime de ordinul p, coordonata _y_ este fie pară fie impară, care corespunde cu semnul negativ/pozitiv explicat mai devreme. Prin urmare, pentru a face distincția între cele două valori posibile ale lui _y_, stocăm o cheie publică comprimată cu prefixul _02_ dacă _y_ este par, și _03_ dacă este impar, permițând software-ului să deducă corect coordonata _y_ din coordonata _x_ și să decomprime cheia publică la coordonatele complete ale punctului. Compresia cheii publice este ilustrată în <<pubkey_compression>>.
 
-Iată aceeași cheie publică generată anterior, prezentată ca și cheie publică comprimată, stocată pe 264 de biți (66 de cifre hexa) cu prefixul +03+ indicând că coordonata _y_ este impară:
+Iată aceeași cheie publică generată anterior, prezentată ca și cheie publică comprimată, stocată pe 264 de biți (66 de cifre hexa) cu prefixul _03_ indicând că coordonata _y_ este impară:
 
 ----
 K = 03F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A
 ----
 
-Această cheie publică comprimată corespunde aceleiași chei private, însemnând că este generată din aceeași cheie privată. Cu toate acestea, arată diferit față de o cheie publică necomprimată. Și mai important, dacă convertim această cheie publică într-o adresă bitcoin folosind funcția de rezumat dublu (+RIPEMD160(SHA256(K))+) vom produce o adresă bitcoin _diferită_. Acest lucru poate crea confuzie, deoarece înseamnă că o singură cheie privată poate produce o cheie publică exprimată în două formate diferite (comprimat și necomprimat) care vor produce la rândul lor două adrese bitcoin diferite. Totuși, cheia privată este identică pentru ambele adrese bitcoin.
+Această cheie publică comprimată corespunde aceleiași chei private, însemnând că este generată din aceeași cheie privată. Cu toate acestea, arată diferit față de o cheie publică necomprimată. Și mai important, dacă convertim această cheie publică într-o adresă bitcoin folosind funcția de rezumat dublu (_RIPEMD160(SHA256(K))_) vom produce o adresă bitcoin _diferită_. Acest lucru poate crea confuzie, deoarece înseamnă că o singură cheie privată poate produce o cheie publică exprimată în două formate diferite (comprimat și necomprimat) care vor produce la rândul lor două adrese bitcoin diferite. Totuși, cheia privată este identică pentru ambele adrese bitcoin.
 
 [[pubkey_compression]]
 [role="smallerseventy"]
@@ -490,12 +490,12 @@ Rețineți că, în formatul hexa-comprimat, cheia privată are un octet în plu
 
 Nu uitați, aceste formate _nu_ sunt folosite în mod interschimbabil. Într-un portofel mai nou care implementează chei publice comprimate, cheile private vor fi exportate doar în format WIF-comprimat (cu un prefix de _K_ sau _L_). Dacă portofelul are o versiune mai veche și nu folosește chei publice comprimate, cheile private vor fi exportate doar ca WIF (cu un prefix de 5). Scopul este de a semnala portofelului care importă aceste chei private daca trebuie să caute în lanțul de blocuri după chei publice și adrese comprimate sau necomprimate.
 
-Dacă un portofel bitcoin este capabil să implementeze chei publice comprimate, le va folosi pe acelea în toate tranzacțiile. Cheile private din portofel vor fi folosite pentru a deriva punctul cheii publice pe curbă, care va fi comprimat. Cheile publice comprimate vor fi folosite pentru a genera adrese bitcoin, iar acelea vor fi folosite în tranzacții. Când exportați cheile private dintr-un portofel nou care implementează chei publice comprimate, fișerul WIF este modificat, prin adăugarea la cheia privată a unui octet sufix cu valoarea de +01+. Cheia privată codificată în Base58Check este numită ”WIF comprimat” și începe cu literele _K_ sau _L_, în loc să înceapă cu un ”5” cum este cazul pentru cheile necomprimate codificate WIF din portofelele mai vechi.
+Dacă un portofel bitcoin este capabil să implementeze chei publice comprimate, le va folosi pe acelea în toate tranzacțiile. Cheile private din portofel vor fi folosite pentru a deriva punctul cheii publice pe curbă, care va fi comprimat. Cheile publice comprimate vor fi folosite pentru a genera adrese bitcoin, iar acelea vor fi folosite în tranzacții. Când exportați cheile private dintr-un portofel nou care implementează chei publice comprimate, fișerul WIF este modificat, prin adăugarea la cheia privată a unui octet sufix cu valoarea de _01_. Cheia privată codificată în Base58Check este numită ”WIF comprimat” și începe cu literele _K_ sau _L_, în loc să înceapă cu un ”5” cum este cazul pentru cheile necomprimate codificate WIF din portofelele mai vechi.
 
 
 [TIP]
 ====
-”Chei private comprimate” este un termen impropriu! Ele nu sunt comprimate deloc; mai degrabă WIF-comprimat înseamnă că cheile ar trebui să fie folosite doar pentru a deriva chei publice comprimate și adresele lor bitcoin corespunzătoare. În mod ironic, o cheie privată codificată în ”WIF-comprimat” este cu un octet mai lungă deoarece are adăugat sufixul +01+ pentru a o deosebi de una ”necomprimată”.((("", startref="KAaddress04")))
+”Chei private comprimate” este un termen impropriu! Ele nu sunt comprimate deloc; mai degrabă WIF-comprimat înseamnă că cheile ar trebui să fie folosite doar pentru a deriva chei publice comprimate și adresele lor bitcoin corespunzătoare. În mod ironic, o cheie privată codificată în ”WIF-comprimat” este cu un octet mai lungă deoarece are adăugat sufixul _01_ pentru a o deosebi de una ”necomprimată”.((("", startref="KAaddress04")))
 ====
 
 === Implementarea cheilor și adreselor în Cpass: [++]
@@ -530,7 +530,7 @@ Address: 1PRTTaJesdNovgne6Ehcdu1fpEdX7913CK
 
 [TIP]
 ====
-Codul de la <<addr_example_run>> produce o adresă bitcoin  (+1PRTT...+) dintr-o cheie publică _comprimată_ (vezi <<comp_pub>>). Dacă foloseați în loc cheia publică necomprimată, ar fi produs o adresă bitcoin diferită (+14K1y...+).
+Codul de la <<addr_example_run>> produce o adresă bitcoin  (_1PRTT..._) dintr-o cheie publică _comprimată_ (vezi <<comp_pub>>). Dacă foloseați în loc cheia publică necomprimată, ar fi produs o adresă bitcoin diferită (_14K1y..._).
 ====
 
 === Implementarea Cheilor și Adreselor în Python
@@ -596,7 +596,7 @@ include::code/ec-math.py[]
 
 [WARNING]
 ====
-<<ec_math>> ((("numere aleatoare", "os.urandom", see="entropy")))((("entropie", "os.urandom", see="numere aleatoare")))((("numere aleatoare", "generare de numere aleatoare")))((("entropie", "generare de numere aleatoare")))folosește +os.urandom+, care reflectă un generator de numere aleatoare securizat criptografic (CSRNG) furnizat de sistemul de operare pe care rulează. Atenție: în funcție de sistemul de operare,  +os.urandom+ s-ar putea să nu fie destul de securizat și s-ar putea să _nu_ fie potrivit pentru generarea de chei bitocoin de calitate.((("", startref="KApython04")))
+<<ec_math>> ((("numere aleatoare", "os.urandom", see="entropy")))((("entropie", "os.urandom", see="numere aleatoare")))((("numere aleatoare", "generare de numere aleatoare")))((("entropie", "generare de numere aleatoare")))folosește _os.urandom_, care reflectă un generator de numere aleatoare securizat criptografic (CSRNG) furnizat de sistemul de operare pe care rulează. Atenție: în funcție de sistemul de operare,  _os.urando_ s-ar putea să nu fie destul de securizat și s-ar putea să _nu_ fie potrivit pentru generarea de chei bitocoin de calitate.((("", startref="KApython04")))
 ====
 
 [[ec_math_run]]
@@ -625,7 +625,7 @@ BTC public key: 029ade3effb0a67d5c8609850d797366af428f4a0d5194cb221d807770a15228
 
 BIP-38 propune un standard comun pentru criptarea cheilor private cu o parolă de acces și codificarea acestora cu Base58Check, astfel încât acestea să poată fi stocate în siguranță pe suporturi de rezervă, transportate în siguranță între portofele sau păstrate în orice alte condiții în care cheia ar putea fi expusă. Standardul pentru criptare utilizează Advanced Encryption Standard (AES), un standard stabilit de NIST și utilizat pe scară largă în implementările de criptare a datelor pentru aplicații comerciale și militare.
 
-O schemă de criptare BIP-38 are ca intrare o cheie privată bitcoin, de obicei codificată în formatul WIF, ca un șir Base58Check cu prefixul ”5”. În plus, schema de criptare BIP-38 ia o parolă lungă compusă de obicei din mai multe cuvinte sau un șir complex de caractere alfanumerice. Rezultatul schemei de criptare BIP-38 este o cheie privată criptată codificată în Base58Check care începe cu prefixul +6P+. Dacă vedeți o cheie care începe cu +6P+, este criptată și necesită o parolă pentru a o coverti (decripta) înapoi într-o cheie privată în format WIF (prefix +5+) care poate fi folosită într-un portofel. Multe portofele recunosc acum cheile criptate BIP-38 și solicită utilizatorului o parolă pentru a decripta și importa cheia. Alte aplicații, cum ar fi http://bitaddress.org[Bit Address] (tab-ul Wallet Details), pot fi folosite pentru a decripta chei BIP-38.
+O schemă de criptare BIP-38 are ca intrare o cheie privată bitcoin, de obicei codificată în formatul WIF, ca un șir Base58Check cu prefixul ”5”. În plus, schema de criptare BIP-38 ia o parolă lungă compusă de obicei din mai multe cuvinte sau un șir complex de caractere alfanumerice. Rezultatul schemei de criptare BIP-38 este o cheie privată criptată codificată în Base58Check care începe cu prefixul _6P_. Dacă vedeți o cheie care începe cu _6P_, este criptată și necesită o parolă pentru a o coverti (decripta) înapoi într-o cheie privată în format WIF (prefix _5_) care poate fi folosită într-un portofel. Multe portofele recunosc acum cheile criptate BIP-38 și solicită utilizatorului o parolă pentru a decripta și importa cheia. Alte aplicații, cum ar fi http://bitaddress.org[Bit Address] (tab-ul Wallet Details), pot fi folosite pentru a decripta chei BIP-38.
 
 Cele mai des întâlnit caz pentru chei criptate BIP-38 este pentru portofelele de hârtie care pot fi folosite pentru a crea o copie de rezervă pe o bucată de hârtie. Cât timp utilizatorul alege o parolă puternică, un portofel de hârtie cu chei criptate BIP-38 este incredibil de sigur și o modalitate excelentă de a stoca bitcoin offline (cunoscută și sub denumirea de „stocare la rece”).
 
@@ -653,7 +653,7 @@ O adresă P2SH este creată dintr-un script de tranzacție, care definește cine
 script hash = RIPEMD160(SHA256(script))
 ----
 
-”Rezumatul scriptului” rezultat este codificat cu Base58Check cu un prefix de versiune de 5, ceea ce rezultă într-o adresă codificată care începe cu un +3+. Un exemplu de o adresă P2SH este +3F6i6kwkevjR7AsAd4te2YB2zZyASEm1HM+, care poate fi derivată folosind comenzile Bitcoin Explorer +script-encode+, +sha256+, +ripemd160+, și +base58check-encode+ (vezi <<appdx_bx>>) după cum urmează:
+”Rezumatul scriptului” rezultat este codificat cu Base58Check cu un prefix de versiune de 5, ceea ce rezultă într-o adresă codificată care începe cu un _3_. Un exemplu de o adresă P2SH este _3F6i6kwkevjR7AsAd4te2YB2zZyASEm1HM_, care poate fi derivată folosind comenzile Bitcoin Explorer _script-encode_, _sha256_, _ripemd160_, și _base58check-encode_ (vezi <<appdx_bx>>) după cum urmează:
 
 ----
 $ echo \
@@ -676,7 +676,7 @@ Vom explora cum să creăm tranzacții care cheltuiesc fonduri din adrese P2SH (
 
 ==== Adrese de Vanitate
 
-((("chei și adrese", "forme avansate", "adrese de vanitate")))((("adrese de vanitate", id="vanity04")))((("adrese", "adrese de vanitate", id="Avanity04")))Adresele de vanitate sunt adrese bitcoin valide care conțin mesaje ușor de citit de către oameni. De exemplu, +1LoveBPzzD72PUXLzCkYAtGFYmK5vYNR33+ este o adresă de vanitate care conține litere ce formează cuvântul ”Love” pe primele patru poziții ale valorii Base58. Adresele de vanitate necesită generarea și testarea a miliarde de chei private candidat, până când o adresă cu forma dorită este găsită. Deși există unele optimizări în algoritumul de generare a adreselor de vanitate, procesul constă din alegerea unei chei private aleator, derivarea cheii publice, derivarea adresei, și verificarea dacă adresa găsită se potrivește cu forma dorită a adresei de vanitate, apoi se repetă acești pași de miliarde de ori până când se găsește o cheie care se potrivește.
+((("chei și adrese", "forme avansate", "adrese de vanitate")))((("adrese de vanitate", id="vanity04")))((("adrese", "adrese de vanitate", id="Avanity04")))Adresele de vanitate sunt adrese bitcoin valide care conțin mesaje ușor de citit de către oameni. De exemplu, _1LoveBPzzD72PUXLzCkYAtGFYmK5vYNR33_ este o adresă de vanitate care conține litere ce formează cuvântul ”Love” pe primele patru poziții ale valorii Base58. Adresele de vanitate necesită generarea și testarea a miliarde de chei private candidat, până când o adresă cu forma dorită este găsită. Deși există unele optimizări în algoritumul de generare a adreselor de vanitate, procesul constă din alegerea unei chei private aleator, derivarea cheii publice, derivarea adresei, și verificarea dacă adresa găsită se potrivește cu forma dorită a adresei de vanitate, apoi se repetă acești pași de miliarde de ori până când se găsește o cheie care se potrivește.
 
 Odata ce este găsită o adresă de vanitate care se potrivește cu modelul dorit, cheia privată din care a fost derivată poate fi folosită de către proprietar pentru a cheltui bitcoin în exact același mod ca orice altă adresă. Adresele de vanitate nu sunt în nici un fel mai sigure sau mai puțin sigure decât oricare altă adresă. Ele depind de aceeași Criptografie a Curbei Eliptice (ECC) și SHA ca oricare altă adresă. Nu putem găsi mai ușor cheia privată a unei adrese care începe cu un model de vanitate decât am putea pentru orice altă adresă.
 
@@ -684,7 +684,7 @@ Odata ce este găsită o adresă de vanitate care se potrivește cu modelul dori
 
 ===== Generarea adreselor de vanitate
 
-Este important să înțelegem că o adresă bitcoin este doar un număr reprezentat prin simboluri din alfabetul Base58. Căutarea unui model de genul ”1Kids” poate fi vazută drept căutarea unei adrese în intervalul începând de la +1Kids11111111111111111111111111111+ la +1Kidszzzzzzzzzzzzzzzzzzzzzzzzzzzzz+. Sunt aproximativ 58^29^ (aproximativ 1.4 * 10^51^) adrese în acest interval, toate începând cu ”1Kids.” <<table_4-11>> arată intervalul de adrese care au prefixul ”1Kids”.
+Este important să înțelegem că o adresă bitcoin este doar un număr reprezentat prin simboluri din alfabetul Base58. Căutarea unui model de genul ”1Kids” poate fi vazută drept căutarea unei adrese în intervalul începând de la _1Kids11111111111111111111111111111_ la _1Kidszzzzzzzzzzzzzzzzzzzzzzzzzzzzz_. Sunt aproximativ 58^29^ (aproximativ 1.4 * 10^51^) adrese în acest interval, toate începând cu ”1Kids.” <<table_4-11>> arată intervalul de adrese care au prefixul ”1Kids”.
 
 [[table_4-11]]
 . Intervalul adreselor de vanitate care încep cu "1Kids"
@@ -734,7 +734,7 @@ include::code/vanity-miner.cpp[]
 
 [NOTE]
 ====
-<<vanity_miner_run>> folosește +std::random_device+. Depinzând de implementare, ar putea reflecta o CSRNG furnizată de sistemul de operare. În cazul unui sistem de operare bazat pe Unix, cum ar fi Linux, se bazează pe +/dev/urandom+. Generatorul de numere aleatoare folosit aici este folosit doar în scopuri demonstrative și _nu_ este potrivit pentru generarea de chei bitcoin de calitate din moment ce nu este destul de sigur.
+<<vanity_miner_run>> folosește _std::random_device_. Depinzând de implementare, ar putea reflecta o CSRNG furnizată de sistemul de operare. În cazul unui sistem de operare bazat pe Unix, cum ar fi Linux, se bazează pe _/dev/urandom_. Generatorul de numere aleatoare folosit aici este folosit doar în scopuri demonstrative și _nu_ este potrivit pentru generarea de chei bitcoin de calitate din moment ce nu este destul de sigur.
 ====
 
 Codul exemplu trebuie să fie compilat folosind un compilator pass:[C++] și legat de biblioteca libbitcoin (care trebuie instalată mai întâi pe acel sistem). Pentru a rula exemplul, rulați executabilul ++vanity-miner++ fără parametri (vezi <<vanity_miner_run>>)), iar acesta va încerca să găsească o adresă de vanitate care începe cu ”1kid.”
@@ -765,15 +765,15 @@ sys	0m0.035s
 ----
 ====
 
-Codul exemplu va dura câteva secunde pentru a găsi o potrivire pentru modelul de trei caractere ”kid,” după cum putem vedea când folosim comanda Unix +time+ pentru a măsura timpul de execuție. Schimbați modelul +search+ în codul sursă și observați cât durează pentru un model de patru sau cinci caractere.
+Codul exemplu va dura câteva secunde pentru a găsi o potrivire pentru modelul de trei caractere ”kid,” după cum putem vedea când folosim comanda Unix _time_ pentru a măsura timpul de execuție. Schimbați modelul _search_ în codul sursă și observați cât durează pentru un model de patru sau cinci caractere.
 
 ===== Securitatea adresei de vanitate
 
 ((("securitate", "adrese de vanitate")))Adresele de vanitate pot fi folosite pentru a îmbunătăți _și_ pentru a zădărnici măsurile de siguranță; ele sunt cu adevărat o sabie cu două tăișuri. Folosită să îmbunătățească securitatea, o adresă deosebită face mai dificil pentru adversari să o înlocuiască cu adresele lor proprii și să păcăleacă clienții dumneavoastră în a-i plăti pe ei în locul dumneavoastră. Din păcate, adresele de vanitate permit de asemenea oricui să creeze o adresă care _seamănă_ cu orice altă adresă, sau chiar cu o altă adresă de vanitate, prin urmare înșelând clienții dumneavoastră.
 
-Eugenia ar putea publica o adresă generată aleatoriu (de exemplu, +1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+) către care oamenii își pot trimite donațiile. Sau ar putea genera o adresă de vanitate care începe cu 1Kids, pentru a o face mai distinctivă.
+Eugenia ar putea publica o adresă generată aleatoriu (de exemplu, _1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy_) către care oamenii își pot trimite donațiile. Sau ar putea genera o adresă de vanitate care începe cu 1Kids, pentru a o face mai distinctivă.
 
-În ambele cazuri, unul dintre riscurile utilizării unei singure adrese fixe (în loc de o adresă dinamică separată pentru fiecare donator) este că un hoț ar putea să se infiltreze pe site-ul dumneavoastră web și să înlocuiască adresa cu propria sa adresă, redirectând astfel donațiile către el însuși. Dacă ați publicat adresa dumneavoastră de donare în mai multe locuri diferite, utilizatorii dumneavoastră pot inspecta vizual adresa înainte de a efectua o plată pentru a se asigura că este aceeași adresă pe care au văzut-o pe site-ul dumneavoastră web, pe e-mail și pe pliantul dumneavoastră. În cazul unei adrese aleatorii precum +1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+, utilizatorul obișnuit va inspecta probabil primele caractere ”1J7mdg” și va fi mulțumit că adresa corespunde. Folosind un generator de adrese de vanitate, cineva care are intenția de a fura prin înlocuirea cu o adresă similară poate genera rapid adrese care se potrivesc cu primele câteva caractere, așa cum se vede în <<table_4-13>>.
+În ambele cazuri, unul dintre riscurile utilizării unei singure adrese fixe (în loc de o adresă dinamică separată pentru fiecare donator) este că un hoț ar putea să se infiltreze pe site-ul dumneavoastră web și să înlocuiască adresa cu propria sa adresă, redirectând astfel donațiile către el însuși. Dacă ați publicat adresa dumneavoastră de donare în mai multe locuri diferite, utilizatorii dumneavoastră pot inspecta vizual adresa înainte de a efectua o plată pentru a se asigura că este aceeași adresă pe care au văzut-o pe site-ul dumneavoastră web, pe e-mail și pe pliantul dumneavoastră. În cazul unei adrese aleatorii de forma _1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy_, utilizatorul obișnuit va inspecta probabil primele caractere ”1J7mdg” și va fi mulțumit că adresa corespunde. Folosind un generator de adrese de vanitate, cineva care are intenția de a fura prin înlocuirea cu o adresă similară poate genera rapid adrese care se potrivesc cu primele câteva caractere, așa cum se vede în <<table_4-13>>.
 
 [[table_4-13]]
 .Generarea adreselor de vanitate pentru a se potrivi cu o adresă aleatorie
@@ -784,7 +784,7 @@ Eugenia ar putea publica o adresă generată aleatoriu (de exemplu, +1J7mdg5rbQy
 | * Vanitate (potrivire de 6 caractere) * | 1J7mdg5WxGENmwyJP9xuGhG5KRzu99BBCX
 |=======
 
-Deci, o adresă de vanitate crește securitatea? Dacă Eugenia generează adresa de vanitate +1Kids33q44erFfpeXrmDSz7zEqG2FesZEN+, utilizatorii probabil vor acorda atenție modelului de vanitate _și câtorva caractere după_, de exemplu vor observa partea "1Kids33" din adresă. Acest lucru ar obliga un atacator să genereze o adresă de vanitate care să se potrivească cu cel puțin șase caractere (încă două), investind un efort care este de 3364 (58 x 58) mai mare decât efortul pe care Eugenia l-a investit pentru cele 4 caractere de vanitate. În esență, efortul pe care Eugenia îl depune (sau pentru care plătește un bazin de vanitate) ”împinge” atacatorul să producă o adresă de vanitate cu un model mai lung. Dacă Eugenia plătește un bazin pentru a genera o adresă de vanitate cu un model de 8 caractere, atacatorul va fi împins în zona de 10 caractere, care nu este fezibil pe un calculator personal și este scump chiar cu un echipament de minerit specializat sau folosind un bazin de mineri de vanitate. Ce este  accesibil pentru Eugenia, devine inaccesibil pentru atacator, mai ales dacă recompensa potențială în urma fraudei nu este destul de mare pentru a acoperi costurile generării adresei de vanitate.((("", startref="Avanity04")))((("", startref="vanity04")))((("", startref="eugeniafour")))
+Deci, o adresă de vanitate crește securitatea? Dacă Eugenia generează adresa de vanitate _1Kids33q44erFfpeXrmDSz7zEqG2FesZEN_, utilizatorii probabil vor acorda atenție modelului de vanitate _și câtorva caractere după_, de exemplu vor observa partea "1Kids33" din adresă. Acest lucru ar obliga un atacator să genereze o adresă de vanitate care să se potrivească cu cel puțin șase caractere (încă două), investind un efort care este de 3364 (58 x 58) mai mare decât efortul pe care Eugenia l-a investit pentru cele 4 caractere de vanitate. În esență, efortul pe care Eugenia îl depune (sau pentru care plătește un bazin de vanitate) ”împinge” atacatorul să producă o adresă de vanitate cu un model mai lung. Dacă Eugenia plătește un bazin pentru a genera o adresă de vanitate cu un model de 8 caractere, atacatorul va fi împins în zona de 10 caractere, care nu este fezibil pe un calculator personal și este scump chiar cu un echipament de minerit specializat sau folosind un bazin de mineri de vanitate. Ce este  accesibil pentru Eugenia, devine inaccesibil pentru atacator, mai ales dacă recompensa potențială în urma fraudei nu este destul de mare pentru a acoperi costurile generării adresei de vanitate.((("", startref="Avanity04")))((("", startref="vanity04")))((("", startref="eugeniafour")))
 
 [[paper_wallets]]
 ==== Portofele de Hârtie
