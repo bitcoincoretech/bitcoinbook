@@ -27,7 +27,7 @@ Există o relație matematică între cheia publică și cheia privată care per
 
 Când cheltuiește bitcoin, actualul proprietar își prezintă cheia publică și o semnătură (diferită de fiecare dată, dar creeată folosind aceiași cheie privată) ca parte a unei tranzacții pentru a cheltui acei bitcoin. Prin prezentarea cheii publice și a semnăturii, toți cei din rețeaua bitcoin pot verifica și accepta tranzacția ca fiind validă, confirmând că persoana care a transferat bitcoin îi deținea la momentul transferului. 
 
-[Sfat]
+[TIP]
 ====
 ((("chei și adrese", "prezentare generală a", "perechi de chei")))În majoritatea implementărilor de portofele, cheile private și publice sunt stocate împreună ca o _pereche de chei_ pentru comoditate. Totuși, cheia publică poate fi calculată din cheia privată, deci este posibil să se stocheze doar cheia privată.
 ====
@@ -51,7 +51,7 @@ image::images/mbc2_0401.png["privk_to_pubK_to_addressA"]
 
 ((("chei și adrese", "prezentare generală a", "generarea cheii private")))((("avertismente și precauții", "protecția cheii private")))O cheie privată este pur și simplu un număr ales la întâmplare. Deținerea și controlul cheii private este sursa controlului utilizatorului asupra tuturor fondurilor asociate cu adresa bitcoin corespunzătoare. Cheia privată este folosită pentru a crea semnăturile necesare cheltuirii bitcoin, dovedind deținerea fondurilor folosite într-o tranzacție. Cheia privată trebuie să rămână secretă tot timpul, pentru că dezvăluirea ei este echivalent cu a ceda controlul asupra monedelor bitcoin securizate de acea adresă. Cheia privată trebuie de asemenea să aibă o copie de rezervă și să fie protejată împotriva pierderii accidentale, deoarece dacă este pierdută nu poate fi recuperată, iar fondurile securizate de ea sunt pierdute și ele pentru totdeauna.
 
-[Sfat]
+[TIP]
 ====
 Cheia privată bitcoin este doar un număr. Puteți să vă alegeți cheile private aleator folosind doar o monedă, un creion și o foaie de hârtie: aruncați o monedă de 256 de ori și aveți cifrele binare ale unei chei private aleatorii pe care o puteți folosi într-un portofel bitcoin. Apoi cheia publică poate fi generată din cheia privată.
 ====
@@ -62,7 +62,7 @@ Primul și cel mai important pas în generarea cheilor este găsirea unei surse 
 
 Mai precis, cheia privată poate fi orice număr între +0+ și +n - 1+ inclusiv, unde n este o constantă (n = 1.1578 * 10^77^, ceva mai puțin decât 2^256^) definită ca ordinea curbei eliptice folosite în bitcoin (vezi <<elliptic_curve>>). Pentru a crea o astfel de cheie, alegem la întâmplare un număr format din 256 biți și verificăm dacă este mai mic decât +n+. În materie de programare, acest lucru este de obicei obținut pasând un șir mai mare de biți aleatori, creați dintr-o sursă criptografică sigură de aleatoriu, unui algoritm SHA256, care va produce în mod convenabil un număr pe 256 de biți. Dacă rezultatul este mai mic decât +n+ atunci avem o cheie privată adecvată. În caz contrar încercăm din nou cu un alt număr aleator.
 
-[ATENȚIE]
+[WARNING]
 ====
 ((("numere aleatorii", "generare numere aleatorii")))((("entropie", "generare numere aleatorii")))Nu este indicat să scrieți propriul cod care să creeze un număr aleator sau să folosiți un generator ”simplu” de numere aleatorii oferit de limbajul dumneavoastră de programare. Folosiți un pseudogenerator de numere aleatorii care este sigur din punct de vedere criptografic (CSPRNG) cu o sămânță (seed) obținută dintr-o sursă sigură de entropie. Studiați documentația bibliotecii de generare a numerelor aleatorii pe care o alegeți pentru a vă asigura că este sigură din punct de vedere criptografic. Implementarea corectă a CSPRNG este critică pentru asigurarea securității cheilor.
 ====
@@ -74,7 +74,7 @@ Mai jos este o cheie privată (k) generată aleator afișată în format hexazec
 ----
 
 
-[Sfat]
+[TIP]
 ====
 Dimenisunea spațiului (2^256^) pentru cheia privată bitcoin este un număr inexplicabil de mare. În format  zecimal este aproximativ 10^77^. Pentru comparație, este estimat că universul vizibil conține 10^80^ atomi.
 ====
@@ -90,7 +90,7 @@ KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
 
 Comanda  +dumpprivkey+ deschide portofelul și extrage cheia privată care a fost generată de comanda +getnewaddress+. Nu este posibil pentru +bitcoind+ să afle cheia privată din cheia publică decât dacă ambele sunt stocate în portofel.
 
-[Sfat]
+[TIP]
 =====================================================================
 Comanda +dumpprivkey+ nu generează o cheie privată dintr-o cheie publică, acest lucru fiind imposibil. Comanda pur și simplu dezvăluie cheia privată care este deja cunoscută de către portofel și care a fost generată de comanda +getnewaddress+.
 =====================================================================
@@ -108,7 +108,7 @@ $ bx seed | bx ec-new | bx ec-to-wif
 
 ((("chei și adrese", "prezentare generală a", "calcularea cheii publice")))((("punct generator")))Cheia publică este calculată din cheia privată folosind înmulțirea curbei eliptice, care este ireversibilă: _K_ = _k_ * _G_, unde _k_ este cheia privată, _G_ este un punct fix numit _punct generator_, și _K_ este cheia publică rezultată. Operația inversă, cunoscută ca ”găsirea logaritmului discret”—calcularea lui _k_ dacă îl știți pe __K__—este la fel de dificilă ca a încerca toate valorile posibile pentru _k_, i.e. o căutare prin forță brută. Înainte de a demonstra cum să generăm o cheie publică dintr-o cheie privată, să ne uităm la criptografia curbei eliptice în detaliu.
 
-[Sfat]
+[TIP]
 ====
 Înmulțirea curbei eliptice este un tip de funcție pe care criptografii o numesc funcție ”ușă capcană”: este ușor de calculat într-o direcție (înmulțirea) și imposibil de a calcula inversa (împărțirea). Proprietarul cheii private poate crea cu ușurință cheia publică și apoi poate să o împartă cu restul lumii știind că nimeni nu poate să inverseze funcția și să calculeze cheia privată din cheia publică. Acest artificiu matematic devine baza pentru semnăturile digitale securizate și nefalsificabile care dovedesc deținerea fondurilor bitcoin.
 ====
@@ -208,7 +208,7 @@ Acum că am definit adunarea, putem defini înmulțirea în modul clasic în car
 
 unde _k_ este cheia privată, _G_ este punctul generator, iar _K_ este cheia publică rezultată, un punct pe curbă. Deoarece punctul generator este tot timpul același pentru toți utilizatorii bitcoin, o cheie privată _k_ înmulțită cu _G_ va rezulta tot timpul în aceeași cheie publică _K_. Relația dintre _k_ și _K_ este fixă, dar poate fi calculată doar într-o direcție, de la _k_ la _K_. De aceea o adresă bitcoin (derivată din _K_) poate fi prezentată oricui și nu dezvăluie cheia privată a utilizatorului (_k_).
 
-[Sfat]
+[TIP]
 ====
 O cheie privată poate fi convertită într-o cheie publică, dar o cheie publică nu poate să fie convertită înapoi într-o cheie privată deoarece calculul funcționează doar într-un sens.
 ====
@@ -234,7 +234,7 @@ Pentru a vizualiza multiplicarea unui punct cu un număr întreg, vom folosi cur
 
 <<ecc_illustrated>> prezintă procesul pentru derivarea _G_, _2G_, _4G_, ca o operație geometrică pe curbă.
 
-[Sfat]
+[TIP]
 ====
 ((("biblioteca secp256k1 C optimizată")))Bitcoin folosește https://github.com/bitcoin-core/secp256k1[biblioteca secp256k1 C optimizată] pentru a efectua calculele matematice pentru curba eliptică.((("", startref="KAover04")))
 ====
@@ -268,7 +268,7 @@ Adresa bitcoin este cea care apare cel mai des într-o tranzacție ca ”destina
 unde _K_ este cheia publică, iar _A_ este adresa bitcoin rezultată.
 
 
-[Sfat]
+[TIP]
 ====
 O adresă bitcoin _nu_ este același lucru ca o cheie publică. Adresele bitcoin sunt derivate dintr-o cheie publică folosind o funcție unidirecțională.
 ====
@@ -493,7 +493,7 @@ Nu uitați, aceste formate _nu_ sunt folosite în mod interschimbabil. Într-un 
 Dacă un portofel bitcoin este capabil să implementeze chei publice comprimate, le va folosi pe acelea în toate tranzacțiile. Cheile private din portofel vor fi folosite pentru a deriva punctul cheii publice pe curbă, care va fi comprimat. Cheile publice comprimate vor fi folosite pentru a genera adrese bitcoin, iar acelea vor fi folosite în tranzacții. Când exportați cheile private dintr-un portofel nou care implementează chei publice comprimate, fișerul WIF este modificat, prin adăugarea la cheia privată a unui octet sufix cu valoarea de +01+. Cheia privată codificată în Base58Check este numită ”WIF comprimat” și începe cu literele _K_ sau _L_, în loc să înceapă cu un ”5” cum este cazul pentru cheile necomprimate codificate WIF din portofelele mai vechi.
 
 
-[Sfat]
+[TIP]
 ====
 ”Chei private comprimate” este un termen impropriu! Ele nu sunt comprimate deloc; mai degrabă WIF-comprimat înseamnă că cheile ar trebui să fie folosite doar pentru a deriva chei publice comprimate și adresele lor bitcoin corespunzătoare. În mod ironic, o cheie privată codificată în ”WIF-comprimat” este cu un octet mai lungă deoarece are adăugat sufixul +01+ pentru a o deosebi de una ”necomprimată”.((("", startref="KAaddress04")))
 ====
@@ -528,7 +528,7 @@ Address: 1PRTTaJesdNovgne6Ehcdu1fpEdX7913CK
 ----
 ====
 
-[Sfat]
+[TIP]
 ====
 Codul de la <<addr_example_run>> produce o adresă bitcoin  (+1PRTT...+) dintr-o cheie publică _comprimată_ (vezi <<comp_pub>>). Dacă foloseați în loc cheia publică necomprimată, ar fi produs o adresă bitcoin diferită (+14K1y...+).
 ====
@@ -594,7 +594,7 @@ include::code/ec-math.py[]
 
 <<ec_math_run>> arată rezultatul produs de rularea acestui script.
 
-[ATENȚIE]
+[WARNING]
 ====
 <<ec_math>> ((("numere aleatoare", "os.urandom", see="entropy")))((("entropie", "os.urandom", see="numere aleatoare")))((("numere aleatoare", "generare de numere aleatoare")))((("entropie", "generare de numere aleatoare")))folosește +os.urandom+, care reflectă un generator de numere aleatoare securizat criptografic (CSRNG) furnizat de sistemul de operare pe care rulează. Atenție: în funcție de sistemul de operare,  +os.urandom+ s-ar putea să nu fie destul de securizat și s-ar putea să _nu_ fie potrivit pentru generarea de chei bitocoin de calitate.((("", startref="KApython04")))
 ====
@@ -663,7 +663,7 @@ $ bx script-encode < script | bx sha256 | bx ripemd160 \
 3F6i6kwkevjR7AsAd4te2YB2zZyASEm1HM
 ----
 
-[Sfat]
+[TIP]
 ====
 P2SH nu este neaparat același lucru cu o tranzacție standard cu semnătură multiplă. O adresă P2SH _cel mai des_ reprezintă un script cu semnătură multiplă, dar ar putea de asemenea să reprezinte un script care să codifice alte tipuri de tranzacții. 
 ====
@@ -732,7 +732,7 @@ include::code/vanity-miner.cpp[]
 ----
 ====
 
-[NOTĂ]
+[NOTE]
 ====
 <<vanity_miner_run>> folosește +std::random_device+. Depinzând de implementare, ar putea reflecta o CSRNG furnizată de sistemul de operare. În cazul unui sistem de operare bazat pe Unix, cum ar fi Linux, se bazează pe +/dev/urandom+. Generatorul de numere aleatoare folosit aici este folosit doar în scopuri demonstrative și _nu_ este potrivit pentru generarea de chei bitcoin de calitate din moment ce nu este destul de sigur.
 ====
@@ -814,12 +814,12 @@ image::images/mbc2_0408.png[]
 .Un exemplu de portofel de hârtie criptat de la bitaddress.org. Parola este ”test”.
 image::images/mbc2_0409.png[]
 
-[ATENȚIE]
+[WARNING]
 ====
 Chiar dacă puteți depozita fonduri într-un portofel de hârtie de mai multe ori, ar trebui să retrageți fondurile doar o data, cheltuind totul. Motivul este că în procesul de deblocare și cheltuire a fondurilor unele portofele s-ar putea să genereze o adresă de rest dacă cheltuiți mai puțin decât suma totală. Dacă calculatorul pe care l-ați folosit să semnați tranzacțiile este apoi compromis, riscați expunerea cheii private, oferind access la fondurile din adresa de rest. Cheltuind întreaga sumă a unui portofel de hârtie doar o dată, reduceți riscul de a compromite cheile. Dacă trebuie să cheltuiți doar o sumă mai mică, trimiteți fondurile rămase la un nou portofel de hârtie în aceeași tranzacție.
 ====
 
-Portofelele de hârtie au mai multe modele și dimensiuni, cu multe funcționalități diferite. Unele sunt destinate a fi oferite ca și cadouri și au teme de sezon, cum ar fi teme de Crăciun și Anul Nou. Altele sunt  concepute pentru depozitare într-un seif al băncii având cheile private ascunse cumva, sau cu colante opace răzuibile, sau împăturite și sigilate cu o folie adezivă. Imaginile pass:[<a data-type="xref" href="#paper_wallet_bpw" data-xrefstyle="select: labelnumber">#paper_wallet_bpw</a>] până la pass:[<a data-type="xref" href="#paper_wallet_spw" data-xrefstyle="select: labelnumber">#paper_wallet_spw</a>] prezintă diferite exemple de portofele de hârtie având funcții de securitate și rezervă.
+Portofelele de hârtie au mai multe modele și dimensiuni, cu multe funcționalități diferite. Unele sunt destinate a fi oferite ca și cadouri și au teme de sezon, cum ar fi teme de Crăciun și Anul Nou. Altele sunt  concepute pentru depozitare într-un seif al băncii având cheile private ascunse cumva, sau cu colante opace răzuibile, sau împăturite și sigilate cu o folie adezivă. Imaginile următoare prezintă diferite exemple de portofele de hârtie având funcții de securitate și rezervă.
 
 [[paper_wallet_bpw]]
 .Un exemplu de portofel de hârtie de la bitcoinpaperwallet.com cu cheia privată pe o clapeta pliabilă
