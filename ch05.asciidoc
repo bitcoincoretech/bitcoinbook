@@ -15,7 +15,7 @@ Mai restrâns, din perspectiva programatorului, cuvântul ”portofel” se refe
 
 ((("portofele", "conținutul"))) O concepție greșită comună despre bitcoin este aceea că portofelele bitcoin conțin bitcoin. De fapt, portofelul conține doar chei. ”Monedele” sunt înregistrate în lanțul-de-blocuri în rețeaua bitcoin. Utilizatorii controlează monedele din rețea prin semnarea tranzacțiilor cu cheile din portofele.((("brelocuri"))) Într-un sens, un portofel bitcoin este un _breloc_.
 
-[Sfat]
+[TIP]
 ====
 Portofelele Bitcoin conțin chei, nu monede. Fiecare utilizator are un portofel care conține chei. Portofelele sunt mai de grabă brelocuri care conțin perechi de chei private/publice (vezi <<private_public_keys>>). Utilizatorii semnează tranzacții cu cheile, dovedind astfel că dețin ieșirile tranzacției (monedele lor). Monedele sunt stocate în lanțul-de-blocuri sub formă de ieșiri de tranzacție (adesea notate ca vout sau txout).
 ====
@@ -35,7 +35,7 @@ Următoarele secțiuni prezintă fiecare dintre aceste tehnologii la un nivel î
 
 ((("portofele", "tipuri de", "portofele nedeterministe (aleatoare")))În primul portofel bitcoin (acum numit Bitcoin Core), portofelele erau colecții de chei private generate aleatoriu. De exemplu, clientul inițial Bitcoin Core pre-generează 100 de chei private aleatorii la prima pornire și generează mai multe chei după cum este necesar, folosind fiecare cheie o singură dată. Astfel de portofele sunt înlocuite cu portofele deterministe, deoarece sunt greoi de gestionat, de creat copii de rezervă și de importat. Dezavantajul cheilor aleatorii este că, dacă generați multe, trebuie să păstrați copii ale tuturor, ceea ce înseamnă că portofelul trebuie să fie copiat în mod frecvent. Fiecare cheie trebuie să fie salvată sau fondurile pe care le controlează sunt pierdute irevocabil dacă portofelul devine inaccesibil. Acest lucru este în conflict direct cu principiul evitării reutilizării adreselor, utilizând fiecare adresă bitcoin pentru o singură tranzacție. Reutilizarea adreselor reduce confidențialitatea prin asocierea mai multor tranzacții și adrese între ele. Un portofel nedeterministic de Tip-0 este o alegere slabă, în special dacă doriți să evitați refolosirea adreselor, deoarece asta înseamnă gestionarea multor chei, ceea ce aduce cu sine necesitatea creării frecvente a copiilor de rezervă. Deși clientul Bitcoin Core include un portofel de Tip-0, utilizarea acestui portofel este descurajată de către dezvoltatorii Bitcoin Core. <<Type0_wallet>> prezintă un portofel nedeterminist, care conține o colecție de chei aleatorii independente.
 
-[Sfat]
+[TIP]
 ====
 Utilizarea portofelelor nedeterministe este descurajată pentru orice altceva decât teste simple. Ele sunt pur și simplu prea greoaie pentru a face copii de rezervă și a le utiliza. În schimb, utilizați un portofel bazat-pe-standardele-industriei cu o sămânță (seed) mnemonică ca rezervă.
 ====
@@ -101,7 +101,7 @@ Standardele au fost adoptate de o gamă largă de portofele software și hardwar
 
 Secțiunile următoare examinează fiecare dintre aceste tehnologii în detaliu.
 
-[Sfat]
+[TIP]
 ====
 Dacă implementați un portofel bitcoin, acesta ar trebui să fie construit ca un portofel HD, cu o sămânță (seed) codificată ca și cod mnemonic pentru recuperare, urmând standardele BIP-32, BIP-39, BIP-43 și BIP-44, așa cum este descris în următoarele secțiuni.
 ====
@@ -136,7 +136,7 @@ Notând acestă mnemonică, Gabriel a creat o copie de rezervă (vezi <<mnemonic
 |*6.*| _true_ |*12.*| _crunch_
 |===
 
-[NOTĂ]
+[NOTE]
 ====
 O mnemonică de 12 cuvinte este afișată în <<mnemonic_paper_backup>>, pentru simplitate. De fapt, majoritatea portofelelor hardware generează o mnemonică mai sigură fomată din 24 de cuvinte. Mnemonica este utilizată în același mod, indiferent de lungime.
 ====
@@ -152,7 +152,7 @@ Să examinăm acum în detaliu fiecare dintre standardele importante ale industr
 
 ((("portofele", "tehnologia", "cuvinte cod mnemonic")))((("cuvinte cod mnemonic", id="mnemonic05")))((("propuneri de îmbunătățire bitcoin", "Cuvinte Cod Mnemonic (BIP-39)", id="BIP3905")))Cuvintele cod mnemonic sunt secvențe de cuvinte care reprezintă (codifică) un număr aleator folosit ca sămânță (seed) pentru a obține un portofel determinist. Secvența de cuvinte este suficientă pentru a recrea sămânța și de acolo pentru a recrea portofelul și toate cheile derivate. O aplicație portofel care implementează portofele deterministe cu cuvinte mnemonice va arăta utilizatorului o secvență de 12 până la 24 de cuvinte atunci când acesta crează un portofel. Acea secvență de cuvinte este copia de rezervă a portofelului și poate fi folosită pentru a recupera și recrea toate cheile din aceași aplicație sau din alte aplicații portofel compatibile. Cuvintele mnemonice facilitează crearea copiilor de rezervă pentru că sunt ușor de citit și de transcris corect, în comparație cu o secvență aleatoare de numere.
 
-[Sfat]
+[TIP]
 ====
 (((”portofele mentale”)))Cuvintele mnemonice sunt deseori confundate cu ”portofelele mentale”. Nu sunt același lucru. Diferența principală este că un set de portofele mentale este format din cuvinte alese de utilizator, în timp ce cuvintele mnemonice sunt create la întâmplare de portofel și prezentate utilizatorului. Această diferență importantă face ca cuvintele mnemonice să fie mult mai sigure, deoarece oamenii sunt surse foarte slabe de aleatoriu.
 ====
@@ -217,7 +217,7 @@ Procesul descris în etapele 7 până la 9 continuă din procesul descris anteri
 .De la mnemonică la sămânță
 image::images/mbc2_0507.png["De la mnemonică la sămânță"]
 
-[Sfat]
+[TIP]
 ====
 Funcția de întindere (stretching) a cheilor, cu rundele sale de 2048 de rezumări (hashing), este o protecție foarte eficientă împotriva atacurilor de forță brută împotriva mnemonicei sau a frazei de acces. Este extrem de costisitor (ca efort de calcul) să încercați mai mult de câteva mii de fraze și combinații mnemonice, în timp ce numărul de semințe (seeds) derivate posibile este vast (2^512^).
 ====
@@ -264,7 +264,7 @@ luggage oxygen faint major edit measure invite love trap field dilemma oblige+
 
 ((("fraze de acces")))Standardul BIP-39 permite utilizarea unei fraze de acces opționale în derivarea seminței (seed). Dacă nu se utilizează o frază-de-acces, mnemonica este întinsă cu o sare (salt) constând din textul constant +”mnemonic”+, producând o sămânță specifică de 512 biți din orice mnemonică dată. Dacă se folosește o frază-de-acces, funcția de întindere produce o sămânță _diferită_ din aceași mnemonică. De fapt, având o singură mnemonică, fiecare frază-de-acces posibilă rezultă într-o sămânță diferită. În esență, nu există o frază-de-acces ”greșită”. Toate frazele de acces sunt valide și toate conduc la semințe diferite, formând un set vast de portofele posibile neinițializate. Setul de portofele posibile este atât de mare (2^512^) încât nu există nici o posibilitate practică de a folosi forța brută sau de a ghici accidental un portofel care este în uz.
 
-[Sfat]
+[TIP]
 ====
 Nu există fraze-de-acces ”greșite” în BIP-39. Fiecare frază de acces conduce la un portofel, care, dacă nu a fost folosit anterior, va fi gol.
 ====
@@ -349,7 +349,7 @@ Cheile private copii nu se disting de cheile nedeterministice (aleatorii). Deoar
 
 Deci, la ce se poate folosi cheia privată a copilului de una singură? Poate fi folosită pentru a crea o cheie publică și o adresă bitcoin. Apoi, poate fi folosită pentru a semna tranzacții pentru a cheltui orice a fost plătit la adresa respectivă.
 
-[Sfat]
+[TIP]
 ====
 Cheia privată copil, cheia publică corespunzătoare și adresa bitcoin sunt toate imposibil de deosebit față de chei și adrese create la întâmplare. Faptul că fac parte dintr-o secvență nu este vizibil în afara funcției de portofel HD care le-a creat. Odată create, acestea funcționează exact ca și cheile ”normale”.
 ====
@@ -362,7 +362,7 @@ Cheile extinse sunt stocate și reprezentate pur și simplu ca o concatenare a c
 
 Gândiți-vă la o cheie extinsă ca la rădăcina unei ramuri din structura de arbore a portofelului HD. Cu rădăcina ramurii, puteți obține restul ramurii. Cheia privată extinsă poate crea o ramură completă, în timp ce cheia publică extinsă poate crea _doar_ o ramură de chei publice.
 
-[Sfat]
+[TIP]
 ====
 O cheie extinsă constă dintr-o cheie privată sau publică și un cod de lanț. O cheie extinsă poate crea copii, generând propria ramură în structura arborelui. Distribuirea unei chei extinse oferă acces la întreaga ramură.
 ====
