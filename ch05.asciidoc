@@ -13,7 +13,7 @@ Mai restrâns, din perspectiva programatorului, cuvântul ”portofel” se refe
 
 În această secțiune vom rezuma diferitele tehnologii utilizate pentru a construi portofele bitcoin ușor de utilizat, sigure și flexibile.
 
-((("portofele", "conținutul"))) O concepție greșită comună despre bitcoin este aceea că portofelele bitcoin conțin bitcoin. De fapt, portofelul conține doar chei. ”Monedele” sunt înregistrate în lanțul-de-blocuri în rețeaua bitcoin. Utilizatorii controlează monedele din rețea prin semnarea tranzacțiilor cu cheile din portofele.((("brelocuri")))Într-un sens, un portofel bitcoin este un _breloc_.
+((("portofele", "conținutul"))) O concepție greșită comună despre bitcoin este aceea că portofelele bitcoin conțin bitcoin. De fapt, portofelul conține doar chei. ”Monedele” sunt înregistrate în lanțul-de-blocuri în rețeaua bitcoin. Utilizatorii controlează monedele din rețea prin semnarea tranzacțiilor cu cheile din portofele.((("brelocuri"))) Într-un sens, un portofel bitcoin este un _breloc_.
 
 [Sfat]
 ====
@@ -126,7 +126,7 @@ Notând acestă mnemonică, Gabriel a creat o copie de rezervă (vezi <<mnemonic
 
 [[mnemonic_paper_backup]]
 .Copia de rezervă de hârtie a lui Gabriel
-[cols="<1,^50,<1,^50", width="80%"]
+[width="80%"]
 |===
 |*1.*| _army_ |*7.*| _garbage_
 |*2.*| _van_ |*8.*| _claim_
@@ -199,14 +199,14 @@ image::images/mbc2_0506.png["Generarea entropiei și codificarea sub formă de c
 
 ((("funcția de întindere")))((("funcția PBKDF2")))Cuvintele mnemonice reprezintă o entropie cu o lungime de 128 până la 256 biți. Entropia este apoi utilizată pentru a obține o sămânță mai lungă (512 biți) prin utilizarea funcției PBKDF2 de întindere (stretching) a cheilor. Sămânța produsă este apoi utilizată pentru a construi un portofel determinist și pentru a-i deduce cheile.
 
-((("sare")))((("frază de acces"))) Funcția de întindere (stretching) a cheii are doi parametri: mnemonica și o _sare_ (salt). Scopul unei sări într-o funcție de întindere a cheilor este de a face dificilă construirea unui tabel de căutare care să permită un atac de forță brută. În standardul BIP-39, sarea are un alt scop - permite introducerea unei fraze care servește ca un factor suplimentar de securitate care protejează sămânța, așa cum vom descrie mai detaliat în <<mnemonic_passphrase>>.
+((("sare")))((("frază-de-acces"))) Funcția de întindere (stretching) a cheii are doi parametri: mnemonica și o _sare_ (salt). Scopul unei sări într-o funcție de întindere a cheilor este de a face dificilă construirea unui tabel de căutare care să permită un atac de forță brută. În standardul BIP-39, sarea are un alt scop - permite introducerea unei fraze care servește ca un factor suplimentar de securitate care protejează sămânța, așa cum vom descrie mai detaliat în <<mnemonic_passphrase>>.
 
 Procesul descris în etapele 7 până la 9 continuă din procesul descris anterior în <<generating_mnemonic_words>>:
 
 ++++
 <ol start="7">
 	<li> Primul parametru al funcției PBKDF2 de întindere (stretching) a cheilor este <em>mnemonica</em> produsă la pasul 6. </li>
-	<li>Al doilea parametru pentru funcția PBKDF2 de întindere (stretching) a cheilor este o <em>sare</em>. Sarea (salt) este compusă din constanta ”<code>mnemonic</code>” concatenată cu o frază de acces opțională furnizată de utilizator.</li>
+	<li>Al doilea parametru pentru funcția PBKDF2 de întindere (stretching) a cheilor este o <em>sare</em>. Sarea (salt) este compusă din constanta ”<code>mnemonic</code>” concatenată cu o frază-de-acces opțională furnizată de utilizator.</li>
 	<li> PBKDF2 întinde parametrii (mnemonica și sarea) folosind 2048 de runde de rezumat cu algoritmul HMAC-SHA512, producând o valoare de 512 biți ca ieșire finală. Acea valoare de 512 biți este sămânța.</li>
 </ol>
 ++++
@@ -222,39 +222,39 @@ image::images/mbc2_0507.png["De la mnemonică la sămânță"]
 Funcția de întindere (stretching) a cheilor, cu rundele sale de 2048 de rezumări (hashing), este o protecție foarte eficientă împotriva atacurilor de forță brută împotriva mnemonicei sau a frazei de acces. Este extrem de costisitor (ca efort de calcul) să încercați mai mult de câteva mii de fraze și combinații mnemonice, în timp ce numărul de semințe (seeds) derivate posibile este vast (2^512^).
 ====
 
-Tabelele pass:[<a data-type="xref" href="#mnemonic_128_no_pass" data-xrefstyle="select: labelnumber">#mnemonic_128_no_pass</a>], pass:[<a data-type="xref" href="#mnemonic_128_w_pass" data-xrefstyle="select: labelnumber">#mnemonic_128_w_pass</a>], și pass:[<a data-type="xref" href="#mnemonic_256_no_pass" data-xrefstyle="select: labelnumber">#mnemonic_256_no_pass</a>] arată câteva exemple de coduri mnemonice și semințele pe care le produc (cu sau fără o frază de acces).
+Tabelele următoare arată câteva exemple de coduri mnemonice și semințele pe care le produc (cu sau fără o frază-de-acces).
 
 [[mnemonic_128_no_pass]]
-.Cod mnemonic de entropie pe 128 biți, fără frază de acces, sămânța rezultată
+.Cod mnemonic de entropie pe 128 biți, fără frază-de-acces, sămânța rezultată
 [cols="h,"]
 |=======
 | *Entropie (128 biți)*| +0c1e24e5917779d297e14d45f14e1a1a+
 | *Mnemonică (12 cuvinte)* | +army van defense carry jealous true garbage claim echo media make crunch+
-| *Frază de acces*| (none)
+| *Frază-de-acces*| (none)
 | *Sămânță (512 biți)* | +5b56c417303faa3fcba7e57400e120a0ca83ec5a4fc9ffba757fbe63fbd77a89a1a3be4c67196f57c39+
 +a88b76373733891bfaba16ed27a813ceed498804c0570+
 |=======
 
 [[mnemonic_128_w_pass]]
-.Cod mnemonic de entropie pe 128 biți, cu frază de acces, sămânța rezultată
+.Cod mnemonic de entropie pe 128 biți, cu frază-de-acces, sămânța rezultată
 [cols="h,"]
 |=======
 | *Entropie (128 biți)*| +0c1e24e5917779d297e14d45f14e1a1a+
 | *Mnemonică (12 cuvinte)* | +army van defense carry jealous true garbage claim echo media make crunch+
-| *Frază de access*| SuperDuperSecret
+| *Frază-de-access*| SuperDuperSecret
 | *Sămânță  (512 biți)* | +3b5df16df2157104cfdd22830162a5e170c0161653e3afe6c88defeefb0818c793dbb28ab3ab091897d0+
 +715861dc8a18358f80b79d49acf64142ae57037d1d54+
 |=======
 
 
 [[mnemonic_256_no_pass]]
-.Cod mnemonic de entropie pe 256 de biți, fără frază de acces, sămânța rezultată
+.Cod mnemonic de entropie pe 256 de biți, fără frază-de-acces, sămânța rezultată
 [cols="h,"]
 |=======
 | *Entropie (256 biți)* | +2041546864449caff939d32d574753fe684d3c947c3346713dd8423e74abcf8c+
 | *Mnemonică (24 cuvinte)* | +cake apple borrow silk endorse fitness top denial coil riot stay wolf
 luggage oxygen faint major edit measure invite love trap field dilemma oblige+
-| *Frază de acces*| (none)
+| *Frază-de-acces*| (none)
 | *Sămânță (512 biți)* | +3269bce2674acbd188d4f120072b13b088a0ecf87c6e4cae41657a0bb78f5315b33b3a04356e53d062e5+
 +5f1e0deaa082df8d487381379df848a6ad7e98798404+
 |=======
@@ -262,18 +262,18 @@ luggage oxygen faint major edit measure invite love trap field dilemma oblige+
 [[mnemonic_passphrase]]
 ===== Fraza de acces opțională în BIP-39
 
-((("fraze de acces")))Standardul BIP-39 permite utilizarea unei fraze de acces opționale în derivarea seminței (seed). Dacă nu se utilizează o frază de access, mnemonica este întinsă cu o sare (salt) constând din textul constant +”mnemonic”+, producând o sămânță specifică de 512 biți din orice mnemonică dată. Dacă se folosește o frază de acces, funcția de întindere produce o sămânță _diferită_ din aceași mnemonică. De fapt, având o singură mnemonică, fiecare frază posibilă rezultă într-o sămânță diferită. În esență, nu există o frază de acces ”greșită”. Toate frazele de acces sunt valide și toate conduc la semințe diferite, formând un set vast de portofele posibile neinițializate. Setul de portofele posibile este atât de mare (2^512^) încât nu există nici o posibilitate practică de a folosi forța brută sau de a ghici accidental un portofel care este în uz.
+((("fraze de acces")))Standardul BIP-39 permite utilizarea unei fraze de acces opționale în derivarea seminței (seed). Dacă nu se utilizează o frază-de-acces, mnemonica este întinsă cu o sare (salt) constând din textul constant +”mnemonic”+, producând o sămânță specifică de 512 biți din orice mnemonică dată. Dacă se folosește o frază-de-acces, funcția de întindere produce o sămânță _diferită_ din aceași mnemonică. De fapt, având o singură mnemonică, fiecare frază-de-acces posibilă rezultă într-o sămânță diferită. În esență, nu există o frază-de-acces ”greșită”. Toate frazele de acces sunt valide și toate conduc la semințe diferite, formând un set vast de portofele posibile neinițializate. Setul de portofele posibile este atât de mare (2^512^) încât nu există nici o posibilitate practică de a folosi forța brută sau de a ghici accidental un portofel care este în uz.
 
 [Sfat]
 ====
-Nu există fraze”greșite” în BIP-39. Fiecare frază de acces conduce la un portofel, care, dacă nu a fost folosit anterior, va fi gol.
+Nu există fraze-de-acces ”greșite” în BIP-39. Fiecare frază de acces conduce la un portofel, care, dacă nu a fost folosit anterior, va fi gol.
 ====
 
 Fraza de acces opțională crează două caracteristici importante:
 
 * Un al doilea factor (ceva memorat) care face ca o mnemonică să fie inutilă de la sine, protejând copiile de rezervă mnemonice împotriva compromiterii de către un hoț.
 
-* O formă de negare plauzibilă sau ”portofel momeală”, unde o frază de acces aleasă duce la un portofel cu o sumă mică de fonduri folosite pentru a distrage un atacator de la portofelul ”real” care conține majoritatea fondurilor.
+* O formă de negare plauzibilă sau ”portofel momeală”, unde o frază-de-acces aleasă duce la un portofel cu o sumă mică de fonduri folosite pentru a distrage un atacator de la portofelul ”real” care conține majoritatea fondurilor.
 
 Cu toate acestea, este important să rețineți că utilizarea unei fraze de acces introduce, de asemenea, riscul de pierdere:
 
