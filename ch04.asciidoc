@@ -5,9 +5,9 @@
 
 == Introducere
 
-((("chei digitale", see="chei și adrese")))((("chei și adrese", "prezentare generală a", id="KAover04")))((("semnături digitale", "scopul")))Deținerea de bitcoin este stabilită folosind _chei digitale_, _adrese bitcoin_, și _semnături digitale_. Cheile digitale nu sunt stocate de fapt în rețea, ci sunt în schimb create și stocate de către utilizatori într-un fișier, sau o bază de date simplă, numită _portofel_. Cheile digitale din portofelul unui utilizator sunt complet independente față de protocolul bitcoin și pot fi generate și administrate de către software-ul portofel al utilizatorului fără a face referire la lanțul de blocuri și fără acces la internet. Cheile oferă mijloacele pentru multe dintre proprietățile interesante ale bitcoin, incluzând încrederea și controlul descentralizat, atestarea proprietății, și modelul de securitate dovedit-criptografic. 
+((("chei digitale", see="chei și adrese")))((("chei și adrese", "prezentare generală a", id="KAover04")))((("semnături digitale", "scopul")))Deținerea de bitcoin este stabilită folosind _chei digitale_, _adrese bitcoin_, și _semnături digitale_. Cheile digitale nu sunt stocate de fapt în rețea, ci sunt în schimb create și stocate de către utilizatori într-un fișier, sau o bază de date simplă, numită _portofel_. Cheile digitale din portofelul unui utilizator sunt complet independente față de protocolul bitcoin și pot fi generate și administrate de către software-ul portofel al utilizatorului fără a face referire la lanțul-de-blocuri și fără acces la internet. Cheile oferă mijloacele pentru multe dintre proprietățile interesante ale bitcoin, incluzând încrederea și controlul descentralizat, atestarea proprietății, și modelul de securitate dovedit-criptografic. 
 
-Majoritatea tranzacțiilor bitcoin necesită o semnătură digitală validă pentru a fi incluse în lanțul de blocuri, semnătura care poate fi generată doar folosind o cheie secretă; prin urmare, oricine are o copie a acelei chei are control asupra bitcoin.((("martori")))Semnătura digitală folosită pentru a cheltui fonduri este de asemenea denumită _martor_, un termen folosit în criptografie. Datele martor dintr-o tranzacție bitcoin depun mărturie despre cine deține cu adevărat fondurile care sunt cheltuite.
+Majoritatea tranzacțiilor bitcoin necesită o semnătură digitală validă pentru a fi incluse în lanțul de blocuri, semnătura care poate fi generată doar folosind o cheie secretă; prin urmare, oricine are o copie a acelei chei are control asupra bitcoin. ((("martori")))Semnătura digitală folosită pentru a cheltui fonduri este de asemenea denumită _martor_, un termen folosit în criptografie. Datele martor dintr-o tranzacție bitcoin depun mărturie despre cine deține cu adevărat fondurile care sunt cheltuite.
 
 ((("chei publice și private", "perechi de chei")))((("chei publice și private", see="de asemenea chei și adrese")))Cheile vin în perechi formate dintr-o cheie privată (secretă) și o cheie publică. Ne putem gândi la cheia publică ca la un număr de cont bancar, iar la cheia privată ca la codul PIN secret, sau ca la o semnătură pe un cec, care oferă controlul asupra contului. Aceste chei digitale sunt foarte rar văzute de către utilizatorii bitcoin. În cea mai mare parte, ele sunt stocate în fișierul unui portofel și sunt gestionate de software-ul portofel bitcoin.
 
@@ -110,7 +110,7 @@ $ bx seed | bx ec-new | bx ec-to-wif
 
 [TIP]
 ====
-Înmulțirea curbei eliptice este un tip de funcție pe care criptografii o numesc funcție ”ușă capcană”: este ușor de calculat într-o direcție (înmulțirea) și imposibil de a calcula inversa (împărțirea). Proprietarul cheii private poate crea cu ușurință cheia publică și apoi poate să o împartă cu restul lumii știind că nimeni nu poate să inverseze funcția și să calculeze cheia privată din cheia publică. Acest artificiu matematic devine baza pentru semnăturile digitale securizate și nefalsificabile care dovedesc deținerea fondurilor bitcoin.
+Înmulțirea curbei eliptice este un tip de funcție pe care criptografii o numesc funcție ”ușă capcană”: este ușor de calculat într-o direcție (înmulțirea) și imposibil de a calcula inversa (împărțirea). Proprietarul cheii private poate crea cu ușurință cheia publică și apoi poate să o împărtășească cu restul lumii știind că nimeni nu poate să inverseze funcția și să calculeze cheia privată din cheia publică. Acest artificiu matematic devine baza pentru semnăturile digitale securizate și nefalsificabile care dovedesc deținerea fondurilor bitcoin.
 ====
 
 [[elliptic_curve]]
@@ -256,7 +256,7 @@ Adresa bitcoin este cea care apare cel mai des într-o tranzacție ca ”destina
 
 ((("adrese", "algoritmi folosiți să creeze")))Adresa bitcoin este derivată dintr-o cheie publică prin folosirea unei funcții de rezumat unidirecțională. Un algoritm de rezumare (hashing) sau pe scurt ”algoritm rezumat” este o funcție unidirecțională care produce o amprentă sau ”rezumat” (hash) pentru o intrare de mărime variabilă. Funcțiile rezumat criptografice sunt folosite extensiv în bitcoin: în adresele bitcoin, în adresele scripturilor, și în algoritmul de minerit Dovadă-de-Lucru. Algoritmii folosiți pentru crearea unei adrese bitcoin dintr-o cheie publică sunt Secure Hash Algorithm (SHA) și RACE Integrity Primitives Evaluation Message Digest (RIPEMD), mai exact SHA256 și RIPEMD160.
 
-Începând cu cheia publică _K_, calculăm rezumatul SHA256, iar apoi pentru rezultat calculăm rezumatul RIPEMD160, producând un număr pe 160 de biți (20 bytes):
+Începând cu cheia publică _K_, calculăm rezumatul SHA256, iar apoi pentru rezultat calculăm rezumatul RIPEMD160, producând un număr pe 160 de biți (20 octeți):
 
 [latexmath]
 ++++
@@ -282,7 +282,7 @@ image::images/mbc2_0405.png["pubkey_to_address"]
 [[base58]]
 ==== Codare Base58 și Base58Check
 
-((("chei și adrese", "adrese bitcoin", "codare Base58 și Base58check")))((("codare Base58 și Base58check", id="base5804")))((("adrese", "codare Base58 și Base58check", id="Abase5804")))Pentru a reprezenta numerele lungi într-o formă compactă, folosind cât mai puține simboluri, multe programe folosesc un sistem de reprezentare alfanumeric într-o bază mai mare decât 10. De exemplu, în timp ce sistemul zecimal folosește 10 cifre de la 0 la 9, sistemul hexazecimal folosește 16 cifre având în plus literele de la A la F. Un număr în format hexazecimal e mai scurt decât unul în format zecimal. Reprezentarea Base64 este chiar și mai compactă folosind 26 de litere mici, 26 de litere mari, 10 cifre și încă două caractere, cum ar fi ”+” și ”/” pentru a transmite date binare pe suporturi bazate pe text cum ar fi email-ul. Base64 este cel mai des folosit pentru a adăuga atașamente binare la email-uri. Base58 este un format de codare binară bazat pe text dezvoltat pentru folosirea în bitcoin și folosit în multe alte criptomonede. Oferă un echilibru între reprezentare compactă, lizibilitate, și detectarea și prevenirea erorilor. Base58 este un subset al Base64, ce folosește litere mici și mari, și numere, dar omițând unele caractere care sunt frecvent confundate între ele și pot părea identice când sunt afișate folosind anumite fonturi. Concret Base58 este Base64 fără 0 (zero), O (litera mare o), l (litera mică L), I (litera mare i), și simbolurile ”+” și ”/”. Sau, și mai simplu, este un set de litere mici și mari și numere fără cele patru (0, O, l, I) deja menționate.  <<base58alphabet>> prezintă alfabetul Base58 complet.
+((("chei și adrese", "adrese bitcoin", "codare Base58 și Base58check")))((("codare Base58 și Base58check", id="base5804")))((("adrese", "codare Base58 și Base58check", id="Abase5804")))Pentru a reprezenta numerele lungi într-o formă compactă, folosind cât mai puține simboluri, multe programe folosesc un sistem de reprezentare alfanumeric într-o bază mai mare decât 10. De exemplu, în timp ce sistemul zecimal folosește 10 cifre de la 0 la 9, sistemul hexazecimal folosește 16 cifre având în plus literele de la A la F. Un număr în format hexazecimal e mai scurt decât unul în format zecimal. Reprezentarea Base64 este chiar și mai compactă folosind 26 de litere mici, 26 de litere mari, 10 cifre și încă două caractere, cum ar fi ”\+” și ”/” pentru a transmite date binare pe suporturi bazate pe text cum ar fi email-ul. Base64 este cel mai des folosit pentru a adăuga atașamente binare la email-uri. Base58 este un format de codare binară bazat pe text dezvoltat pentru folosirea în bitcoin și folosit în multe alte criptomonede. Oferă un echilibru între reprezentare compactă, lizibilitate, și detectarea și prevenirea erorilor. Base58 este un subset al Base64, ce folosește litere mici și mari, și numere, dar omițând unele caractere care sunt frecvent confundate între ele și pot părea identice când sunt afișate folosind anumite fonturi. Concret Base58 este Base64 fără 0 (zero), O (litera mare o), l (litera mică L), I (litera mare i), și simbolurile ”\+” și ”/”. Sau, și mai simplu, este un set de litere mici și mari și numere fără cele patru (0, O, l, I) deja menționate.  <<base58alphabet>> prezintă alfabetul Base58 complet.
 
 [[base58alphabet]]
 .Alfabetul bitcoin Base58
@@ -293,7 +293,7 @@ image::images/mbc2_0405.png["pubkey_to_address"]
 ====
 
 
-Pentru a adăuga o verificare în plus împotriva greșelilor de dactilografiere sau transcriere, Base58Check este un format de codare Base58 folosit frecvent în bitcoin, ce are încorporat un cod de verificare al erorilor. Suma de control constă din patru bytes în plus care sunt adăugați la sfârșitul datelor ce sunt codate. Suma de control este derivată din rezumatul datelor codate și prin urmare poate fi folosită la detectarea și prevenirea erorilor de dactilografiere și transcriere. Când îi este prezentat un cod în format Base58Check software-ul de decodare va calcula suma de control a datelor și o va compara cu suma de control inclusă în cod. Daca cele două nu se potrivesc, înseamnă că a fost introdusă o eroare, iar datele Base58Check sunt considerate invalide. Acest lucru previne ca adresele bitcoin care au fost introduse greșit să fie acceptate de software-ul portofelului ca destinații valide, o eroare care altfel ar fi rezultat în pierderea de fonduri.
+Pentru a adăuga o verificare în plus împotriva greșelilor de dactilografiere sau transcriere, Base58Check este un format de codare Base58 folosit frecvent în bitcoin, ce are încorporat un cod de verificare al erorilor. Suma de control constă din patru octeți în plus care sunt adăugați la sfârșitul datelor ce sunt codate. Suma de control este derivată din rezumatul datelor codate și prin urmare poate fi folosită la detectarea și prevenirea erorilor de dactilografiere și transcriere. Când îi este prezentat un cod în format Base58Check software-ul de decodare va calcula suma de control a datelor și o va compara cu suma de control inclusă în cod. Daca cele două nu se potrivesc, înseamnă că a fost introdusă o eroare, iar datele Base58Check sunt considerate invalide. Acest lucru previne ca adresele bitcoin care au fost introduse greșit să fie acceptate de software-ul portofelului ca destinații valide, o eroare care altfel ar fi rezultat în pierderea de fonduri.
 
 Pentru a converti datele (un număr) în format Base58Check, întâi adăugam un prefix, numit ”byte-ul de versiune”, care indică ce tip de date sunt codate. De exemplu, în cazul unei adrese bitcoin prefixul este zero (0x00 în hexa), în timp ce prefixul folosit la codarea unei chei private este 128 (0x80 în hexa). O listă a celor mai des întâlnite prefixuri pentru versiuni este prezentată în <<base58check_versions>>.
 
@@ -342,7 +342,7 @@ image::images/mbc2_0406.png["Base58CheckEncoding"]
 |Tip|Prefix|Descriere
 | Brut | Nici unul | 32 de octeți
 | Hexa | Nici unul | 64 de cifre hexazecimale
-| WIF |  5 | Codare Base58Check: Base58 cu prefix de versiune cu valoarea de 128, și 32-biți sumă de control
+| WIF |  5 | Codare Base58Check: Base58 cu prefix de versiune pe 128 biți, și 32-biți sumă de control
 | WIF-comprimat | K sau L | Ca mai sus, cu adăugarea sufixului 0x01 înainte de codare
 |=======
 
@@ -436,10 +436,10 @@ y = 07CF33DA18BD734C600B96A72BBC4749D5141C90EC8AC328AE52DDFE2E505BDB
 Iată aceiași cheie publică prezentată ca un număr pe 520 de biți (130 de cifre hexa) având prefixul _04_ urmat de coordonatele _x_ și _y_, sub forma _04 x y_:
 
 ++++
-<pre data-type="programlisting">
-K = 04F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A&#x21b5;
+ 
+K = 04F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A↵
 07CF33DA18BD734C600B96A72BBC4749D5141C90EC8AC328AE52DDFE2E505BDB
-</pre>
+ 
 ++++
 
 [[comp_pub]]
@@ -552,7 +552,7 @@ include::code/key-to-address-ecc-example.py[]
 .Running key-to-address-ecc-example.py
 ====
 ++++
-<pre data-type="programlisting">
+ 
 $ python key-to-address-ecc-example.py
 Private Key (hex) is:
  3aba4162c7251c891207b747840551a71939b0de081f85c4e44cf7c13e41daa6
@@ -576,7 +576,7 @@ Bitcoin Address (b58check) is:
  1thMirt546nngXqyPEz532S8fLwbozud8
 Compressed Bitcoin Address (b58check) is:
  14cxpo3MBCYYWCgF74SWTdcmxipnGUsPw3
-</pre>
+ 
 ++++
 ====
 
