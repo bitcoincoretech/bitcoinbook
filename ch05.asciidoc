@@ -13,7 +13,7 @@ Mai restrâns, din perspectiva programatorului, cuvântul ”portofel” se refe
 
 În această secțiune vom rezuma diferitele tehnologii utilizate pentru a construi portofele bitcoin ușor de utilizat, sigure și flexibile.
 
-((("portofele", "conținutul"))) O concepție greșită comună despre bitcoin este aceea că portofelele bitcoin conțin bitcoin. De fapt, portofelul conține doar chei. ”Monedele” sunt înregistrate în lanțul-de-blocuri în rețeaua bitcoin. Utilizatorii controlează monedele din rețea prin semnarea tranzacțiilor cu cheile din portofele.((("brelocuri"))) Într-un sens, un portofel bitcoin este un _breloc_.
+((("portofele", "conținutul"))) O concepție greșită comună despre bitcoin este aceea că portofelele bitcoin conțin bitcoin. De fapt, portofelul conține doar chei. ”Monedele” sunt înregistrate în lanțul-de-blocuri în rețeaua bitcoin. Utilizatorii controlează monedele din rețea prin semnarea tranzacțiilor cu cheile din portofele. ((("brelocuri")))Într-un sens, un portofel bitcoin este un _breloc_.
 
 [TIP]
 ====
@@ -71,7 +71,7 @@ Al doilea avantaj al portofelelor HD este că utilizatorii pot crea o secvență
 
 ((("portofele", "tehnologia", "semințe și coduri mnemonice")))((("cuvinte cod mnemonic")))((("propunere de îmbunătățire bitcoin", "Cuvinte Cod Mnemonic (BIP-39)")))Portofelele HD sunt un mecanism foarte puternic pentru a gestiona multe chei și adrese. Ele sunt chiar mai utile dacă sunt combinate cu un mod standardizat de a crea semințe dintr-o secvență de cuvinte în limba engleză ușor de transcris, exportat și importat în portofele. Aceasta este cunoscută sub numele de _mnemonică_, iar standardul este definit de BIP-39. Astăzi, majoritatea portofelelor bitcoin (precum și portofelele pentru alte criptomonede) folosesc acest standard și pot importa și exporta semințe pentru copii de rezervă și pentru recuperare folosind mnemonice interoperabile.
 
-Să privim acest lucru dintr-o perspectivă practică. Care dintre următoarele semințe este mai ușor de transcris, înregistrat pe hârtie, citit fără greșeală, export și import într-un alt portofel?
+Să privim acest lucru dintr-o perspectivă practică. Care dintre următoarele semințe este mai ușor de transcris, înregistrat pe hârtie, citit fără greșeală, exportat și importat într-un alt portofel?
 
 .O sămânță pentru un portofel determinist, în hexa
 ----
@@ -199,17 +199,17 @@ image::images/mbc2_0506.png["Generarea entropiei și codificarea sub formă de c
 
 ((("funcția de întindere")))((("funcția PBKDF2")))Cuvintele mnemonice reprezintă o entropie cu o lungime de 128 până la 256 biți. Entropia este apoi utilizată pentru a obține o sămânță mai lungă (512 biți) prin utilizarea funcției PBKDF2 de întindere (stretching) a cheilor. Sămânța produsă este apoi utilizată pentru a construi un portofel determinist și pentru a-i deduce cheile.
 
-((("sare")))((("frază-de-acces"))) Funcția de întindere (stretching) a cheii are doi parametri: mnemonica și o _sare_ (salt). Scopul unei sări într-o funcție de întindere a cheilor este de a face dificilă construirea unui tabel de căutare care să permită un atac de forță brută. În standardul BIP-39, sarea are un alt scop - permite introducerea unei fraze care servește ca un factor suplimentar de securitate care protejează sămânța, așa cum vom descrie mai detaliat în <<mnemonic_passphrase>>.
+((("sare")))((("frază-de-acces"))) Funcția de întindere (stretching) a cheii are doi parametri: mnemonica și o _sare_ (salt). Scopul unei sări într-o funcție de întindere a cheilor este de a face dificilă construirea unui tabel de căutare care să permită un atac prin forță brută. În standardul BIP-39, sarea are un alt scop - permite introducerea unei fraze care servește ca un factor suplimentar de securitate care protejează sămânța, așa cum vom descrie mai detaliat în <<mnemonic_passphrase>>.
 
 Procesul descris în etapele 7 până la 9 continuă din procesul descris anterior în <<generating_mnemonic_words>>:
 
-++++
-<ol start="7">
-	<li> Primul parametru al funcției PBKDF2 de întindere (stretching) a cheilor este <em>mnemonica</em> produsă la pasul 6. </li>
-	<li>Al doilea parametru pentru funcția PBKDF2 de întindere (stretching) a cheilor este o <em>sare</em>. Sarea (salt) este compusă din constanta ”<code>mnemonic</code>” concatenată cu o frază-de-acces opțională furnizată de utilizator.</li>
-	<li> PBKDF2 întinde parametrii (mnemonica și sarea) folosind 2048 de runde de rezumat cu algoritmul HMAC-SHA512, producând o valoare de 512 biți ca ieșire finală. Acea valoare de 512 biți este sămânța.</li>
-</ol>
-++++
+ 
+[start=7]
+	. Primul parametru al funcției PBKDF2 de întindere (stretching) a cheilor este _mnemonica_ produsă la pasul 6.
+	. Al doilea parametru pentru funcția PBKDF2 de întindere (stretching) a cheilor este o _sare_. Sarea (salt) este compusă din constanta  **`mnemonic`** concatenată cu o frază-de-acces opțională furnizată de utilizator.
+	. PBKDF2 întinde parametrii (mnemonica și sarea) folosind 2048 de runde de rezumat cu algoritmul HMAC-SHA512, producând o valoare de 512 biți ca ieșire finală. Acea valoare de 512 biți este sămânța.
+ 
+ 
 
 <<fig_5_7>>  arată cum se folosește o mnemonică pentru a genera o sămânță.
 
@@ -219,7 +219,7 @@ image::images/mbc2_0507.png["De la mnemonică la sămânță"]
 
 [TIP]
 ====
-Funcția de întindere (stretching) a cheilor, cu rundele sale de 2048 de rezumări (hashing), este o protecție foarte eficientă împotriva atacurilor de forță brută împotriva mnemonicei sau a frazei de acces. Este extrem de costisitor (ca efort de calcul) să încercați mai mult de câteva mii de fraze și combinații mnemonice, în timp ce numărul de semințe (seeds) derivate posibile este vast (2^512^).
+Funcția de întindere (stretching) a cheilor, cu rundele sale de 2048 de rezumări (hashing), este o protecție foarte eficientă împotriva atacurilor prin forță brută împotriva mnemonicei sau a frazei-de-acces. Este extrem de costisitor (ca efort de calcul) să încercați mai mult de câteva mii de fraze și combinații mnemonice, în timp ce numărul de semințe (seeds) derivate posibile este vast (2^512^).
 ====
 
 Tabelele următoare arată câteva exemple de coduri mnemonice și semințele pe care le produc (cu sau fără o frază-de-acces).
@@ -228,22 +228,22 @@ Tabelele următoare arată câteva exemple de coduri mnemonice și semințele pe
 .Cod mnemonic de entropie pe 128 biți, fără frază-de-acces, sămânța rezultată
 [cols="h,"]
 |=======
-| *Entropie (128 biți)*| +0c1e24e5917779d297e14d45f14e1a1a+
-| *Mnemonică (12 cuvinte)* | +army van defense carry jealous true garbage claim echo media make crunch+
+| *Entropie (128 biți)*| _0c1e24e5917779d297e14d45f14e1a1a_
+| *Mnemonică (12 cuvinte)* | _army van defense carry jealous true garbage claim echo media make crunch_
 | *Frază-de-acces*| (none)
-| *Sămânță (512 biți)* | +5b56c417303faa3fcba7e57400e120a0ca83ec5a4fc9ffba757fbe63fbd77a89a1a3be4c67196f57c39+
-+a88b76373733891bfaba16ed27a813ceed498804c0570+
+| *Sămânță (512 biți)* | _5b56c417303faa3fcba7e57400e120a0ca83ec5a4fc9ffba757fbe63fbd77a89a1a3be4c67196f57c39_
+_a88b76373733891bfaba16ed27a813ceed498804c0570_
 |=======
 
 [[mnemonic_128_w_pass]]
 .Cod mnemonic de entropie pe 128 biți, cu frază-de-acces, sămânța rezultată
 [cols="h,"]
 |=======
-| *Entropie (128 biți)*| +0c1e24e5917779d297e14d45f14e1a1a+
-| *Mnemonică (12 cuvinte)* | +army van defense carry jealous true garbage claim echo media make crunch+
+| *Entropie (128 biți)*| _0c1e24e5917779d297e14d45f14e1a1a_
+| *Mnemonică (12 cuvinte)* | _army van defense carry jealous true garbage claim echo media make crunch_
 | *Frază-de-access*| SuperDuperSecret
-| *Sămânță  (512 biți)* | +3b5df16df2157104cfdd22830162a5e170c0161653e3afe6c88defeefb0818c793dbb28ab3ab091897d0+
-+715861dc8a18358f80b79d49acf64142ae57037d1d54+
+| *Sămânță  (512 biți)* | _3b5df16df2157104cfdd22830162a5e170c0161653e3afe6c88defeefb0818c793dbb28ab3ab091897d0_
+_715861dc8a18358f80b79d49acf64142ae57037d1d54_
 |=======
 
 
@@ -251,37 +251,37 @@ Tabelele următoare arată câteva exemple de coduri mnemonice și semințele pe
 .Cod mnemonic de entropie pe 256 de biți, fără frază-de-acces, sămânța rezultată
 [cols="h,"]
 |=======
-| *Entropie (256 biți)* | +2041546864449caff939d32d574753fe684d3c947c3346713dd8423e74abcf8c+
-| *Mnemonică (24 cuvinte)* | +cake apple borrow silk endorse fitness top denial coil riot stay wolf
-luggage oxygen faint major edit measure invite love trap field dilemma oblige+
+| *Entropie (256 biți)* | _2041546864449caff939d32d574753fe684d3c947c3346713dd8423e74abcf8c_
+| *Mnemonică (24 cuvinte)* | _cake apple borrow silk endorse fitness top denial coil riot stay wolf
+luggage oxygen faint major edit measure invite love trap field dilemma oblige_
 | *Frază-de-acces*| (none)
-| *Sămânță (512 biți)* | +3269bce2674acbd188d4f120072b13b088a0ecf87c6e4cae41657a0bb78f5315b33b3a04356e53d062e5+
-+5f1e0deaa082df8d487381379df848a6ad7e98798404+
+| *Sămânță (512 biți)* | _3269bce2674acbd188d4f120072b13b088a0ecf87c6e4cae41657a0bb78f5315b33b3a04356e53d062e5_
+_5f1e0deaa082df8d487381379df848a6ad7e98798404_
 |=======
 
 [[mnemonic_passphrase]]
-===== Fraza de acces opțională în BIP-39
+===== Fraza-de-acces opțională în BIP-39
 
-((("fraze de acces")))Standardul BIP-39 permite utilizarea unei fraze de acces opționale în derivarea seminței (seed). Dacă nu se utilizează o frază-de-acces, mnemonica este întinsă cu o sare (salt) constând din textul constant +”mnemonic”+, producând o sămânță specifică de 512 biți din orice mnemonică dată. Dacă se folosește o frază-de-acces, funcția de întindere produce o sămânță _diferită_ din aceași mnemonică. De fapt, având o singură mnemonică, fiecare frază-de-acces posibilă rezultă într-o sămânță diferită. În esență, nu există o frază-de-acces ”greșită”. Toate frazele de acces sunt valide și toate conduc la semințe diferite, formând un set vast de portofele posibile neinițializate. Setul de portofele posibile este atât de mare (2^512^) încât nu există nici o posibilitate practică de a folosi forța brută sau de a ghici accidental un portofel care este în uz.
+((("fraze-de-acces")))Standardul BIP-39 permite utilizarea unei fraze-de-acces opționale în derivarea seminței (seed). Dacă nu se utilizează o frază-de-acces, mnemonica este întinsă (stretched) cu o sare (salt) constând din textul constant **`mnemonic`**, producând o sămânță specifică de 512 biți din orice mnemonică dată. Dacă se folosește o frază-de-acces, funcția de întindere produce o sămânță _diferită_ din aceeași mnemonică. De fapt, având o singură mnemonică, fiecare frază-de-acces posibilă rezultă într-o sămânță diferită. În esență, nu există o frază-de-acces ”greșită”. Toate frazele-de-acces sunt valide și toate conduc la semințe diferite, formând un set vast de portofele posibile neinițializate. Setul de portofele posibile este atât de mare (2^512^) încât nu există nici o posibilitate practică de a folosi forța brută sau de a ghici accidental un portofel care este în uz.
 
 [TIP]
 ====
-Nu există fraze-de-acces ”greșite” în BIP-39. Fiecare frază de acces conduce la un portofel, care, dacă nu a fost folosit anterior, va fi gol.
+Nu există fraze-de-acces ”greșite” în BIP-39. Fiecare frază-de-acces conduce la un portofel, care, dacă nu a fost folosit anterior, va fi gol.
 ====
 
-Fraza de acces opțională crează două caracteristici importante:
+Fraza-de-acces opțională creează două caracteristici importante:
 
 * Un al doilea factor (ceva memorat) care face ca o mnemonică să fie inutilă de la sine, protejând copiile de rezervă mnemonice împotriva compromiterii de către un hoț.
 
 * O formă de negare plauzibilă sau ”portofel momeală”, unde o frază-de-acces aleasă duce la un portofel cu o sumă mică de fonduri folosite pentru a distrage un atacator de la portofelul ”real” care conține majoritatea fondurilor.
 
-Cu toate acestea, este important să rețineți că utilizarea unei fraze de acces introduce, de asemenea, riscul de pierdere:
+Cu toate acestea, este important să rețineți că utilizarea unei fraze-de-acces introduce, de asemenea, riscul de pierdere:
 
-* Dacă proprietarul portofelului este incapacitat sau mort și nimeni altcineva nu cunoaște fraza de acces, sămânța este inutilă și toate fondurile stocate în portofel se pierd pentru totdeauna.
+* Dacă proprietarul portofelului este incapacitat sau mort și nimeni altcineva nu cunoaște fraza-de-acces, sămânța este inutilă și toate fondurile stocate în portofel se pierd pentru totdeauna.
 
-* În schimb, dacă proprietarul face o copie de rezervă a frazei de acces în același loc cu sămânța, atunci scopul unui al doilea factor își pierde rostul.
+* În schimb, dacă proprietarul face o copie de rezervă a frazei-de-acces în același loc cu sămânța, atunci scopul unui al doilea factor își pierde rostul.
 
-În timp ce frazele de acces sunt foarte utile, acestea ar trebui utilizate doar în combinație cu un proces planificat cu atenție pentru copii de rezervă și pentru recuperare, având în vedere posibilitatea de a supravețui mai mult decât proprietarul și permițând familiei sale să recupereze averea în criptomonedă.
+În timp ce frazele-de-acces sunt foarte utile, acestea ar trebui utilizate doar în combinație cu un proces planificat cu atenție pentru copii de rezervă și pentru recuperare, având în vedere posibilitatea de a supravețui mai mult decât proprietarul și permițând familiei sale să recupereze averea în criptomonedă.
 
 ===== Lucrul cu coduri mnemonice
 
@@ -315,9 +315,9 @@ image::images/mbc2_0509.png["HDWalletFromRootSeed"]
 
 Sămânța rădăcină (root seed) este folosită ca intrare în algoritmul HMAC-SHA512 și rezumatul (hash-ul) obținut este utilizat pentru a crea o _cheie privată principală_ (m) și un _cod de lanț principal_ (c).
 
-Cheia privată principală (m) generează apoi o cheie publică principală (M) folosind procesul de înmulțire a curbei eliptice +m * G+ pe care l-am văzut în <<pubkey>>.
+Cheia privată principală (m) generează apoi o cheie publică principală (M) folosind procesul de înmulțire a curbei eliptice _m * G_ pe care l-am văzut în <<pubkey>>.
 
-Codul de lanț (c) este utilizat pentru a introduce entropie în funcția care crează cheile copil din cheile părinte, așa cum vom vedea în secțiunea următoare.
+Codul de lanț (c) este utilizat pentru a introduce entropie în funcția care creează cheile copil din cheile părinte, așa cum vom vedea în secțiunea următoare.
 
 ===== Derivarea cheii private copil
 
@@ -408,7 +408,7 @@ Gabriel a folosit prima adresă bitcoin generată de dispozitivul său Trezor ca
 
 Clienții trimiteau o comandă folosind formularul și trimiteau plata pe adresa de bitcoin publicată de Gabriel, declanșând un e-mail cu detaliile comenzii pentru ca Gabriel să le proceseze. Cu doar câteva comenzi în fiecare săptămână, acest sistem a funcționat suficient de bine.
 
-Cu toate acestea, micul magazin web a devenit destul de apreciat și a atras multe comenzi din partea comunității locale. Curând, Gabriel a fost copleșit. Cu toate comenzile care plăteau aceași adresă, a devenit dificil să facă potrivirea corect dintre comenzi și tranzacții, mai ales atunci când mai multe comenzi pentru aceași sumă erau primite la intervale scurte de timp.
+Cu toate acestea, micul magazin web a devenit destul de apreciat și a atras multe comenzi din partea comunității locale. Curând, Gabriel a fost copleșit. Cu toate comenzile care plăteau aceeași adresă, a devenit dificil să facă potrivirea corect dintre comenzi și tranzacții, mai ales atunci când mai multe comenzi pentru aceeași sumă erau primite la intervale scurte de timp.
 
 Portofelul HD a lui Gabriel oferă o soluție mult mai bună prin posibilitatea de a deriva chei publice copii fără a cunoaște cheile private. Gabriel poate încărca o cheie publică extinsă (xpub) pe site-ul său web, care poate fi folosită pentru a obține o adresă unică pentru fiecare comandă a clienților. Gabriel poate cheltui fondurile folosind Trezor, dar xpub-ul încărcat pe site-ul web poate doar genera adrese și primi fonduri. Această caracteristică a portofelelor HD este o funcționalitate excelentă de securitate. Site-ul  lui Gabriel nu conține chei private și, prin urmare, nu are nevoie de un nivel ridicat de securitate.
 
@@ -424,7 +424,7 @@ Gabriel copiază xpub-ul pe magazinul lui online care utilizează plata cu bitco
 
 ((("chei publice și private", "derivarea întărită a cheii copil")))((("derivare întărită")))Posibilitatea de a deriva o ramură de chei publice dintr-un xpub este foarte utilă, dar vine cu un potential risc. Accesul la un xpub nu oferă acces la cheile private ale copiilor. Cu toate acestea, deoarece xpub conține codul de lanț, dacă este cunoscută o cheie privată a copilului sau a fost cumva dezvăluită (leaked), ea poate fi folosită cu codul de lanț pentru a obține toate celelalte chei private pentru copii. O cheie privată cu un singur copil dezvăluit (leaked), împreună cu un cod de lanț părinte, dezvăluie toate cheile private ale tuturor copiilor. Mai rău, cheia privată pentru copii împreună cu un cod de lanț părinte pot fi folosite pentru a deduce cheia privată părinte.
 
-Pentru a contracara acest risc, portofelele HD utilizează o funcție de derivare alternativă numită _derivare întărită_, care ”rupe” relația dintre cheia publică părinte și codul lanțului copil. Funcția de derivare întărită utilizează cheia privată părinte pentru a deriva codul lanțului copil, în loc de cheia publică părinte. Aceasta crează un ”firewall” în secvența părinte/copil, cu un cod de lanț care nu poate fi utilizat pentru a compromite o cheie privată a unui părinte sau a unui frate. Funcția de derivare întărită pare aproape identică cu derivarea normală a cheii private pentru copii, cu excepția faptului că cheia privată părinte este utilizată ca intrare pentru funcția rezumat, în loc de cheia publică părinte, așa cum se vede în diagrama din <<CKDprime>>.
+Pentru a contracara acest risc, portofelele HD utilizează o funcție de derivare alternativă numită _derivare întărită_, care ”rupe” relația dintre cheia publică părinte și codul lanțului copil. Funcția de derivare întărită utilizează cheia privată părinte pentru a deriva codul lanțului copil, în loc de cheia publică părinte. Aceasta creează un ”firewall” în secvența părinte/copil, cu un cod de lanț care nu poate fi utilizat pentru a compromite o cheie privată a unui părinte sau a unui frate. Funcția de derivare întărită pare aproape identică cu derivarea normală a cheii private pentru copii, cu excepția faptului că cheia privată părinte este utilizată ca intrare pentru funcția rezumat, în loc de cheia publică părinte, așa cum se vede în diagrama din <<CKDprime>>.
 
 [[CKDprime]]
 .Derivarea întărită a unei chei copil; omite cheia publică părinte
@@ -465,7 +465,7 @@ Structura arborescentă a portofelului HD oferă o flexibilitate extraordinară.
 
 Două propuneri de îmbunătățire bitcoin (BIP) oferă o soluție la această complexitate prin crearea unor propuneri pentru structura arborilor portofelelor HD. BIP-43 propune utilizarea primului indice de copil întărit ca un identificator special care semnifică ”scopul” structurii arborelui. Pe baza BIP-43, un portofel HD ar trebui să utilizeze o singură ramură de nivel 1 a arborelui, numărul indicelui identificând structura și contextul restului arborelui, și astfel definindu-i scopul. De exemplu, un portofel HD care folosește numai ramura m/i'/ este destinat să semnifice un scop specific, iar acest scop este identificat cu numărul de indice ”i”.
 
-Extinzând această specificație, BIP-44 propune o structură multicont ca număr ”de scop” +44'+ în conformitate cu BIP-43. Toate portofelele HD care urmează structura BIP-44 sunt identificate prin faptul că au folosit doar o ramură a arborelui: m/44'/.
+Extinzând această specificație, BIP-44 propune o structură multicont ca număr ”de scop” _44'_ în conformitate cu BIP-43. Toate portofelele HD care urmează structura BIP-44 sunt identificate prin faptul că au folosit doar o ramură a arborelui: m/44'/.
 
 BIP-44 specifică structura ca fiind formată din cinci niveluri predefinite ale arborelui:
 
@@ -473,7 +473,7 @@ BIP-44 specifică structura ca fiind formată din cinci niveluri predefinite ale
 m / scop' / tip_monedă'  / cont'  / rest  / adresă_indice
 -----
 
-”Scopul” de pe primul nivel este întotdeauna setat la +44'+. Al doilea nivel ”tip_monedă” specifică tipul de cripto monedă, permițând portofele HD multimonedă în care fiecare monedă are propriul său sub-arbore sub al doilea nivel. Există trei valute definite deocamdată: Bitcoin este m/44'/0', Bitcoin Testnet este m/44'/1', iar Litecoin este m/44'/2'.
+”Scopul” de pe primul nivel este întotdeauna setat la _44'_. Al doilea nivel ”tip_monedă” specifică tipul de cripto monedă, permițând portofele HD multimonedă în care fiecare monedă are propriul său sub-arbore sub al doilea nivel. Există trei valute definite deocamdată: Bitcoin este m/44'/0', Bitcoin Testnet este m/44'/1', iar Litecoin este m/44'/2'.
 
 Al treilea nivel al arborelui este ”cont”, care permite utilizatorilor să își subdivizeze portofelele în subconturi logice separate, în scopuri contabile sau organizaționale. De exemplu, un portofel HD poate conține două ”conturi” bitcoin: m/44'/0'/0' și m/44'/0'/1'. Fiecare cont este rădăcina propriului său sub-arbore.
 
