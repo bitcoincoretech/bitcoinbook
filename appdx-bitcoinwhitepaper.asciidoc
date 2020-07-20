@@ -75,7 +75,7 @@ Odată ce ultima tranzacție dintr-o monedă este acoperită de destule blocuri,
 
 image::images/mbc2_abin04.png["disk"]
 
-Antetul unui bloc fără nici o tranzacție are aproximativ 80 de bytes. Dacă presupunem că blocurile sunt generate la aproximativ 10 minute, `80 de bytes * 6 * 24 * 365 = 4.2MB` pe an. Având calculatoare care se vând de obicei cu 2GB de RAM în 2008, iar Legea lui Moore care prevede o creștere de 1.2BG pe an, stocarea nu ar trebui să fie o problemă chiar dacă antetele blocurilor trebuie ținute în memorie. 
+Antetul unui bloc fără nici o tranzacție are aproximativ 80 de octeți. Dacă presupunem că blocurile sunt generate la aproximativ 10 minute, `80 de octeți * 6 * 24 * 365 = 4.2MB` pe an. Având calculatoare care se vând de obicei cu 2GB de RAM în 2008, iar Legea lui Moore care prevede o creștere de 1.2BG pe an, stocarea nu ar trebui să fie o problemă chiar dacă antetele blocurilor trebuie ținute în memorie. 
 
 ==== Verificarea Simplificată a Plății
 Este posibilă verificarea plăților fără a rula un nod de rețea complet. Un utilizator are nevoie să păstreze doar o copie a antetelor celui mai lung lanț bazat pe dovada-de-lucru, pe care o poate obține (copia antetelor) interogând nodurile rețelei până când este convins că are cel mai lung lanț, și apoi să obțină ramura Merkle legând tranzacția de blocul în care a fost inclusă. Utilizatorul nu poate verifica tranzacția de unul singur, dar legând-o într-un anumit loc în lanț, poate vedea că un nod din rețea a acceptat-o, iar blocurile adăugate după ea, confirmă și mai mult că rețeaua a acceptat-o. 
@@ -104,7 +104,7 @@ Considerăm scenariul în care un atacator încearcă să genereze un lanț alte
 Cursa între lanțul onest și lanțul atacatorului poate fi caracterizată ca o Plimbare Aleatorie în Tandem. Un eveniment de succes este atunci când lanțul onest este extins cu un bloc, mărindu-și avantajul cu +1, iar un eveniment de eșec este atunci când lanțul atacatorului este extins cu un bloc, reducând diferența cu -1.
 
  
-<p>Probabiliatea ca un atacator să ajungă din urmă de la o anumită diferență este similară cu problema referitoare la Ruina Pariorului. Presupunem că un parior cu fonduri nelimitate începe la un anume deficit și joacă un număr potențial infinit de încercări pentru a ajunge pe zero. Putem calcula probabiliatea ca el să ajungă vreodată pe zero, sau că un atacator ajunge din urmă lanțul onest, după cum urmează  <a href="#ref_eight">[8]</a>:</p>
+Probabiliatea ca un atacator să ajungă din urmă de la o anumită diferență este similară cu problema referitoare la Ruina Pariorului. Presupunem că un parior cu fonduri nelimitate începe la un anume deficit și joacă un număr potențial infinit de încercări pentru a ajunge pe zero. Putem calcula probabiliatea ca el să ajungă vreodată pe zero, sau că un atacator ajunge din urmă lanțul onest, după cum urmează  [8]:
  
 
 p = probabilitatea ca un nod onest să găsescă blocul următor
@@ -119,7 +119,7 @@ Având în vedere presupunerea noastră că p > q, probabilitatea scade exponen�
 
 Acum vom lua în considerare cât timp trebuie să aștepte beneficiarul unei noi tranzacții până când să fie suficient de sigur că expeditorul nu poate schimba tranzacția. Presupunem că expeditorul este un atacator care vrea să îl facă pe beneficiar să creadă pentru o vreme că a fost plătit, apoi să se plătească înapoi pe el după ce un anumit interval de timp a trecut. Beneficiarul va fi alertat când acest lucru se întâmplă, dar expeditorul speră că va fi prea târziu. 
 
-Destinatarul generează o nouă pereche de chei și trimite cheia publică expeditorului cu puțin timp înainte ca acesta să semneze tranzacția. Acest lucru împiedică expeditorul să pregătească un lanț de blocuri în avans lucrând la el în mod continuu până când e destul de norocos pentru a ajunge destul de în față, apoi să execute tranzacția la acel moment. Odată ce tranzacția este trimisă, expeditorul necinstit începe lucrul în secret la un lanț paralel ce conține o versiune alternativă a tranzacției originale.
+Destinatarul generează o nouă pereche de chei și trimite cheia publică expeditorului cu puțin timp înainte ca acesta să semneze tranzacția. Acest lucru împiedică expeditorul să pregătească un lanț-de-blocuri în avans lucrând la el în mod continuu până când e destul de norocos pentru a ajunge destul de în față, apoi să execute tranzacția la acel moment. Odată ce tranzacția este trimisă, expeditorul necinstit începe lucrul în secret la un lanț paralel ce conține o versiune alternativă a tranzacției originale.
 
 Destinatarul așteaptă până când tranzacția a fost adaugată la un bloc, iar după acel bloc încă z blocuri au fost adăugate. El nu știe exact progresul pe care atacatorul l-a făcut, dar presupunând că blocurile oneste au fost create în intervalul mediu preconizat de timp per bloc, progresul potențial al atacatorului va fi o distribuție Poisson cu valoarea:
 
