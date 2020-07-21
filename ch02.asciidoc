@@ -190,7 +190,7 @@ Vedeți https://www.blockchain.com/btc/tx/7957a35fe64f80d234d76d83a2a8f1a0d8149a
 După cum puteți vedea, portofelul lui Alice conține destul bitcoin într-o singură ieșire necheltuită pentru a plăti ceașca de cafea. Dacă nu ar fi fost cazul, aplicația portofel a lui Alice ar fi fost nevoită să ”scotocească” printr-o grămadă de ieșiri necheltuite, ca atunci când căutam monede intr-o poșetă, până când ar fi putut găsi destule pentru a plăti pentru cafea. În ambele cazuri, s-ar putea să fie necesar să primească rest, ceea ce vom vedea în secțiunea următoare, când aplicația portofel creează ieșirile tranzacției (plățile).
 
 
-==== Creearea Ieșirilor
+==== Crearea Ieșirilor
 
 ((("ieșiri și intrări", "creearea ieșirilor")))Ieșirea unei tranzacții este creată sub forma unui script care creează o restricție pentru valoare, și poate fi încasată prin prezentarea unei soluții la script. În termeni simpli, ieșirea tranzacției lui Alice va conține un script care spune ceva de genul, ”Această ieșire este plătibilă oricui poate prezenta o semnătură de la cheia care corespunde adresei lui Bob”. Deoarece doar Bob are portofelul cu cheile care corespund acelei adrese, doar portofelul lui Bob poate să prezinte o asemenea semnătură pentru a încasa această ieșire. Drept urmare, Alice va ”restricționa” valoarea ieșirii cu cerința unei semnături de la Bob.
 

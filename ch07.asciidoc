@@ -420,7 +420,7 @@ Pentru a preveni ”smulgerea comisioanelor”, atunci când Bitcoin Core creeaz
 
 Pentru a realiza acest lucru, Bitcoin Core stabilește `nLocktime` la toate tranzacțiile noi la `<current block # + 1>` și stabilește `nSequence` pe toate intrările la 0xFFFFFFF**E** pentru a activa `nLocktime`.((("", startref="Stimelock07")))
 
-=== Scripturi cu Control al Execuției (Clauze Condiționate)
+=== Scripturi cu Control al Execuției
 
 ((("tranzacții", "avansat", "scripturi cu control al execuției")))((("scriptare", "scripturi cu control al execuției", id="Sflow07")))((("clauze condiționale", id="condition07")))((("control al execuției", id="flow07")))Una dintre funcționalitățile mai puternice ale Bitcoin Script este controlul fluxului de execuție, cunoscut și sub denumirea de clauze condiționale. Probabil că sunteți familiarizați cu controlul fluxului de execuție din diverse limbaje de programare care utilizează forma `IF ... THEN ... ELSE`. Clauzele condiționate din Bitcoin arată un pic diferit, dar sunt, în esență, aceleași structuri.
 
