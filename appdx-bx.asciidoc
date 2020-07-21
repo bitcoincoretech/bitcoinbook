@@ -91,7 +91,7 @@ Pentru mai multe informații, consultați documentația de utilizare  https://gi
 
 Să ne uităm la câteva exemple de utilizare a comenzilor Bitcoin Explorer pentru a experimenta cu chei și adrese.
 
-Generarea unei valori aleatorii ”sămânță” folosind comanda +seed+, care utilizează generatorul de numere aleatoare ale sistemului de operare. Pasați sămânța la comanda +ec-new+ pentru a genera o nouă cheie privată. Salvăm ieșirea standard în fișierul _private_key_:
+Generarea unei valori aleatorii ”sămânță” folosind comanda `seed`, care utilizează generatorul de numere aleatoare ale sistemului de operare. Pasați sămânța la comanda `ec-new` pentru a genera o nouă cheie privată. Salvăm ieșirea standard în fișierul _private_key_:
 
 ----
 $ bx seed | bx ec-new > private_key
@@ -99,7 +99,7 @@ $ cat private_key
 73096ed11ab9f1db6135857958ece7d73ea7c30862145bcc4bbc7649075de474
 ----
 
-Acum, generați cheia publică din acea cheie privată folosind comanda +ec-to-public+. Pasăm fișierul _private_key_ la intrarea standard și salvăm ieșirea standard a comenzii într-un nou fișier _public_key_:
+Acum, generați cheia publică din acea cheie privată folosind comanda `ec-to-public`. Pasăm fișierul _private_key_ la intrarea standard și salvăm ieșirea standard a comenzii într-un nou fișier _public_key_:
 
 ----
 $ bx ec-to-public < private_key > public_key
@@ -107,16 +107,16 @@ $ cat public_key
 02fca46a6006a62dfdd2dbb2149359d0d97a04f430f12a7626dd409256c12be500
 ----
 
-Putem reformata +public_key+ ca adresă folosind comanda +ec-to-address+. Pasăm _public_key_ la intrare standard:
+Putem reformata `public_key` ca adresă folosind comanda `ec-to-address`. Pasăm _public_key_ la intrare standard:
 
 ----
 $ bx ec-to-address < public_key
 17re1S4Q8ZHyCP8Kw7xQad1Lr6XUzWUnkG
 ----
 
-Cheile generate în acest mod produc un portofel neterministic de tip-0. Aceasta înseamnă că fiecare cheie este generată dintr-o sămânță independentă. Comenzile Bitcoin Explorer pot genera, de asemenea, chei determinist, în conformitate cu BIP-32. În acest caz, o cheie ”master” este creată dintr-o sămânță și apoi extinsă determinist pentru a produce un arbore de sub-chei, rezultând un portofel determinist de tip-2.
+Cheile generate în acest mod produc un portofel nedeterministic de tip-0. Aceasta înseamnă că fiecare cheie este generată dintr-o sămânță independentă. Comenzile Bitcoin Explorer pot genera, de asemenea, chei determinist, în conformitate cu BIP-32. În acest caz, o cheie ”master” este creată dintr-o sămânță și apoi extinsă determinist pentru a produce un arbore de sub-chei, rezultând un portofel determinist de tip-2.
 
-În primul rând, folosim comenzile +seed+ și +hd-new+ pentru a genera o cheie master care va fi folosită ca bază pentru a obține o ierarhie de chei:
+În primul rând, folosim comenzile `seed` și `hd-new` pentru a genera o cheie master care va fi folosită ca bază pentru a obține o ierarhie de chei:
 
 ----
 $ bx seed > seed
@@ -128,7 +128,7 @@ $ cat master
 xprv9s21ZrQH143K2BEhMYpNQoUvAgiEjArAVaZaCTgsaGe6LsAnwubeiTcDzd23mAoyizm9cApe51gNfLMkBqkYoWWMCRwzfuJk8RwF1SVEpAQ
 ----
 
-Acum folosim comanda +hd-private+ pentru a genera o cheie ”cont” întărită și o secvență de două chei private în cont:
+Acum folosim comanda `hd-private` pentru a genera o cheie ”cont” întărită și o secvență de două chei private în cont:
 
 ----
 $ bx hd-private --hard < master > account
@@ -142,7 +142,7 @@ $ bx hd-private --index 1 < account
 xprv9xHfb6w1vX9xjc8XbN4GN86jzNAZ6xHEqYxzbLB4fzHFd6VqCLPGRZFsdjsuMVERadbgDbziCRJru9n6tzEWrASVpEdrZrFidt1RDfn4yA3
 ----
 
-În continuare, folosim comanda +hd-public+ pentru a genera secvența corespunzătoare de două chei publice:
+În continuare, folosim comanda `hd-public` pentru a genera secvența corespunzătoare de două chei publice:
 
 ----
 $ bx hd-public --index 0 < account
@@ -152,7 +152,7 @@ $ bx hd-public --index 1 < account
 xpub6BH1zcTuktiFx6CzhPbGjG3UYQ13WR16CmtbPiagEKpEVtpyjshWyMaMV1cn7nUPUkgQHPVXJVqsrA8xWbGQDhohEcDFTEYMvYzwRD7Juf8
 ----
 
-Cheile publice pot fi de asemenea derivate din cheile private corespunzătoare folosind comanda +hd-to-public+:
+Cheile publice pot fi de asemenea derivate din cheile private corespunzătoare folosind comanda `hd-to-public`:
 
 ----
 $ bx hd-private --index 0 < account | bx hd-to-public
@@ -162,20 +162,20 @@ $ bx hd-private --index 1 < account | bx hd-to-public
 xpub6BH1zcTuktiFx6CzhPbGjG3UYQ13WR16CmtbPiagEKpEVtpyjshWyMaMV1cn7nUPUkgQHPVXJVqsrA8xWbGQDhohEcDFTEYMvYzwRD7Juf8
 ----
 
-Putem genera un număr de chei practic nelimitat într-un lanț determinist, toate derivate dintr-o singură sămânță. Această tehnică este folosită în multe aplicații de portofel pentru a genera chei care pot fi salvate și restabilite cu o singură valoare de sămânță. Acest lucru este mai ușor decât să faceți o copie de siguranță a portofelului de fiecare dată când o nouă cheie este creată cu toate cheile sale generate aleatoriu .
+Putem genera un număr de chei practic nelimitat într-un lanț determinist, toate derivate dintr-o singură sămânță. Această tehnică este folosită în multe aplicații de portofel pentru a genera chei care pot fi salvate și restabilite cu o singură valoare de sămânță. Acest lucru este mai ușor decât să faceți o copie de siguranță a portofelului de fiecare dată când o nouă cheie este creată cu toate cheile sale generate aleatoriu.
 
-Sămânța poate fi codată folosind comanda +mnemonic-codare+:
+Sămânța poate fi codată folosind comanda `mnemonic-codare`:
 
 ----
 $ bx hd-mnemonic < seed > words
 adore repeat vision worst especially veil inch woman cast recall dwell appreciate
 ----
 
-Sămânța poate fi apoi decodată folosind comanda +mnemonic-decode+:
+Sămânța poate fi apoi decodată folosind comanda `mnemonic-decode`:
 
 ----
 $ bx mnemonic-decode < words
 eb68ee9f3df6bd4441a9feadec179ff1
 ----
 
-Codificarea memonică poate face sămânța mai ușor de înregistrat și chiar de amintit(((range="endofrange", startref="BX18_1")))
+Codificarea mnemonică poate face sămânța mai ușor de înregistrat și chiar de amintit(((range="endofrange", startref="BX18_1")))
