@@ -2,7 +2,7 @@
 [appendix]
 == Operatori, Constante și Simboluri ale Limbajului de Scriptare pentru Tranzacții
 
-[NOTĂ]
+[NOTE]
 ====
 Tabele și descrieri provenite de la https://en.bitcoin.it/wiki/Script[].
 ====
@@ -59,7 +59,7 @@ Tabele și descrieri provenite de la https://en.bitcoin.it/wiki/Script[].
 <<tx_script_ops_table_stack>> arată operatorii utilizați pentru manipularea stivei.
 
 [[tx_script_ops_table_stack]]
-. Operații pe stivă
+.Operații pe stivă
 [options="header"]
 |=======
 | Simbol | Valoare (hexa) | Descriere
@@ -87,7 +87,7 @@ Tabele și descrieri provenite de la https://en.bitcoin.it/wiki/Script[].
 <<tx_script_ops_table_splice>> prezinta operatori pentru text.
 
 [[tx_script_ops_table_splice]]
-. Operații de manipulare a șirurilor de caractere
+.Operații de manipulare a șirurilor de caractere
 [options="header"]
 |=======
 | Simbol | Valoare (hexa) | Descriere
@@ -168,7 +168,7 @@ Tabele și descrieri provenite de la https://en.bitcoin.it/wiki/Script[].
 | OP_CODESEPARATOR | 0xab | Marchează începutul datelor verificate prin semnătură
 | OP_CHECKSIG | 0xac | Extrage o cheie publică și semnătura și validează semnătura pentru datele rezumate ale tranzacției, întoarce TRUE dacă se potrivește
 | OP_CHECKSIGVERIFY | 0xad | La fel ca CHECKSIG, apoi OP_VERIFY pentru a opri, dacă nu TRUE
-| OP_CHECKMULTISIG | 0xae | Rulează CHECKSIG pentru fiecare pereche de semnătură și chei publică furnizate. Toate trebuie să se potrivească. Un defect în implementare extrage o valoare suplimentară, prefixare cu OP_NOP ca soluție
+| OP_CHECKMULTISIG | 0xae | Rulează CHECKSIG pentru fiecare pereche de semnătură și chei publică furnizate. Toate trebuie să se potrivească. Un defect în implementare extrage o valoare suplimentară, prefixare cu OP_0 ca soluție
 | OP_CHECKMULTISIGVERIFY | 0xaf | La fel ca CHECKMULTISIG, apoi OP_VERIFY pentru a opri dacă nu TRUE
 |=======
 

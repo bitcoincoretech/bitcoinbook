@@ -4,7 +4,7 @@ Exemple de Cod: ![travis_ci](https://travis-ci.org/bitcoinbook/bitcoinbook.svg?b
 
 Mastering Bitcoin este o carte pentru programatori, deși primele două capitole acoperă bitcoin la un nivel care este, de asemenea, accesibil și non-programatorilor. Oricine are o înțelegere de bază a tehnologiei poate citi primele două capitole pentru a obține o înțelegere excelentă a bitcoin.
 
-Acest repo conține în întregime [prima ediție, a doua tipărire](https://github.com/bitcoinbook/bitcoinbook/releases/tag/Edition1Print2), publicată în decembrie 2014 și în întregime [ediția a doua, a doua tipărire](https://github.com/bitcoinbook/bitcoinbook/releases/tag/second_edition_print2), publicată în iulie 2017, publicată de  O'Reilly  Media în format tipărit și ebook.
+Acest repo conține în întregime [prima ediție, a treia tipărire](https://github.com/bitcoinbook/bitcoinbook/releases/tag/Edition1Print2), publicată în decembrie 2014 și în întregime [ediția a doua, a doua tipărire](https://github.com/bitcoinbook/bitcoinbook/releases/tag/second_edition_print3_rc1s), publicată în martie 2018, publicată de  O'Reilly  Media în format tipărit și ebook.
 
 # Probleme, Erori, Comentarii, Contribuții
 
@@ -37,7 +37,7 @@ Pentru a citi această carte, consultați [book.asciidoc](https://github.com/bit
 
 Mastering Bitcoin (Prima ediție a doua tipărire) este publicată și în japoneză, coreeană și chineză (simplificată) de editori din țările respective.
 
-Mastering Bitcoin (Open Edition), bazată pe Prima ediție, a fost tradus de voluntari în mai mult de zeci de limbi. Traducerile sunt disponibile gratuit sub licența CC-BY-SA la: https://bitcoinbook.info
+Mastering Bitcoin (Open Edition), bazată pe Prima ediție, a fost tradusă de voluntari în mai mult de zeci de limbi. Traducerile sunt disponibile gratuit sub licența CC-BY-SA la: https://bitcoinbook.info
 
 # Codul Sursă
 

@@ -498,7 +498,7 @@ Dacă un portofel bitcoin este capabil să implementeze chei publice comprimate,
 ”Chei private comprimate” este un termen impropriu! Ele nu sunt comprimate deloc; mai degrabă WIF-comprimat înseamnă că cheile ar trebui să fie folosite doar pentru a deriva chei publice comprimate și adresele lor bitcoin corespunzătoare. În mod ironic, o cheie privată codificată în ”WIF-comprimat” este cu un octet mai lungă deoarece are adăugat sufixul _01_ pentru a o deosebi de una ”necomprimată”.((("", startref="KAaddress04")))
 ====
 
-=== Implementarea cheilor și adreselor în Cpass: [++]
+=== Implementarea cheilor și adreselor în Cpass:[++]
 
 Să ne uităm la procesul complet de creare a unei adrese bitcoin, de la o cheie privată, la o cheie publică (un punct pe curba eliptică), la o adresă dublu rezumată, și în final, codificarea Base58Check. Codul C++ de la  <<addr_example>> arată pas cu pas procesul complet, de la cheia privată la adresa bitcoin codificată Base58Check. Exemplul de cod folosește biblioteca libbitcoin introdusă în  <<alt_libraries>> pentru niște funcții ajutătoare.
 
@@ -666,7 +666,7 @@ Odata ce este găsită o adresă de vanitate care se potrivește cu modelul dori
 Este important să înțelegem că o adresă bitcoin este doar un număr reprezentat prin simboluri din alfabetul Base58. Căutarea unui model de genul ”1Kids” poate fi vazută drept căutarea unei adrese în intervalul începând de la _1Kids11111111111111111111111111111_ la _1Kidszzzzzzzzzzzzzzzzzzzzzzzzzzzzz_. Sunt aproximativ 58^29^ (aproximativ 1.4 * 10^51^) adrese în acest interval, toate începând cu ”1Kids.” <<table_4-11>> arată intervalul de adrese care au prefixul ”1Kids”.
 
 [[table_4-11]]
-. Intervalul adreselor de vanitate care încep cu "1Kids"
+.Intervalul adreselor de vanitate care încep cu "1Kids"
 |=======
 | *De la* | +1Kids11111111111111111111111111111+
 | | +1Kids11111111111111111111111111112+

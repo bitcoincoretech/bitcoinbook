@@ -27,7 +27,7 @@ Natura demonstrează că sistemele descentralizate pot fi reziliente și pot pro
 
 _Italic_:: Indică termeni noi, URL-uri, adrese de email, nume de fișiere și extensii de fișiere.
 
-+Lațime constantă+:: folosit pentru listări de cod, precum și în cadrul paragrafelor pentru a face referiri la elemente de cod, cum ar fi variabile sau nume de funcții, baze de date, tipuri de date, variabile de mediu, declarații, și cuvintele cheie.
++Lățime constantă+:: folosit pentru listări de cod, precum și în cadrul paragrafelor pentru a face referiri la elemente de cod, cum ar fi variabile sau nume de funcții, baze de date, tipuri de date, variabile de mediu, declarații, și cuvintele cheie.
 
 **`Lățime constantă bold`**:: Indică comenzi sau alt text care ar trebui să fie introdus așa cum este de către utilizator.
 
@@ -97,14 +97,14 @@ Pentru mai multe informații, vă rugăm să vizitați pass:[<a href="http://ore
 ((("comentarii și întrebări")))((("informații de contact")))Vă rugăm să adresați editorului comentarii și întrebări referitoare la această carte:
 
 ++++
-<ul class="simplelist">
-  <li>O’Reilly Media, Inc.</li>
-  <li>1005 Gravenstein Highway North</li>
-  <li>Sebastopol, CA 95472</li>
-  <li>800-998-9938 (in the United States or Canada)</li>
-  <li>707-829-0515 (international or local)</li>
-  <li>707-829-0104 (fax)</li>
-</ul>
+ 
+  O’Reilly Media, Inc.
+  1005 Gravenstein Highway North
+  Sebastopol, CA 95472
+  800-998-9938 (in the United States or Canada)
+  707-829-0515 (international or local)
+  707-829-0104 (fax)
+ 
 ++++
 
 Pentru a comenta sau a pune întrebări tehnice despre această carte, trimiteți un e-mail la pass:[<a class="email" href="mailto:bookquestions@oreilly.com"><em>bookquestions@oreilly.com</em></a>].
@@ -161,3 +161,10 @@ Mai mulți dezvoltatori bitcoin au contribuit cu mostre de cod, recenzii, coment
 Datorez dragostea mea pentru cuvinte și cărți mamei mele, Theresa, care m-a crescut într-o casă cu cărți captușind fiecare perete. Mama mea mi-a cumparat de asemenea, primul meu calculator în 1982, în ciuda faptului că mă consider technofob. Tatăl meu, Menelaos, un inginer în construcții civile care tocmai a publicat prima sa carte la 80 de ani, a fost cel care m-a învățat gândirea logică și analitică și o iubire pentru știință și inginerie.
 
 Vă mulțumesc tuturor că m-ați susținut pe parcursul acestei călătorii.
+
+
+ 
+Contributie traducere în limba română: http://bitcoincore.tech/
+ 
+
+ 

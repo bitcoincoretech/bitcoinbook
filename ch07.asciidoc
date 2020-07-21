@@ -91,9 +91,9 @@ Scriptul rezultat este destul de lung și arată astfel:
 2 <Mohammed's Public Key> <Partner1 Public Key> <Partner2 Public Key> <Partner3 Public Key> <Attorney Public Key> 5 CHECKMULTISIG
 ----
 
-Deși scripturile cu mai multe semnături reprezintă o funcționalitate puternică, ele sunt greoi de utilizat. Având în vedere scriptul precedent, Mohammed ar trebui să comunice acest script fiecărui client înainte de plată. Fiecare client ar trebui să utilizeze un portofel special bitcoin cu posibilitatea de a crea scripturi de tranzacții personalizate, iar fiecare client ar trebui să înțeleagă cum să creeze o tranzacție folosind scripturi personalizate. Mai mult, tranzacția rezultată ar fi de aproximativ cinci ori mai mare decât o simplă tranzacție de plată, deoarece acest script conține chei publice foarte lungi. Încărcătura acestei tranzacții foarte mari ar fi suportată de client sub formă de comisioane. În cele din urmă, un script de tranzacție mare ca acesta va fi transportat în setul UTXO în memoria RAM din fiecare nod complet, până când va fi cheltuit. Toate aceste probleme fac dificilă utilizarea scripturilor complexe de blocare în practică.
+Deși scripturile cu mai multe semnături reprezintă o funcționalitate puternică, ele sunt greoi de utilizat. Având în vedere scriptul precedent, Mohammed ar trebui să comunice acest script fiecărui client înainte de plată. Fiecare client ar trebui să utilizeze un portofel special bitcoin cu posibilitatea de a crea scripturi de tranzacții personalizate, iar fiecare client ar trebui să înțeleagă cum să creeze o tranzacție folosind scripturi personalizate. Mai mult, tranzacția rezultată ar fi de aproximativ cinci ori mai mare decât o simplă tranzacție de plată, deoarece acest script conține chei publice foarte lungi. Încărcătura acestei tranzacții foarte mari ar fi suportată de client sub formă de comisioane. În cele din urmă, un script de tranzacție mare ca acesta va fi transportat în setul UTXO în memoria RAM din fiecare nod complet, până când va fi cheltuit. Toate aceste probleme fac dificilă utilizarea în practică a scripturilor complexe de blocare.
 
-P2SH a fost dezvoltat pentru a rezolva aceste dificultăți practice și pentru a face utilizarea unor scripturi complexe la fel de ușor ca plata către o adresă bitcoin. Cu plățile P2SH, scriptul de blocare complex este înlocuit cu amprenta sa digitală, un rezumat (hash) criptografic. Când o tranzacție care încearcă să cheltuiască UTXO-ul este prezentată mai târziu, trebuie să conțină scriptul care se potrivește cu rezumatul (hash-ul), pe lângă scriptul de deblocare. În termeni simpli, P2SH înseamnă ”plată către un script care se potrivește cu acest rezumat (hash), un script care va fi prezentat ulterior, atunci când va fi cheltuită această ieșire”.
+P2SH a fost dezvoltat pentru a rezolva aceste dificultăți practice și pentru a face utilizarea unor scripturi complexe la fel de ușară ca plata către o adresă bitcoin. Cu plățile P2SH, scriptul de blocare complex este înlocuit cu amprenta sa digitală, un rezumat (hash) criptografic. Când o tranzacție care încearcă să cheltuiască UTXO-ul este prezentată mai târziu, trebuie să conțină scriptul care se potrivește cu rezumatul (hash-ul), pe lângă scriptul de deblocare. În termeni simpli, P2SH înseamnă ”plată către un script care se potrivește cu acest rezumat (hash), un script care va fi prezentat ulterior, atunci când va fi cheltuită această ieșire”.
 
 ((("scripturi de răscumpărare")))((("scriptare", "scripturi de răscumpărare")))În tranzacțiile P2SH, scriptul de blocare care este înlocuit cu un rezumat (hash) este denumit _script de răscumpărare_ (redeem script) deoarece este prezentat sistemului la momentul răscumpărării și nu ca un script de blocare. <<without_p2sh>> arată scriptul fără P2SH și <<with_p2sh>> arată același script codat cu P2SH.
 
@@ -112,7 +112,7 @@ P2SH a fost dezvoltat pentru a rezolva aceste dificultăți practice și pentru 
 | Scriptul de Deblocare | `Sig1 Sig2 <redeem script>`
 |=======
 
-După cum puteți vedea din tabele, cu P2SH scriptul complex care detaliază condițiile pentru cheltuirea ieșirii (scriptul de răscumpărare) nu este prezentat în scriptul de blocare. În schimb, doar un rezumat (hash) al acestuia este în scriptul de blocare iar scriptul de răscumpărare în sine este prezentat mai târziu, ca parte a scriptului de deblocare atunci când ieșirea este cheltuită. Aceasta schimbă povara comisioanelor și complexității de la expeditor la destinatarul (cel care cheltuiește) tranzacției.
+După cum puteți vedea din tabele, cu P2SH scriptul complex care detaliază condițiile pentru cheltuirea ieșirii (scriptul de răscumpărare) nu este prezentat în scriptul de blocare. În schimb, doar un rezumat (hash) al acestuia este în scriptul de blocare, iar scriptul de răscumpărare în sine este prezentat mai târziu, ca parte a scriptului de deblocare atunci când ieșirea este cheltuită. Aceasta schimbă povara comisioanelor și complexității de la expeditor la destinatarul (cel care cheltuiește) tranzacției.
 
 Să ne uităm la compania lui Mohammed, scriptul multisemnătură complex și scripturile P2SH rezultate.
 
@@ -204,11 +204,11 @@ Adresele P2SH ascund toată complexitatea, astfel încât persoana care efectuea
 * Scripturile complexe sunt înlocuite cu amprente mai scurte în ieșirea tranzacției, ceea ce face ca tranzacția să fie mai mică.
 * Scripturile pot fi codificate ca adresă, astfel că expeditorul și portofelul expeditorului nu au nevoie de cunoștințe complexe pentru a implementa P2SH.
 * P2SH transferă sarcina construirii scriptului către destinatar, nu expeditor.
-* P2SH mută sarcina în stocarea datelor pentru scriptul lung de la ieșire (care, pe lângă că este stocat în lanțul de blocuri este ținut și în setul UTXO) la intrare (stocat doar în lanțul-de-blocuri).
+* P2SH mută sarcina în stocarea datelor pentru scriptul lung de la ieșire (care, pe lângă că este stocat în lanțul-de-blocuri este ținut și în setul UTXO) la intrare (stocat doar în lanțul-de-blocuri).
 * P2SH mută sarcina în stocarea datelor pentru scriptul lung de la momentul curent (plata) la o perioadă viitoare (când este cheltuită ieșirea).
 * P2SH transferă costul de tranzacție pentru un script lung de la expeditor la destinatar, care trebuie să includă scriptul lung de răscumpărare pentru a cheltui ieșirea.
 
-==== Script de Răscumpărare și Validare Lui
+==== Script de Răscumpărare și Validarea Lui
 
 ((("scriptare", "Plata-către-Rezumat-Script", "scripturi de răscumpărare și validarea lor")))((("Plata-către-Rezumat-Script (P2SH)", "scripturi de răscumpărare și validarea lor")))((("scripturi de recuperare")))((("validare")))Înainte de versiunea 0.9.2 a clientului Bitcoin Core, Plata-către-Rezumat-Script (Pay-to-Script-Hash) era limitată la tipurile standard de scripturi de tranzacții bitcoin, prin funcția `IsStandard()`. Aceasta înseamnă că scriptul de răscumpărare prezentat în tranzacția de cheltuire nu poate fi decât unul dintre tipurile standard: P2PK, P2PKH sau multisemnătură.
 
@@ -230,7 +230,7 @@ Rețineți că, deoarece scriptul de răscumpărare nu este prezentat rețelei p
 
 ((("tranzacții", "avansat", "ieșire de înregistrare a datelor")))((("scriptare", "ieșire de înregistrare a datelor")))((("operatorul RETURN")))((("inregistrarea datelor (date de neplată)")))((("date de neplată")))((("lanț-de-blocuri", "înregistrarea datelor de neplată")))((("servicii notariale digitale")))Registrul bitcoin distribuit și de marcare a timpului (timestamped ledger), lanțul-de-blocuri, are potențiale utilizări care depășesc plățile. Mulți programatori au încercat să utilizeze limbajul de scriptare pentru tranzacții pentru a profita de securitatea și rezistența sistemului în scopul creării de aplicații precum servicii notariale digitale, certificate de stoc și contracte inteligente (smart contracts). Încercările timpurii de a utiliza limbajul de scriptare bitcoin în aceste scopuri au implicat crearea de ieșiri de tranzacții care au înregistrat date pe lanțul-de-blocuri; de exemplu, să înregistreze o amprentă digitală a unui fișier în așa fel încât oricine să poată stabili dovada existenței acelui fișier la o dată specifică prin referire la tranzacția respectivă.
 
-((("congestionare lanț-de-blocuri")))((("cnogestionare")))((("ieșiri de tranzacție necheltuite(UTXO)")))((("seturi UTXO")))Utilizarea lanțului-de-blocuri bitcoin pentru a stoca datele care nu au legătură cu plățile bitcoin este un subiect controversat. Mulți programatori consideră că o astfel de utilizare este abuzivă și vor să o descurajeze. Alții o privesc ca o demonstrație a capacităților puternice ale tehnologiei lanț-de-blocuri și vor să încurajeze o astfel de experimentare. Cei care se opun includerii datelor care nu țin de plăți susțin că aceastea provoacă ”congestionarea lanțului-de-blocuri”, care îi încarcă pe cei care rulează noduri bitcoin complete cu costurile de stocare pe disc a datelor pe care lanțul-de-blocuri nu a fost intenționat să le susțină. Mai mult, astfel de tranzacții creează UTXO-uri care nu pot fi cheltuite, folosind adresa bitcoin de destinație ca un câmp de 20 de octeți care poate avea orice valoare. Deoarece adresa este folosită pentru date, aceasta nu corespunde unei chei private, iar UTXO-ul rezultată nu poate fi cheltuită; este o plată falsă. Prin urmare, aceste tranzacții care nu pot fi cheltuite niciodată nu sunt eliminate niciodată din setul UTXO și determină creșterea permanentă a dimensiunii bazei de date UTXO, sau ”congestionarea”.
+((("congestionare lanț-de-blocuri")))((("cnogestionare")))((("ieșiri de tranzacție necheltuite(UTXO)")))((("seturi UTXO")))Utilizarea lanțului-de-blocuri bitcoin pentru a stoca datele care nu au legătură cu plățile bitcoin este un subiect controversat. Mulți programatori consideră că o astfel de utilizare este abuzivă și vor să o descurajeze. Alții o privesc ca o demonstrație a capacităților puternice ale tehnologiei lanț-de-blocuri și vor să încurajeze o astfel de experimentare. Cei care se opun includerii datelor care nu țin de plăți susțin că acestea provoacă ”congestionarea lanțului-de-blocuri”, care îi încarcă pe cei care rulează noduri bitcoin complete cu costurile de stocare pe disc a datelor pe care lanțul-de-blocuri nu a fost intenționat să le susțină. Mai mult, astfel de tranzacții creează UTXO-uri care nu pot fi cheltuite, folosind adresa bitcoin de destinație ca un câmp de 20 de octeți care poate avea orice valoare. Deoarece adresa este folosită pentru date, aceasta nu corespunde unei chei private, iar UTXO-ul rezultată nu poate fi cheltuită; este o plată falsă. Prin urmare, aceste tranzacții care nu pot fi cheltuite niciodată nu sunt eliminate niciodată din setul UTXO și determină creșterea permanentă a dimensiunii bazei de date UTXO, sau ”congestionarea”.
 
 În versiunea 0.9 a clientului Bitcoin Core, s-a ajuns la un compromis odată cu introducerea operatorului `RETURN`. `RETURN` permite programatorilor să adauge 80 de octeți de date care nu sunt asociați unei plăți la o ieșire a tranzacției. Cu toate acestea, spre deosebire de utilizarea de UTXO-uri ”false”, operatorul `RETURN` creează o ieșire _demonstrabil necheltuibilă_ în mod explicit , care nu trebuie să fie stocată în setul UTXO. Ieșirile `RETURN` sunt înregistrate în lanțul-de-blocuri, astfel încât consumă spațiu pe disc și contribuie la creșterea dimensiunii lanțului-de-blocuri, dar nu sunt stocate în setul UTXO și, prin urmare, nu crește memoria necesară pentru setul de UTXO și nu încărcă nodurile complete cu costuri de RAM mai mari.
 
@@ -255,9 +255,9 @@ Două opțiuni pentru linia de comandă au fost adăugate în Bitcoin Core înce
 
 === Timpi de Blocare (Timelocks)
 
-((("tranzacții", "avansat", "timp de blocare")))((("scriptare", "timp de blocare", id="Stimelock07")))((("câmplul nLocktime")))((("scriptare", "timp de blocare", "utilizări pentru")))((("timp de blocare", "utilizări pentru")))Timpii de blocare (timelocks) sunt restricții pentru tranzacții sau pentru ieșiri care permit cheltuirea numai după un moment în timp. Bitcoin a avut de la început o fucționalitate temporală la nivel de tranzacție. Este implementată de câmpul `nLocktime` într-o tranzacție. Două noi funcționlaități pentru timpi de blocare au fost introduse la sfârșitul anului 2015 și la jumătatea anului 2016, care oferă timpi de blocare (timelocks) la nivel de UTXO. Acestea sunt `CHECKLOCKTIMEVERIFY` și `CHECKSEQUENCEVERIFY`.
+((("tranzacții", "avansat", "timp de blocare")))((("scriptare", "timp de blocare", id="Stimelock07")))((("câmpul nLocktime")))((("scriptare", "timp de blocare", "utilizări pentru")))((("timp de blocare", "utilizări pentru")))Timpii de blocare (timelocks) sunt restricții pentru tranzacții sau pentru ieșiri care permit cheltuirea numai după un moment în timp. Bitcoin a avut de la început o fucționalitate temporală la nivel de tranzacție. Este implementată de câmpul `nLocktime` într-o tranzacție. Două noi funcționlaități pentru timpi de blocare au fost introduse la sfârșitul anului 2015 și la jumătatea anului 2016, care oferă timpi de blocare (timelocks) la nivel de UTXO. Acestea sunt `CHECKLOCKTIMEVERIFY` și `CHECKSEQUENCEVERIFY`.
 
-Timpii de blocare (timelocks) sunt utili pentru postdatarea tranzacțiilor și blocarea fondurilor la o anumită dată în viitor. Și mai important, timpii de blocare extind scripturile bitcoin în dimensiunea timpului, deschizând ușa pentru contracte inteligente complexe multistep.
+Timpii de blocare (timelocks) sunt utili pentru postdatarea tranzacțiilor și blocarea fondurilor la o anumită dată în viitor. Și mai important, timpii de blocare extind scripturile bitcoin în dimensiunea timpului, deschizând ușa pentru contracte inteligente complexe cu mai mulți pași (multistep).
 
 [[transaction_locktime_nlocktime]]
 ==== Timp de Blocare a Tranzacției (nLocktime)
@@ -318,13 +318,13 @@ Mai precis, `CHECKLOCKTIMEVERIFY` eșuează și oprește executarea, marcând tr
 
 1. stiva este goală; sau
 2. elementul din vârf al stivei este mai mic de 0; sau
-3. tipul timpului de blocare (înălțime versus marcă de timp) al elementului din vârful stivei și câmpul `nLocktime` nu sunt aceași; sau
-4. elementul din vârful stivei este mai mare decât câmpul `nLocktime` set pentru tranzacție; sau
+3. tipul timpului de blocare (înălțime versus marcă de timp) al elementului din vârful stivei și câmpul `nLocktime` nu sunt aceleași; sau
+4. elementul din vârful stivei este mai mare decât câmpul `nLocktime` setat pentru tranzacție; sau
 5. câmpul `nSequence` al intrării este 0xffffffff.
 
 [NOTE]
 ====
-`CLTV` și `nLocktime` utilizează același format pentru a descrie timpii de blocare, fie o înălțime a blocului, fie timpul scurs în secunde de la epoca Unix. În mod critic, atunci când este utilizat împreună, formatul `nLocktime` trebuie să se potrivească cu cel al `CLTV` setat pentru ieșiri - acestea trebuie să facă referință fie înălțimea blocului, fie la timpul în secunde.
+`CLTV` și `nLocktime` utilizează același format pentru a descrie timpii de blocare, fie o înălțime a blocului, fie timpul scurs în secunde de la epoca Unix. În mod critic, atunci când este utilizat împreună, formatul `nLocktime` trebuie să se potrivească cu cel al `CLTV` setat pentru ieșiri - acestea trebuie să facă referință fie la înălțimea blocului, fie la timpul în secunde.
 ====
 
 După executare, dacă `CLTV` este satisfăcut, parametrul de timp care l-a precedat rămâne ca elementul din vârful stivei și poate fi nevoie să fie îndepărtat, cu `DROP`, pentru executarea corectă a operatorilor ulteriori. De multe ori veți vedea în scripturi `CHECKLOCKTIMEVERIFY` urmat de `DROP` din acest motiv.
@@ -337,7 +337,7 @@ Standardul este definit la https://github.com/bitcoin/bips/blob/master/bip-0065.
 
 ==== Timpi Relativi de Blocare
 
-`nLocktime` și `CLTV` sunt ((("timpi de blocare", "timpi relativi de blocare", id="Trelative07")))((("scriptare", "timpi de blocare", "timpi relativi de blocare")))((("timpi relativi de blocare", id="relativetime07")))ambele _timpi de blocare absoluți_ prin faptul că ele specifică un punct absolut în timp. Următoarele două funcționalități pentru timpi de blocare pe care le vom examina sunt _timpi de blocare relativi_ prin faptul că ele specifică, ca și condiție de cheltuire a unei ieșiri, un timp scurs de la confirmarea ieșirii în lanțul de blocuri.
+`nLocktime` și `CLTV` sunt ((("timpi de blocare", "timpi relativi de blocare", id="Trelative07")))((("scriptare", "timpi de blocare", "timpi relativi de blocare")))((("timpi relativi de blocare", id="relativetime07")))ambele _timpi de blocare absoluți_ prin faptul că specifică un punct absolut în timp. Următoarele două funcționalități pentru timpi de blocare pe care le vom examina sunt _timpi de blocare relativi_ prin faptul că ele specifică, ca și condiție de cheltuire a unei ieșiri, un timp scurs de la confirmarea ieșirii în lanțul-de-blocuri.
 
 Timpii relativi de blocare sunt utili deoarece permit un lanț de două sau mai multe tranzacții interdependente să fie păstrate în afara lanțului (off chain), impunând în același timp o restricție de timp asupra unei tranzacții care depinde de timpul scurs de la confirmarea unei tranzacții anterioare. Cu alte cuvinte, ceasul nu începe să numere până când UTXO-ul nu este înregistrat în lanțul-de-blocuri. Această funcționalitate este utilă în special în canalele bidirecționale cu stare și în Lightning Networks, așa cum vom vedea în <<state_channels>>.
 
@@ -363,7 +363,7 @@ De la activarea BIP-68, se aplică noi reguli de consens pentru orice tranzacți
 
 Intrările tranzacției cu valori `nSequence` mai mici de 2^31^ sunt interpretate ca având un timp relativ de blocare. O astfel de tranzacție este valabilă numai după ce intrarea a îmbătrânit cu valoarea timpului relativ de blocare. De exemplu, o tranzacție cu o singură intrare cu un timp relativ de blocare `nSequence` de 30 de blocuri este valabilă numai atunci când au trecut cel puțin 30 de blocuri din momentul în care UTXO-ul la care se face referință în intrare a fost minat. Deoarece `nSequence` este un câmp per intrare, iar o tranzacție poate conține oricâte intrări cu timp de blocare, atunci toate intrările trebuie să aibă o vârstă suficientă pentru ca tranzacția să fie validă. O tranzacție poate include atât intrări cu timpi de blocare (`nSequence` < 2^31^), cât și intrări fără un timp relativ de blocare (`nSequence` >= 2^31^).
 
-Valoarea `nSequence` este specificată fie în blocuri, fie în secunde, dar într-un format ușor diferit decât am văzut folosit la `nLocktime`. Un indicator de tip este utilizat pentru a diferenția între o valoare care se refră la blocuri și una care se referă  la timpul scurs în secunde. Indicatorul de tip este setat în al 23-lea cel mai puțin semnificativ bit (adică, valoarea 1<<22). Dacă este setat indicatorul tip, atunci valoarea `nSequence` este interpretată ca un multiplu de 512 secunde. Dacă indicatorul tip nu este setat, valoarea `nSequence` este interpretată ca un număr de blocuri.
+Valoarea `nSequence` este specificată fie în blocuri, fie în secunde, dar într-un format ușor diferit decât am văzut folosit la `nLocktime`. Un indicator de tip este utilizat pentru a diferenția între o valoare care se referă la blocuri și una care se referă  la timpul scurs în secunde. Indicatorul de tip este setat în al 23-lea cel mai puțin semnificativ bit (adică, valoarea 1<<22). Dacă este setat indicatorul tip, atunci valoarea `nSequence` este interpretată ca un multiplu de 512 secunde. Dacă indicatorul tip nu este setat, valoarea `nSequence` este interpretată ca un număr de blocuri.
 
 Atunci când se interpretează `nSequence` ca un timp relativ de blocare, sunt considerați doar cei 16 biți mai puțin semnificativi. Odată ce indicatorii (biții 32 și 23) sunt evaluați, valoarea `nSequence` este de obicei ”mascată” cu o mască de 16 biți (de exemplu, `nSequence` & 0x0000FFFF).
 
@@ -382,7 +382,7 @@ Standardul este definit la https://github.com/bitcoin/bips/blob/master/bip-0068.
 
 ((("scriptare", "timpi de blocare", "timpi relativi de blocare cu CHECKSEQUENCEVERIFY")))((("CHECKSEQUENCEVERIFY (CSV)")))La fel ca CLTV și `nLocktime`, există un operator de script pentru timpii relativi de blocare care utilizează valoarea `nSequence` în scripturi. Acest operator este `CHECKSEQUENCEVERIFY`, denumit în mod uzual pe scurt `CSV`.
 
-Când este evaluat operatorul `CSV` în scriptul de răscumpărare al unei UTXO permite cheltuirea numai într-o tranzacție a cărei intrare are valoarea `nSequence` mai mare sau egală cu parametrul `CSV`. În esență, acest lucru restricționează cheltuirea UTXO-ului până când au trecut un anumit număr de blocuri sau secunde în raport cu timpul în care UTXO a fost minat.
+Când este evaluat, operatorul `CSV` în scriptul de răscumpărare al unei UTXO permite cheltuirea numai într-o tranzacție a cărei intrare are valoarea `nSequence` mai mare sau egală cu parametrul `CSV`. În esență, acest lucru restricționează cheltuirea UTXO-ului până când au trecut un anumit număr de blocuri sau secunde în raport cu timpul în care UTXO a fost minat.
 
 Ca și în cazul CLTV, valoarea din `CSV` trebuie să corespundă formatului valorii corespunzătoare din `nSequence`. Dacă `CSV` este specificat în termeni de blocuri, atunci așa trebuie trebuie și `nSequence`. Dacă `CSV` este specificat în termeni de secunde, atunci așa trebuie și `nSequence`.
 
@@ -422,13 +422,13 @@ Pentru a realiza acest lucru, Bitcoin Core stabilește `nLocktime` la toate tran
 
 === Scripturi cu Control al Execuției (Clauze Condiționate)
 
-((("tranzacții", "avansat", "scripturi cu control al execuției")))((("scriptare", "scripturi cu control al execuției", id="Sflow07")))((("clauze condiționale", id="condition07")))((("control al execuției", id="flow07")))Una dintre funcționalitățile mai puternice ale Bitcoin Script este controlul fluxului de execuție, cunoscut și sub denumirea de clauze condiționale. Probabil că sunteți familiarizați cu controlul fluxului de execuției din diverse limbaje de programare care utilizează forma `IF ... THEN ... ELSE`. Clauzele condiționate din Bitcoin arată un pic diferit, dar sunt, în esență, aceleași structuri.
+((("tranzacții", "avansat", "scripturi cu control al execuției")))((("scriptare", "scripturi cu control al execuției", id="Sflow07")))((("clauze condiționale", id="condition07")))((("control al execuției", id="flow07")))Una dintre funcționalitățile mai puternice ale Bitcoin Script este controlul fluxului de execuție, cunoscut și sub denumirea de clauze condiționale. Probabil că sunteți familiarizați cu controlul fluxului de execuție din diverse limbaje de programare care utilizează forma `IF ... THEN ... ELSE`. Clauzele condiționate din Bitcoin arată un pic diferit, dar sunt, în esență, aceleași structuri.
 
 La un nivel de bază, operatorii condiționali bitcoin ne permit să construim un script de răscumpărare care are două moduri de a fi deblocat, în funcție de rezultatul `TRUE`/`FALSE` de evaluare a unei condiții logice. De exemplu, dacă x este `TRUE` (adevărat), scriptul de răscumpărare este A, iar altfel (ELSE) scriptul de răscumpărare este B.
 
-În plus, expresiile condiționate bitcoin pot fi ”imbircate” la nesfârșit, ceea ce înseamnă că o clauză condițională poate conține o alta în cadrul ei, care conține o alta, etc. Nu există nicio limită pentru imbircare, dar regulile de consens impun o limită pentru dimensiunea maximă, în octeți, a unui script.
+În plus, expresiile condiționate bitcoin pot fi ”imbricate” la nesfârșit, ceea ce înseamnă că o clauză condițională poate conține o alta în cadrul ei, care conține o alta, etc. Nu există nicio limită pentru imbricare, dar regulile de consens impun o limită pentru dimensiunea maximă, în octeți, a unui script.
 
-Bitcoin implementează controlul fluxului de execuție folosind operatorii `IF`, `ELSE`, `ENDIF`, and `NOTIF`. În plus, expresiile condiționate pot conține operatori booleeni, cum ar fi `BOOLAND`, pass:[<span class="keep-together"><code>BOOLOR</code></span>], și `NOT`.
+Bitcoin implementează controlul fluxului de execuție folosind operatorii `IF`, `ELSE`, `ENDIF`, și `NOTIF`. În plus, expresiile condiționate pot conține operatori booleeni, cum ar fi `BOOLAND`, pass:[<span class="keep-together"><code>BOOLOR</code></span>] și `NOT`.
 
 La prima vedere, scripturile bitcoin de control al fluxului de execuție pot părea confuze. Acest lucru se datorează faptului că Bitcoin Script este un limbaj pe stivă. În același mod în care `1 {plus} 1` arată ”invers” atunci când este exprimat ca `1 1 ADD`, clauzele de control al fluxului de execuție în bitcoin arată, de asemenea, ”invers”.
 
@@ -504,12 +504,12 @@ Deci, când folosim `VERIFY` și când folosim `IF`? Dacă tot ce încercăm să
 
 [TIP]
 ====
-((("operatorul EQUAL")))((("operatori", "EQUAL")))((("operatorul EQUALVERIFY")))((("operatori", "EQUALVERIFY")))Un operator precum `EQUAL` va împinge rezultatul (`TRUE`/`FALSE`) pe stivă, lăsându-l acolo pentru evaluarea de către urmatorii operatori. În schimb, operatorul `EQUALVERIFY` nu lasă nimic pe stivă. Codurile care se termină cu `VERIFY` nu lasă rezultatul pe stivă.
+((("operatorul EQUAL")))((("operatori", "EQUAL")))((("operatorul EQUALVERIFY")))((("operatori", "EQUALVERIFY")))Un operator precum `EQUAL` va împinge rezultatul (`TRUE`/`FALSE`) pe stivă, lăsându-l acolo pentru evaluarea de către următorii operatori. În schimb, operatorul `EQUALVERIFY` nu lasă nimic pe stivă. Codurile care se termină cu `VERIFY` nu lasă rezultatul pe stivă.
 ====
 
 ==== Utilizarea Controlului Fluxului de Execuție în Scripturi
 
-O utilizare foarte întâlnit pentru controlul fluxului în Bitcoin Script este construirea unui script de răscumpărare care oferă mai multe căi de execuție, fiecare cale fiind un mod diferit de răscumpărare a UTXO.
+O utilizare foarte întâlnită pentru controlul fluxului în Bitcoin Script este construirea unui script de răscumpărare care oferă mai multe căi de execuție, fiecare cale fiind un mod diferit de răscumpărare a UTXO.
 
 ((("utilizări", "cumpărarea de cafea")))Să ne uităm la un exemplu simplu, în care avem doi semnatari, Alice și Bob, și fiecare dintre ei este în măsură să răscumpere. Folosind multisemnătură, acest lucru ar fi exprimat ca un script multisemnătură 1 din 2. De dragul demonstrației, vom face același lucru cu o clauză `IF`:
 
@@ -554,7 +554,7 @@ ELSE
 ENDIF
 ----
 
-În acest scenariu, există trei căi de execuție (`script A`, `script B`, și `script C`). Scriptul de deblocare oferă o cale sub forma unei secvențe de valori `TRUE` sau `FALSE`. Pentru a selecta calea `script B`, de exemplu, scriptul de deblocare trebuie să se termine în `1 0` (`TRUE`, `FALSE`). Aceste valori vor fi împinse pe stivă, astfel încât a doua valoare (`FALSE`) să se ajungă în partea de sus a stivei. Clauza exterioară `IF` scoate valoarea `FALSE` și execută prima clauză `ELSE`. Apoi, valoarea `TRUE` ajunge în vârful stivei și este evaluată de `IF`-ul interior (imbricat), selectând calea de execuție `B`.
+În acest scenariu, există trei căi de execuție (`script A`, `script B` și `script C`). Scriptul de deblocare oferă o cale sub forma unei secvențe de valori `TRUE` sau `FALSE`. Pentru a selecta calea `script B`, de exemplu, scriptul de deblocare trebuie să se termine în `1 0` (`TRUE`, `FALSE`). Aceste valori vor fi împinse pe stivă, astfel încât a doua valoare (`FALSE`) să ajungă în partea de sus a stivei. Clauza exterioară `IF` scoate valoarea `FALSE` și execută prima clauză `ELSE`. Apoi, valoarea `TRUE` ajunge în vârful stivei și este evaluată de `IF`-ul interior (imbricat) selectând calea de execuție `B`.
 
 Folosind această formă, putem construi scripturi de răscumpărare cu zeci sau sute de căi de execuție, fiecare oferind un mod diferit de a răscumpăra o UTXO. Pentru a cheltui, construim un script de deblocare care navighează pe calea de execuție punând valorile corespunzătoare `TRUE` și `FALSE` pe stivă la fiecare punct de control al fluxului de execuție.((("", startref="Sflow07")))((("", startref="flow07")))((("", startref="condition07")))
 
@@ -597,7 +597,7 @@ Scriptul lui Mohammed implementează trei căi de execuție folosind clauze `IF.
 
 [TIP]
 ====
-`0` la începutul acestui script de deblocare se datorează unui defect al `CHECKMULTISIG` care scoate o valoare suplimentară de pe stivă. Valoarea suplimentară este ignorată de `CHECKMULTISIG`, dar trebuie să fie prezentă sau scriptul eșuează. Adaugare `0` (în mod obișnuit) este o soluție de rezolvare a erorii, așa cum este descris în <<multisig_bug>>.
+`0` la începutul acestui script de deblocare se datorează unui defect al `CHECKMULTISIG` care scoate o valoare suplimentară de pe stivă. Valoarea suplimentară este ignorată de `CHECKMULTISIG`, dar trebuie să fie prezentă sau scriptul eșuează. Adăugare `0` (în mod obișnuit) este o soluție de rezolvare a erorii, așa cum este descris în <<multisig_bug>>.
 ====
 
 A doua cale de execuție poate fi utilizată numai după ce au trecut 30 de zile de la crearea UTXO-ului. La acel moment, este nevoie de semnătura lui Abdul avocatul, și a unuia dintre cei trei parteneri (o multisemnătură 1-din-3). Acest lucru este realizat la linia 7, care stabilește cvorumul pentru multisig la `1`. Pentru a selecta această cale de execuție, scriptul de deblocare ar trebui să se termine în `FALSE TRUE`:
@@ -625,7 +625,7 @@ Alte câteva lucruri de luat în considerare atunci când citiți acest exemplu.
 
 * De ce nu poate avocatul răscumpăra în orice moment a treia cale de execuție, selectând-o cu `FALSE` pe scriptul de deblocare?
 
-* Câte căi de execuție pot fi utilizate la 5, 35 și, respectiv, 105 zile, după ce UTXO-ul a fost minat?
+* Câte căi de execuție pot fi utilizate la 5, 35 și respectiv, 105 zile, după ce UTXO-ul a fost minat?
 
 * Sunt fondurile pierdute dacă avocatul își pierde cheia? Răspunsul dumneavoastră se schimbă dacă au trecut 91 de zile?
 
@@ -636,15 +636,15 @@ Alte câteva lucruri de luat în considerare atunci când citiți acest exemplu.
 [[segwit]]
 === Martor Segregat
 
-((("segwit (Martor Segregat)", id="Ssegwit07")))Funcționalitatea de Martorul Segregat (Segregated Witness - segwit) este o imbunătățire adusă regulilor de consens bitcoin și protocolul de rețea, propusă și implementată ca bifurcare soft BIP-9 care a fost activat în rețeaua bitcoin la 1 august 2017.
+((("segwit (Martor Segregat)", id="Ssegwit07")))Funcționalitatea de Martorul Segregat (Segregated Witness - segwit) este o îmbunătățire adusă regulilor de consens bitcoin și protocolului de rețea, propusă și implementată ca bifurcare soft BIP-9 care a fost activat în rețeaua bitcoin la 1 august 2017.
 
 În criptografie, termenul ”martor” este folosit pentru a descrie o soluție pentru un puzzle criptografic. În termeni bitcoin, martorul îndeplinește o condiție criptografică plasată pe o ieșire de tranzacție necheltuită (UTXO).
 
-În contextul bitcoin, o semnătură digitală este _un tip de martor_, dar un martor este mai pe larg orice soluție care poate satisface condițiile impuse unui UTXO și poate debloca acea UTXO pentru a fi cheltuită. Termenul ”martor” este un termen mai general pentru un ”script de deblocare” sau „scriptSig”.
+În contextul bitcoin, o semnătură digitală este _un tip de martor_, dar un martor este mai pe larg orice soluție care poate satisface condițiile impuse unei UTXO și poate debloca acea UTXO pentru a fi cheltuită. Termenul ”martor” este un termen mai general pentru un ”script de deblocare” sau ”scriptSig”.
 
-Înainte de introducerea segwit, fiecare intrare dintr-o tranzacție era urmată de datele martor care au deblocat-o. Datele martor au fost încorporate în tranzacție ca parte a fiecărei intrări. Termenul _martor segregat_ (segregated witness), sau _segwit_ pe scurt, înseamnă pur și simplu separarea semnăturii sau a scriptului de deblocare pentru o ieșire specifică. Gândiți ca la ”scriptSig separat” sau ”semnătura separată” în cea mai simplă formă.
+Înainte de introducerea segwit, fiecare intrare dintr-o tranzacție era urmată de datele martor care au deblocat-o. Datele martor au fost încorporate în tranzacție ca parte a fiecărei intrări. Termenul _martor segregat_ (segregated witness), sau _segwit_ pe scurt, înseamnă pur și simplu separarea semnăturii sau a scriptului de deblocare pentru o ieșire specifică. Gândiți-vă ca la ”scriptSig separat” sau ”semnătura separată” în cea mai simplă formă.
 
-Prin urmare, Martorul Segregat este o modificare arhitecturală asupra bitcoin care are ca scop mutarea datelor martor din câmpul `scriptSig` (script de deblocare) al unei tranzacții într-o structură de date _martor_ separată care însoțește o tranzacție. Clienții pot solicita datele tranzacției cu sau fără datele martor care le însoțesc.
+Prin urmare, Martorul Segregat este o modificare arhitecturală asupra bitcoin care are ca scop mutarea datelor martor din câmpul `scriptSig` (script de deblocare) a unei tranzacții într-o structură de date _martor_ separată care însoțește o tranzacție. Clienții pot solicita datele tranzacției cu sau fără datele martor care le însoțesc.
 
 În această secțiune vom analiza unele dintre beneficiile Martor Segregat, vom descrie mecanismul folosit pentru instalarea și implementarea acestei schimbări de arhitectură și vom demonstra utilizarea Martor Segregat în tranzacții și adrese.
 
@@ -665,13 +665,13 @@ https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki[BIP-173]:: Format
 
 Martorul Segregat este o schimbare arhitecturală care are mai multe efecte asupra scalabilității, securității, stimulentelor economice și performanței bitcoin:
 
-Maleabilitatea Tranzacției :: Prin mutarea martorului în afara tranzacției, rezumatul (hash-ul) tranzacției folosit ca identificator nu mai include datele martor. Deoarece datele martor sunt singura parte a tranzacției care poate fi modificată de un terț (vezi <<segwit_txid>>), eliminarea acestora elimină și posibilitatea atacurilor de maleabilitate a tranzacțiilor. Cu Martor Segregat, rezumatele (hash-urile) tranzacțiilor devin imutabile față de oricine altcineva decât de creatorul tranzacției, ceea ce îmbunătățește considerabil implementarea multor altor protocoale care se bazează pe construcția avansată a tranzacțiilor bitcoin, cum ar fi canalele de plată, tranzacții înlănțuite și rețele lightning.
+Maleabilitatea Tranzacției :: Prin mutarea martorului în afara tranzacției, rezumatul (hash-ul) tranzacției folosit ca identificator nu mai include datele martor. Deoarece datele martor sunt singura parte a tranzacției care poate fi modificată de un terț (vezi <<segwit_txid>>), eliminarea acestora elimină și posibilitatea atacurilor de maleabilitate a tranzacțiilor. Cu Martor Segregat, rezumatele (hash-urile) tranzacțiilor devin imutabile față de oricine altcineva în afara creatorului tranzacției, ceea ce îmbunătățește considerabil implementarea multor altor protocoale care se bazează pe construcția avansată a tranzacțiilor bitcoin, cum ar fi canalele de plată, tranzacții înlănțuite și rețele lightning.
 
 Versionarea Scripturilor :: Odată cu introducerea scripturilor Martor Segregat, fiecare script de blocare este precedat de un număr de _versiune script_, similar cu modul în care tranzacțiile și blocurile au numere de versiune. Adăugarea unui număr de versiune de script permite actualizarea limbajului de script într-un mod compatibil (întotdeauna, folosind bifurcări soft) pentru a introduce noi operatori de script, sintaxă nouă sau semantică nouă. Capacitatea de a actualiza limbajul de scriptare într-un mod nedisruptiv va accelera mult rata de inovație în bitcoin.
 
-Scalarea Rețeilei si a Stocării :: Datele martor sunt adesea un mare contribuitor la dimensiunea totală a unei tranzacții. Scripturi mai complexe, precum cele utilizate pentru multisemnătură sau canale de plată, sunt foarte mari. În unele cazuri, aceste scripturi reprezintă majoritatea (mai mult de 75%) din datele dintr-o tranzacție. Prin mutarea datelor martor în afara tranzacției, Martorul Segregat îmbunătățește scalabilitatea bitcoin. Nodurile pot să curețe datele martor după validarea semnăturilor sau să le ignore cu totul atunci când fac verificări de plată simplificate. Datele martor nu trebuie transmise tuturor nodurilor și nu trebuie să fie stocate pe disc de către toate nodurile.
+Scalarea Rețelei si a Stocării :: Datele martor sunt adesea un mare contribuitor la dimensiunea totală a unei tranzacții. Scripturi mai complexe, precum cele utilizate pentru multisemnătură sau canale de plată, sunt foarte mari. În unele cazuri, aceste scripturi reprezintă majoritatea (mai mult de 75%) din datele dintr-o tranzacție. Prin mutarea datelor martor în afara tranzacției, Martorul Segregat îmbunătățește scalabilitatea bitcoin. Nodurile pot să curețe datele martor după validarea semnăturilor sau să le ignore cu totul atunci când fac verificări de plată simplificate. Datele martor nu trebuie transmise tuturor nodurilor și nu trebuie să fie stocate pe disc de către toate nodurile.
 
-Optimizarea Verificării Semnăturii :: Martorul Segregat îmbunătățește funcțiile de semnătură (`CHECKSIG`, `CHECKMULTISIG`, etc.) prin reducerea complexitații de calcul a algoritmului. Înainte de segwit, algoritmul folosit pentru producerea unei semnături necesita un număr de operații de rezumare proporțional cu dimensiunea tranzacției. Calculele pentru rezumarea datelor au crescut în O(n^2^) raportat la numărul de operațiuni de semnătură, introducând o povară de calcul substanțială pe toate nodurile care verifică semnătura. Cu segwit, algoritmul este schimbat pentru a reduce complexitatea la O (n).
+Optimizarea Verificării Semnăturii :: Martorul Segregat îmbunătățește funcțiile de semnătură (`CHECKSIG`, `CHECKMULTISIG`, etc.) prin reducerea complexității de calcul a algoritmului. Înainte de segwit, algoritmul folosit pentru producerea unei semnături necesita un număr de operații de rezumare proporțional cu dimensiunea tranzacției. Calculele pentru rezumarea datelor au crescut în O(n^2^) raportat la numărul de operațiuni de semnătură, introducând o povară de calcul substanțială pe toate nodurile care verifică semnătura. Cu segwit, algoritmul este schimbat pentru a reduce complexitatea la O (n).
 
 Îmbunătățirea Semnării Offline :: Semnăturile Martor Segregat includ încorporate valoarea (suma) la care face referire fiecare intrare din rezumatul (hash-ul) semnat. Anterior, un dispozitiv de semnare offline, cum ar fi un portofel hardware, ar fi trebuit să verifice valoarea fiecărei intrări înainte de a semna o tranzacție. Acest lucru se realiza de obicei prin transmiterea unei cantități mari de date despre tranzacțiile anterioare menționate ca intrări. Din moment ce suma face parte din rezumatul (hash-ul) de angajament semnat, un dispozitiv offline nu are nevoie de tranzacțiile anterioare. Dacă sumele nu se potrivesc (sunt prezentate greșit de un sistem online compromis), semnătura nu va fi validă.
 
@@ -679,7 +679,7 @@ Optimizarea Verificării Semnăturii :: Martorul Segregat îmbunătățește fun
 
 La prima vedere, Martorul Segregat pare să fie o modificare a modului în care se construiesc tranzacțiile și, prin urmare, o caracteristică la nivel de tranzacție, dar nu este așa. Mai degrabă, Martorul Segregat este o schimbare a modului în care sunt cheltuite UTXO-urile individuale și, prin urmare, este o caracteristică *per-ieșire*.
 
-O tranzacție poate cheltui ieșiri Martor Segregat sau ieșiri tradiționale (martor încorporat) sau ambele. Prin urmare, nu are prea mult sens să ne referim la o tranzacție ca ”tranzacție Martor Segregat”. Mai degrabă, ar trebui să ne referim la ieșiri specifice ale tranzacțiilor ca ”ieșiri Martor Segregat”.
+O tranzacție poate cheltui ieșiri Martor Segregat sau ieșiri tradiționale (martor încorporat), sau ambele. Prin urmare, nu are prea mult sens să ne referim la o tranzacție ca ”tranzacție Martor Segregat”. Mai degrabă, ar trebui să ne referim la ieșiri specifice ale tranzacțiilor ca ”ieșiri Martor Segregat”.
 
 Când o tranzacție cheltuiește o UTXO, trebuie să ofere un martor. Într-o UTXO tradițională, scriptul de blocare necesită ca datele martor să fie _încorporate_ în partea de intrări a tranzacției care cheltuie UTXO-ul. Totuși, o UTXO Martor Segregat specifică un script de blocare care poate fi satisfăcut cu datele martor exterioare intrării (segregate).
 
@@ -687,18 +687,18 @@ Când o tranzacție cheltuiește o UTXO, trebuie să ofere un martor. Într-o UT
 
 Martorul Segregat reprezintă o schimbare semnificativă a modului în care sunt structurate ieșirile și tranzacțiile. O astfel de modificare ar necesita, în mod normal, o schimbare simultană în fiecare nod și portofel bitcoin pentru a schimba regulile de consens - ceea ce este cunoscut sub numele de bifurcare hard. În schimb, martorul segregat este introdus cu o schimbare mult mai puțin perturbatoare, care este compatibilă cu versiunile anterioare, cunoscută sub numele de bifurcare soft. Acest tip de îmbunătățire permite software-ului neactualizat să ignore modificările și să continue să funcționeze fără întreruperi.
 
-Ieșirile Martor Segregat sunt construite astfel încât sistemele mai vechi care nu folosesc segwit să le poată totuși valida. Pentru un portofel sau nod vechi, o ieșire Martor Segregat pare o ieșire pe care _oricine o poate cheltui_. Astfel de ieșirile pot fi cheltuite cu o semnătură goală, prin urmare, faptul că nu există nicio semnătură în cadrul tranzacției (este segregată) nu invalidează tranzacția. Portofelele și nodurile mai noi, însă, văd ieșirea Martor Segregat și se așteaptă să găsească un martor valid pentru aceasta în datele martor ale tranzacției.
+Ieșirile Martor Segregat sunt construite astfel încât sistemele mai vechi care nu folosesc segwit să le poată totuși valida. Pentru un portofel sau nod vechi, o ieșire Martor Segregat pare o ieșire pe care _oricine o poate cheltui_. Astfel de ieșiri pot fi cheltuite cu o semnătură goală, prin urmare, faptul că nu există nicio semnătură în cadrul tranzacției (este segregată) nu invalidează tranzacția. Portofelele și nodurile mai noi, însă, văd ieșirea Martor Segregat și se așteaptă să găsească un martor valid pentru aceasta în datele martor ale tranzacției.
 
 ==== Exemple de Ieșire și Tranzacție cu Martor Segregat
 
-Să ne uităm la unele dintre exemplele noastre de tranzacții și să vedem cum s-ar schimba acestea când folosim Martor Segregat. Vom analiza mai întâi cum se transformă o Plată-către-Cheie-Publică (P2PKH) cu ajutorul programului Martor Segregat. Apoi, ne vom uita la echivalentul Martor Segregat pentru scripturile Plată-către-Rezumat-Script (P2SH). În cele din urmă, vom analiza modul în care ambele programe Martorilor Segregat precedente pot fi încorporate într-un script P2SH.
+Să ne uităm la unele dintre exemplele noastre de tranzacții și să vedem cum s-ar schimba acestea când folosim Martor Segregat. Vom analiza mai întâi cum se transformă o Plată-către-Cheie-Publică (P2PKH) cu ajutorul programului Martor Segregat. Apoi, ne vom uita la echivalentul Martor Segregat pentru scripturile Plată-către-Rezumat-Script (P2SH). În cele din urmă, vom analiza modul în care ambele programe precedente cu Martori Segregat pot fi încorporate într-un script P2SH.
 
 [[p2wpkh]]
 ===== Plată-către-Martor-Rezumat-Cheie-Publică (Pay-to-Witness-Public-Key-Hash - P2WPKH)
 
 În <<cup_of_coffee>>, ((("utilizări", "cumpărare cafea", id="aliced")))Alice a creat o tranzacție pentru a-i plăti lui Bob o ceașcă de cafea. Acea tranzacție a creat o ieșire P2PKH cu o valoare de 0,015 BTC care a fost cheltuită de Bob. Scriptul ieșirii arată astfel:
 
-. Exemplu script ieșire P2PKH
+.Exemplu script ieșire P2PKH
 ----
 DUP HASH160 ab68025513c3dbd2f7b92a94e0581f5d50f654e7 EQUALVERIFY CHECKSIG
 ----
@@ -710,7 +710,7 @@ Cu Martor Segregat, Alice ar crea un script Plată-către-Martor-Rezumat-Cheie-P
 0 ab68025513c3dbd2f7b92a94e0581f5d50f654e7
 ----
 
-După cum vedeți, scriptul de blocare al unei ieșiri cu Martorilor Segregat este mult mai simplu decât cel al unei ieșiri tradiționale. Este format din două valori care sunt împinse pe stiva de evaluare a scriptului. Pentru un client bitcoin vechi (fără segwit), cele două împingeri ar arăta ca o ieșire pe care o poate cheltui oricine și nu are nevoie de o semnătură (sau mai degrabă, poate fi cheltuită cu o semnătură goală). Pentru un client mai nou, care folosește segwit, primul număr (0) este interpretat ca un număr de versiune (_versiunea martor_), iar a doua parte (20 de octeți) este echivalentul unui script de blocare cunoscut sub numele de program _martor_. Programul martor de 20 de octeți este pur și simplu rezumatul (hash-ul) cheii publice, ca într-un script P2PKH.
+După cum vedeți, scriptul de blocare a unei ieșiri cu Martorilor Segregat este mult mai simplu decât cel al unei ieșiri tradiționale. Este format din două valori care sunt împinse pe stiva de evaluare a scriptului. Pentru un client bitcoin vechi (fără segwit), cele două împingeri ar arăta ca o ieșire pe care o poate cheltui oricine și nu are nevoie de o semnătură (sau mai degrabă, poate fi cheltuită cu o semnătură goală). Pentru un client mai nou, care folosește segwit, primul număr (0) este interpretat ca un număr de versiune (_versiunea martor_), iar a doua parte (20 de octeți) este echivalentul unui script de blocare cunoscut sub numele de program _martor_. Programul martor de 20 de octeți este pur și simplu rezumatul (hash-ul) cheii publice, ca într-un script P2PKH.
 
 Acum, să ne uităm la tranzacția corespunzătoare pe care Bob o folosește pentru a cheltui această ieșire. Pentru scriptul original (nonsegwit), tranzacția lui Bob ar trebui să includă o semnătură în intrarea tranzacției:
 
@@ -756,7 +756,7 @@ P2WPKH ar trebui să fie construit de beneficiar (destinatar) prin transformarea
 
 Al doilea  ((("utilizări", "import/export", id="mohamappd")))tip de program martor corespunde unui script Plată-către-Rezumat-Script (P2SH). Am văzut acest tip de script în <<p2sh>>. În acel exemplu, P2SH a fost folosit de compania lui Mohammed pentru a exprima un script multisemnătură. Plățile către compania lui Mohammed au fost codate cu un script de blocare ca acesta:
 
-. Exemplu script ieșire P2SH
+.Exemplu script ieșire P2SH
 ----
 HASH160 54c557e07dde5bb6cb791c7a540e0a4796f5e97e EQUAL
 ----
@@ -775,12 +775,12 @@ Acest script P2SH face referire la rezumatul (hash-ul) unui _script de răscump�
 
 Acum, să ne uităm la modul în care acest exemplu ar fi actualizat la segwit. Dacă clienții lui Mohammed foloseau un portofel compatibil cu segwit, ar fi făcut o plată, creând o ieșire Plată-către-Martor-Rezumat-Script (P2WSH) care ar arăta astfel:
 
-. Exemplu script ieșire P2WSH
+.Exemplu script ieșire P2WSH
 ----
 0 a9b7b38d972cabc7961dbfbcb841ad4508d133c47ba87457b4a0e8aae86dbb89
 ----
 
-Din nou, la fel ca în exemplul P2WPKH, puteți vedea că scriptul echivalent cu Martor Segregat este mult mai simplu și omite diferiți operanzi pe care le vedeți în scripturile P2SH. În schimb, programul Martor Segregat constă din două valori împinse pe stivă: o versiune martor (0) și rezumatul SHA256 pe 32 de octeți al scriptului de răscumpărare.
+Din nou, la fel ca în exemplul P2WPKH, puteți vedea că scriptul echivalent cu Martor Segregat este mult mai simplu și omite diferiți operanzi pe care îi vedeți în scripturile P2SH. În schimb, programul Martor Segregat constă din două valori împinse pe stivă: o versiune martor (0) și rezumatul SHA256 pe 32 de octeți al scriptului de răscumpărare.
 
 [TIP]
 ====
@@ -821,11 +821,11 @@ După cum putem vedea din exemplele anterioare, trecerea la Martor Segregat este
 Pentru tipurile de plată P2WPKH și P2WSH, atât portofelele expeditorului cât și destinatarul trebuie actualizate pentru a putea utiliza segwit. Mai mult, portofelul expeditorului trebuie să știe că portofelul destinatarului poate folosi segwit.
 ====
 
-Martorul Segregat nu va fi implementat simultan în intreaga retea. Mai degrabă, Martorul Segregat este implementat ca o actualizare compatibilă cu versiunile precedente, unde _clienții vechi și noi pot coexista_. Dezvoltatorii de portofele vor actualiza în mod independent software-ul portofel pentru a adăuga funcționalitățile segwit. Tipurile de plată P2WPKH și P2WSH sunt utilizate atunci când atât expeditorul cât și destinatarul pot folosi segwit. P2PKH și P2SH tradiționale vor continua să funcționeze pentru portofelele neactualizate. Aceasta crează două scenarii importante, care sunt abordate în secțiunea următoare:
+Martorul Segregat nu va fi implementat simultan în intreaga rețea. Mai degrabă, Martorul Segregat este implementat ca o actualizare compatibilă cu versiunile precedente, unde _clienții vechi și noi pot coexista_. Dezvoltatorii de portofele vor actualiza în mod independent software-ul portofel pentru a adăuga funcționalitățile segwit. Tipurile de plată P2WPKH și P2WSH sunt utilizate atunci când atât expeditorul cât și destinatarul pot folosi segwit. P2PKH și P2SH tradiționale vor continua să funcționeze pentru portofelele neactualizate. Aceasta creează două scenarii importante, care sunt abordate în secțiunea următoare:
 
 * Posibilitatea portofelului unui expeditor care nu folosește segwit de a efectua o plată către portofelul unui destinatar care poate procesa tranzacții segwit
 
-* Posibilitatea portofelului unui expeditor care este folosește segwit de a distinge între destinatarii care folosesc segwit și cei care nu folosesc, bazat pe _adresele_ lor.
+* Posibilitatea portofelului unui expeditor care folosește segwit de a distinge între destinatarii care folosesc segwit și cei care nu folosesc, bazat pe _adresele_ lor.
 
 ===== Încorporarea Martor Segregat în P2SH
 
@@ -833,13 +833,13 @@ Să presupunem, de exemplu, că portofelul lui Alice nu este actualizat să folo
 
 În acest caz portofelul lui Bob poate construi o adresă P2SH care conține un script segwit în interiorul său. Portofelul lui Alice consideră că este o adresă P2SH ”normală” și poate face plăți către ea fără să știe informații despre segwit. Portofelul lui Bob poate cheltui această plată cu o tranzacție segwit, profitând din plin de segwit și reducând comisioanele de tranzacție.
 
-Ambele forme de scripturi martor, P2WPKH și P2WSH, pot fi încorporate într-o adresă P2SH. Primul este notat ca P2SH (P2WPKH) iar al doilea este notat ca P2SH(P2WSH).
+Ambele forme de scripturi martor, P2WPKH și P2WSH, pot fi încorporate într-o adresă P2SH. Primul este notat ca P2SH (P2WPKH), iar al doilea este notat ca P2SH(P2WSH).
 
 ===== Plată-către-Martor-Rezumat-Cheie-Publică în interiorul Plată-către-Rezumat-Script
 
 Prima formă de script martor pe care o vom examina este P2SH(P2WPKH). Acesta este un program martor Plată-căte-Martor-Rezumat-Cheie-Publică, încorporat într-un script Plată-către-Rezumat-Script, astfel încât să poată fi folosit de un portofel care nu știe segwit.
 
-Portofelul lui Bob construiește un program martor P2WPKH cu cheia publică a lui Bob. Acest program martor este apoi rezumat iar rezumatul rezultat este codat ca un script P2SH. Scriptul P2SH este convertit într-o adresă bitcoin, una care începe cu un ”3”, așa cum am văzut în secțiunea <<p2sh>>.
+Portofelul lui Bob construiește un program martor P2WPKH cu cheia publică a lui Bob. Acest program martor este apoi rezumat, iar rezumatul rezultat este codat ca un script P2SH. Scriptul P2SH este convertit într-o adresă bitcoin, una care începe cu un ”3”, așa cum am văzut în secțiunea <<p2sh>>.
 
 Portofelul lui Bob începe cu programul martor P2WPKH pe care l-am văzut mai devreme:
 
@@ -848,7 +848,7 @@ Portofelul lui Bob începe cu programul martor P2WPKH pe care l-am văzut mai de
 0 ab68025513c3dbd2f7b92a94e0581f5d50f654e7
 ----
 
-Programul martor P2WPKH este format din versiunea martorului și rezumatul cheii publice pe 20 de octeți a lui Bob.
+Programul martor P2WPKH este format din versiunea martorului și rezumatul cheii publice pe 20 de octeți al lui Bob.
 
 Portofelul lui Bob rezumă apoi programul martor precedent, mai întâi cu SHA256, apoi cu RIPEMD160, producând încă un rezumat pe 20 de biți.
 
@@ -873,7 +873,7 @@ echo \
 37Lx99uaGn5avKBxiW26HjedQE3LrDCZru
 ----
 
-Acum, Bob poate afișa această adresă iar clienții să plătească pentru cafeaua lor. Portofelul lui Alice poate efectua o plată către _37Lx99uaGn5avKBxiW26HjedQE3LrDCZru_, la fel cum ar face-o la orice altă adresă bitcoin.
+Acum, Bob poate afișa această adresă iar clienții pot să plătească pentru cafeaua lor. Portofelul lui Alice poate efectua o plată către _37Lx99uaGn5avKBxiW26HjedQE3LrDCZru_, la fel cum ar face-o către orice altă adresă bitcoin.
 
 Pentru a-i plăti lui Bob, portofelul lui Alice ar bloca ieșirea cu un script P2SH:
 ----
@@ -929,7 +929,7 @@ echo \
 3Dwz1MXhM6EfFoJChHCxh1jWHb8GQqRenG
 ----
 
-Acum, clienții lui Mohammed pot efectua plăți la această adresă fără a fi nevoie să suporte segwit. Pentru a trimite o plată către Mohammed, un portofel ar bloca ieșirea cu următorul script P2SH:
+Acum, clienții lui Mohammed pot efectua plăți către această adresă fără a fi nevoie să suporte segwit. Pentru a trimite o plată către Mohammed, un portofel ar bloca ieșirea cu următorul script P2SH:
 
 .Scriptul P2SH folosit pentru a bloca plățile pentru scriptul multisemnătură a lui Mohammed
 ----
@@ -991,9 +991,9 @@ Tranzacțiile Martor Segregat au două ID-uri: `txid` și `wtxid`. `txid` este r
 
 ==== Noul Algoritm de Semnare pentru Martor Segregat
 
-Martorul Segregat modifică semantica celor patru funcții de verificare a semnăturilor (`CHECKSIG`, `CHECKSIGVERIFY`, `CHECKMULTISIG`, and `CHECKMULTISIGVERIFY`), schimbând modul în care este calculat rezumatul angajamentului de tranzacție.
+Martorul Segregat modifică semantica celor patru funcții de verificare a semnăturilor (`CHECKSIG`, `CHECKSIGVERIFY`, `CHECKMULTISIG`, și `CHECKMULTISIGVERIFY`), schimbând modul în care este calculat rezumatul angajamentului de tranzacție.
 
-Semnăturile din tranzacțiile bitcoin sunt aplicate pe un _rezumat de angajament_, care este calculat din datele tranzacției, blocând anumite părți ale datelor care indică angajamentul semnatarului pentru aceste valori. De exemplu, într-o simplă semnătura de tipul `SIGHASH_ALL`, rezumatul de angajament include toate intrările și ieșirile.
+Semnăturile din tranzacțiile bitcoin sunt aplicate pe un _rezumat de angajament_, care este calculat din datele tranzacției, blocând anumite părți ale datelor care indică angajamentul semnatarului pentru aceste valori. De exemplu, într-o simplă semnătură de tipul `SIGHASH_ALL`, rezumatul de angajament include toate intrările și ieșirile.
 
 Din păcate, modul în care a fost calculat rezumatul de angajament a introdus posibilitatea ca un nod care verifică semnătura să fie obligat să efectueze un număr semnificativ de calcule de rezumare. Mai exact, operațiile de rezumare cresc în O(n^2^) raportat la numărul de operațiuni de semnare din tranzacție. Prin urmare, un atacator ar putea crea o tranzacție cu un număr foarte mare de operațiuni de semnare, determinând întreaga rețea bitcoin să efectueze sute sau mii de operațiuni de rezumare pentru a verifica tranzacția.
 
@@ -1005,9 +1005,9 @@ Noul algoritm atinge două obiective importante. În primul rând, numărul de o
 
 Nodurile de minerit bitcoin și nodurile complete suportă costuri pentru resursele utilizate pentru a susține rețeaua bitcoin și lanțul-de-bocuri. Pe măsură ce volumul tranzacțiilor bitcoin crește, la fel crește și costul resurselor (procesor, lățime de bandă a rețelei, spațiu pe disc, memorie). Minerii sunt compensați pentru aceste costuri prin comisioane proporționale cu dimensiunea (în octeți) a fiecărei tranzacții. Nodurile complete care nu minează nu sunt compensate, deci ele suportă aceste costuri deoarece au nevoie să ruleze un nod complet de validare a indexului, poate pentru că folosesc nodul pentru a derula o afacere bitcoin.
 
-Fără comisioane de tranzacție, creșterea datelor bitcoin ar putea escalada dramatic. Comisioanele sunt destinate să alinieze nevoile utilizatorilor bitcoin cu sarcina pe care tranzacțiile o au asupra rețelei, printr-un mecanism de stabilire a prețurilor intr-o piață liberă.
+Fără comisioane de tranzacție, creșterea datelor bitcoin ar putea escalada dramatic. Comisioanele sunt destinate să alinieze nevoile utilizatorilor bitcoin cu sarcina pe care tranzacțiile o au asupra rețelei, printr-un mecanism de stabilire a prețurilor într-o piață liberă.
 
-Calculul comisioanelor pe baza mărimii tranzacției tratează toate datele din tranzacție ca fiind egale ca și cost. Dar, din perspectiva nodurilor complete și a minerilor, anumite părți ale unei tranzacții crează costuri mult mai mari. Fiecare tranzacție adăugată rețelei bitcoin afectează consumul a patru resurse:
+Calculul comisioanelor pe baza mărimii tranzacției tratează toate datele din tranzacție ca fiind egale ca și cost. Dar, din perspectiva nodurilor complete și a minerilor, anumite părți ale unei tranzacții creează costuri mult mai mari. Fiecare tranzacție adăugată rețelei bitcoin afectează consumul a patru resurse:
 
 Spațiu pe Disc:: Fiecare tranzacție este stocată în lanțul-de-blocuri, adăugând la dimensiunea totală a lanțului-de-blocuri. Lanțul-de-blocuri este stocat pe disc, dar stocarea poate fi optimizată prin ”retezarea” tranzacțiilor mai vechi.
 
@@ -1019,11 +1019,11 @@ Memorie:: Nodurile care validează tranzacțiile păstrează indexul UTXO sau î
 
 După cum puteți vedea din listă, nu fiecare parte a unei tranzacții are un impact egal asupra costului de rulare a unui nod sau asupra capacității bitcoin de a scala pentru a susține mai multe tranzacții. Cea mai scumpă parte a unei tranzacții sunt ieșirile nou create, deoarece acestea sunt adăugate la setul UTXO din memorie. Prin comparație, semnăturile (datele martor) adaugă cea mai mică povară rețelei și costurilor de rulare a unui nod, deoarece datele martor sunt validate o singură dată și nu se mai folosesc niciodată. În plus, imediat după primirea unei noi tranzacții și validarea datelor martor, nodurile pot renunța la datele respective. Dacă comisioanele sunt calculate pentru dimensiunea tranzacției, fără a face discriminări între aceste două tipuri de date, atunci stimulentele de piață ale comisioanelor nu sunt aliniate la costurile reale impuse de o tranzacție. De fapt, structura actuală a comisioanelor încurajează comportamentul opus, deoarece datele martor sunt cea mai mare parte a unei tranzacții.
 
-Stimulentele create de comisioane contează pentru că afectează comportamentul portofelelor. Toate portofelele trebuie să implementeze o strategie pentru asamblarea tranzacțiilor care ia în considerare o serie de factori, cum ar fi confidențialitatea (reducerea reutilizării adreselor), fragmentarea (producerea de măruțiș) și comisioanele. Dacă comisioanele motivează copleșitor portofelele să folosească cât mai puține intrări în tranzacții, acest lucru poate duce la strategii de alegere a UTXO-urilor si a adreselor de rest care din neateție pot umfla setul UTXO.
+Stimulentele create de comisioane contează pentru că afectează comportamentul portofelelor. Toate portofelele trebuie să implementeze o strategie pentru asamblarea tranzacțiilor care ia în considerare o serie de factori, cum ar fi confidențialitatea (reducerea reutilizării adreselor), fragmentarea (producerea de mărunțiș) și comisioanele. Dacă comisioanele motivează copleșitor portofelele să folosească cât mai puține intrări în tranzacții, acest lucru poate duce la strategii de alegere a UTXO-urilor si a adreselor de rest care din neatenție pot umfla setul UTXO.
 
 Tranzacțiile consumă UTXO-uri în intrările lor și creează UTXO-uro noi cu ieșirile lor. Prin urmare, o tranzacție, care are mai multe intrări decât ieșiri, va duce la o scădere a setului UTXO, în timp ce o tranzacție care are mai multe ieșiri decât intrări va duce la o creștere a setului UTXO. Să luăm în considerare _diferența_ dintre intrări și ieșiri și să o numim la ”UTXO-nou-Net”. Aceasta este o metrică importantă, deoarece ne spune ce impact va avea o tranzacție asupra celei mai scumpe resurse din toată rețeaua, setul UTXO din memorie. O tranzacție cu un UTXO-nou-Net pozitiv crește povara. O tranzacție cu un UTXO-nou-Net negativ reduce povara. Prin urmare, am dori să încurajăm tranzacțiile care au un UTXO-nou-Net negativ sau neutru, cu zero UTXO-nou-Net.
 
-Să ne uităm la un exemplu de stimulente care sunt create prin calculul comisionului de tranzacție, cu și fără Martor Segregat. Vom analiza două tranzacții diferite. Tranzacția A este o tranzacție cu 3 intrări și 2 ieșiri, care are o valoare UTXO-nou-Net de -1, ceea ce înseamnă că consumă cu un UTXO mai mult decât creează, reducând setul UTXO cu unul. Tranzacția B este o tranzacție cu 2 intrări și 3 ieșiri, care are o valoare UTXO-nou-Net de 1, ceea ce înseamnă că adaugă o UTXO la setul UTXO, impunând un cost suplimentar întregii rețele bitcoin. Ambele tranzacții folosesc scripturi multisemnătură (2-din-3) pentru a demonstra modul în care scripturile complexe cresc impactul martorului segregat asupra comisioanelor. Să presupunem un comision de tranzacție de 30 satoshi pe octet și o reducere de 75% pentru datele martor:
+Să ne uităm la un exemplu de stimulente care sunt create prin calculul comisionului de tranzacție, cu și fără Martor Segregat. Vom analiza două tranzacții diferite. Tranzacția A este o tranzacție cu 3 intrări și 2 ieșiri, care are o valoare UTXO-nou-Net de -1, ceea ce înseamnă că va consuma cu un UTXO mai mult decât creează, reducând setul UTXO cu unul. Tranzacția B este o tranzacție cu 2 intrări și 3 ieșiri, care are o valoare UTXO-nou-Net de 1, ceea ce înseamnă că adaugă o UTXO la setul UTXO, impunând un cost suplimentar întregii rețele bitcoin. Ambele tranzacții folosesc scripturi multisemnătură (2-din-3) pentru a demonstra modul în care scripturile complexe cresc impactul martorului segregat asupra comisioanelor. Să presupunem un comision de tranzacție de 30 satoshi pe octet și o reducere de 75% pentru datele martor:
 
 ++++
  
@@ -1042,6 +1042,6 @@ Comision tranzacție B: 12,045 satoshi
 ++++
 
 
-Ambele tranzacții sunt mai puțin costisitoare atunci când este foloist martorul segregat. Dar comparând costurile dintre cele două tranzacții, vedem că înainte de Martor Segregat, comisionul este mai mare pentru tranzacția care are un UTXO-nou-Net negativ. După Martor Segregat, comisioanele de tranzacție se aliniază cu stimulentul de a reduce crearea de noi UTXO-uri, fără a penaliza din greșeală tranzacțiile cu multe intrări.
+Ambele tranzacții sunt mai puțin costisitoare atunci când este foloist martorul segregat. Dar, comparând costurile dintre cele două tranzacții, vedem că înainte de Martor Segregat, comisionul este mai mare pentru tranzacția care are un UTXO-nou-Net negativ. După Martor Segregat, comisioanele de tranzacție se aliniază cu stimulentul de a reduce crearea de noi UTXO-uri, fără a penaliza din greșeală tranzacțiile cu multe intrări.
 
 Martorul Segregat are, prin urmare, două efecte principale asupra comisioanelor plătite de utilizatorii bitcoin. În primul rând, segwit reduce costul general al tranzacțiilor prin reducerea datelor martor și creșterea capacității lanțului-de-blocuri bitcoin. În al doilea rând, reducerea datelor martor corectează o aliniere greșită a stimulentelor care ar putea să creeze din neatenție mai multe date în setul UTXO.((("", startref="Tadv07")))((("", startref="Ssegwit07")))

@@ -220,20 +220,20 @@ $ which bitcoin-cli
 
 === Rularea unui Nod Bitcoin Core
 
-((("Bitcoin Core", "rulare noduri core", id="BCnode03")))((("bitcoin nodes", "rularea noduri core", id="BNcore03")))Rețeaua de la egal la egal a bitcoin este compusă din ”noduri” de rețea, operate în mare parte de voluntari și de unele afaceri care construiesc aplicații bitcoin. Cei care rulează noduri bitcoin au o vedere directă și autoritară asupra lanțului de blocuri bitcoin, având o copie locală a tuturor tranzacțiilor, validate independent de către sistemele lor. Rulând un nod, nu trebuie să vă bazați pe nici un terț pentru a valida o tranzacție. Mai mult decât atât, rulând un nod bitcoin contribuiți la rețeaua bitcoin făcând-o mai robustă.
+((("Bitcoin Core", "rulare noduri core", id="BCnode03")))((("bitcoin nodes", "rularea noduri core", id="BNcore03")))Rețeaua de la egal la egal a bitcoin este compusă din ”noduri” de rețea, operate în mare parte de voluntari și de unele afaceri care construiesc aplicații bitcoin. Cei care rulează noduri bitcoin au o vedere directă și autoritară asupra lanțului-de-blocuri bitcoin, având o copie locală a tuturor tranzacțiilor, validate independent de către sistemele lor. Rulând un nod, nu trebuie să vă bazați pe nici un terț pentru a valida o tranzacție. Mai mult decât atât, rulând un nod bitcoin contribuiți la rețeaua bitcoin făcând-o mai robustă.
 
-Rularea unui nod necesită, însă, un sistem conectat permanent, cu suficient resurse pentru a procesa toate tranzacțiile bitcoin. Dacă alegeți să indexați toate tranzacțiile și să menținenți o copie locală completă a lanțului de blocuri, este posibil să aveți nevoie de mult spațiu pe disc și de multă memorie RAM. De la începutul anului 2018, un nod index-complet necesită 2 GB de RAM și minimum 160 GB de spațiu pe disc (vezi https://blockchain.info/charts/blocks-size[]). Bitcoin necesită de asemenea să transmită și să primească tranzacții și blocuri bitcoin, consumând lățime de bandă. Dacă conexiunea dumneavoastră la internet este limitată, are o capacitate de date scăzută, sau este contorizată (taxată per gigabit), probabil nu ar trebui să rulați un nod bitcoin pe ea, sau să rulați într-un mod care îi restrânge lungimea de bandă (vezi <<constrained_resources>>).
+Rularea unui nod necesită, însă, un sistem conectat permanent, cu suficient resurse pentru a procesa toate tranzacțiile bitcoin. Dacă alegeți să indexați toate tranzacțiile și să menținenți o copie locală completă a lanțului-de-blocuri, este posibil să aveți nevoie de mult spațiu pe disc și de multă memorie RAM. De la începutul anului 2018, un nod index-complet necesită 2 GB de RAM și minimum 160 GB de spațiu pe disc (vezi https://blockchain.info/charts/blocks-size[]). Bitcoin necesită de asemenea să transmită și să primească tranzacții și blocuri bitcoin, consumând lățime de bandă. Dacă conexiunea dumneavoastră la internet este limitată, are o capacitate de date scăzută, sau este contorizată (taxată per gigabit), probabil nu ar trebui să rulați un nod bitcoin pe ea, sau să rulați într-un mod care îi restrânge lungimea de bandă (vezi <<constrained_resources>>).
 
 [TIP]
 ====
-((("avertismente și precauții", "resurse necesare pentru un nod core")))((("resurse necesare")))Bitcoin Core menține implicit o copie completă a lanțului de blocuri, cu fiecare tranzacție care a avut loc vreodată în rețeaua bitcoin de la înființare, în 2009. Acest set de date are mărimea de zeci de gigabytes și este descărcat incremental pe parcursul câtorva zile sau săptămâni, în funcție de viteza procesorului și a conexiunii la internet. Bitcoin Core nu va putea procesa tranzacții sau actualiza soldurile contului până când întreg setul de date al lanțului de blocuri nu este descărcat. Asigurați-vă că aveți destul spațiu pe disc, lățime de bandă, și timp pentru a finaliza sincronizarea inițială. Puteți configura Bitcoin Core să reducă marimea lanțului de blocuri eliminând blocurile vechi (vezi <<constrained_resources>>), dar tot va descărca întreg setul de date înainte de a elimina blocurile vechi.
+((("avertismente și precauții", "resurse necesare pentru un nod core")))((("resurse necesare")))Bitcoin Core menține implicit o copie completă a lanțului-de-blocuri, cu fiecare tranzacție care a avut loc vreodată în rețeaua bitcoin de la înființare, în 2009. Acest set de date are mărimea de zeci de gigabytes și este descărcat incremental pe parcursul câtorva zile sau săptămâni, în funcție de viteza procesorului și a conexiunii la internet. Bitcoin Core nu va putea procesa tranzacții sau actualiza soldurile contului până când întreg setul de date al lanțului-de-blocuri nu este descărcat. Asigurați-vă că aveți destul spațiu pe disc, lățime de bandă, și timp pentru a finaliza sincronizarea inițială. Puteți configura Bitcoin Core să reducă marimea lanțului-de-blocuri eliminând blocurile vechi (vezi <<constrained_resources>>), dar tot va descărca întreg setul de date înainte de a elimina blocurile vechi.
 ====
 
 În ciuda acestor cerințe de resurse, mii de volunari rulează noduri bitcoin. Unii rulează pe sisteme simple, cum ar fi un Raspberry Pi (un calculator de dimenisunea unui pachet de cărți care costă 35$). Mulți voluntari rulează de asemenea noduri bitcoin pe servere închiriate, de obicei o variantă de Linux. O instanță de _Server Virtual Privat_ (Virtual Private Server - VPS) sau de _Server în Cloud_ (Cloud Computing Server) poate fi folosită pentru a rula un nod bitcoin. Asemenea servere pot fi închiriate pentru sume între 25$ si 50$ pe lună de la o varietate de furnizori.
 
 De ce ați vrea să rulați un nod? Iată câteva dintre cele mai întâlnite motive:
 
-* Dacă dezvoltați software bitcoin și trebuie să folosiți un nod bitcoin pentru access programabil (API) la rețea și la lanțul de blocuri.
+* Dacă dezvoltați software bitcoin și trebuie să folosiți un nod bitcoin pentru access programabil (API) la rețea și la lanțul-de-blocuri.
 
 * Dacă dezvoltați aplicații care trebuie să valideze tranzacții conform regulilor de consens ale bitcoin. De obicei, companiile de software bitcoin rulează câteva noduri.
 
@@ -294,9 +294,9 @@ alertnotify:: Rulează o comandă sau un script specificat pentru a trimite aler
 
 conf:: O locație alternativă pentru fișierul de configurări. Această configurare are sens doar ca un parametru de la lina de comandă pentru _bitcoind_, întrucât nu poate fi în interiorul fișierului de configurare la care face referire.
 
-datadir:: Selectează directorul și sistemul de fișiere în care să pună toate datele lanțului de blocuri. În mod implicit acesta este subdirectorul _.bitcoin_ în interiorul directorului utilizatorului (home directory). Asigurați-vă că partiția are disponibili câțiva GB.
+datadir:: Selectează directorul și sistemul de fișiere în care să pună toate datele lanțului-de-blocuri. În mod implicit acesta este subdirectorul _.bitcoin_ în interiorul directorului utilizatorului (home directory). Asigurați-vă că partiția are disponibili câțiva GB.
 
-prune:: Reduce cerințele de spațiu pe disc la acest număr de megabytes, prin ștergerea blocurilor vechi. Folosiți această configurare pe un nod cu resurse limitate care nu poate stoca tot lanțul de blocuri.
+prune:: Reduce cerințele de spațiu pe disc la acest număr de megabytes, prin ștergerea blocurilor vechi. Folosiți această configurare pe un nod cu resurse limitate care nu poate stoca tot lanțul-de-blocuri.
 
 txindex:: Menține un index al tuturor tranzacțiilor. Acest lucru înseamnă o copie completă a lanțului-de-blocuri care vă permite să găsiți programatic după ID orice tranzacție.
 
@@ -407,7 +407,7 @@ $ bitcoin-cli getblockchaininfo
 }
 ----
 
-Aceasta arată un nod cu o înalțime a lanțului de blocuri de 0 blocuri și 83999 de antete. Momentan, nodul aduce antetele blocurilor celui mai bun lanț, iar apoi va continua să descarce blocurile în întregime.
+Aceasta arată un nod cu o înalțime a lanțului-de-blocuri de 0 blocuri și 83999 de antete. Momentan, nodul aduce antetele blocurilor celui mai bun lanț, iar apoi va continua să descarce blocurile în întregime.
 
 Odată ce sunteți mulțumit de configurarea pe care ați ales-o, ar trebui să adăugați bitcoin la scriptul de pornire al sistemului dumneavoastră de operare, astfel încât să ruleze continuu și să repornească atunci când sistemul de operare repornește. Veți găsi mai multe exemple de scripturi de pornire pentru diferite sisteme de operare în directorul codului sursă bitcoin în _contrib/init_ și un fișer _README.md_ care explică ce script folosește fiecare sistem.((("", startref="BCnode03")))((("", startref="BNcore03")))
 
@@ -500,7 +500,7 @@ Datele sunt returnate în format JSON (JavaScript Object Notation), un format ca
 
 [TIP]
 ====
-Va dura o vreme, probabil mai mult de o zi, pentru ca clientul _bitcoind_ să ”ajungă” la înălțimea curentă a lanțului de blocuri, pe măsură ce descarcă blocuri de la alți clienți bitcoin. Puteți verifica progresul folosind _getblockchaininfo_ pentru a vedea numărul de blocuri cunoscute.
+Va dura o vreme, probabil mai mult de o zi, pentru ca clientul _bitcoind_ să ”ajungă” la înălțimea curentă a lanțului-de-blocuri, pe măsură ce descarcă blocuri de la alți clienți bitcoin. Puteți verifica progresul folosind _getblockchaininfo_ pentru a vedea numărul de blocuri cunoscute.
 ====
 
 [[exploring_and_decoding_transanctions]]
@@ -530,7 +530,7 @@ ae24cb02204b9f039ff08df09cbe9f6addac960298cad530a863ea8f53982c09db8f6e3813014↵
 
 [TIP]
 ====
-((("ID-uri de transacții  (txd)")))((("maleabilitate")))ID-ul unei tranzacții nu este autoritar până când o tranzacție nu a fost confirmată. Absența unui rezumat (hash) al tranzacției în lanțul de blocuri nu înseamnă că tranzacția nu a fost procesată. Aceasta este cunoscută sub numele de ”maleabilitatea tranzacțiilor,” pentru că rezumatul (hash-ul) tranzacției poate fi modificat înainte de confirmarea într-un bloc. După confirmare, _txid_-ul este imutabil și autoritar.
+((("ID-uri de transacții  (txd)")))((("maleabilitate")))ID-ul unei tranzacții nu este autoritar până când o tranzacție nu a fost confirmată. Absența unui rezumat (hash) al tranzacției în lanțul-de-blocuri nu înseamnă că tranzacția nu a fost procesată. Aceasta este cunoscută sub numele de ”maleabilitatea tranzacțiilor,” pentru că rezumatul (hash-ul) tranzacției poate fi modificat înainte de confirmarea într-un bloc. După confirmare, _txid_-ul este imutabil și autoritar.
 ====
 
 Comanda  _getrawtransaction_ returnează o tranzacție serializată în notație hexazecimală. Pentru a o decoda, vom folosi comanda _decoderawtransaction_, oferind valoarea în hexa ca parametru. Puteți copia valoarea hexa returnată de _getrawtransaction_ și să o oferiți ca parametru pentru _decoderawtransaction_:
@@ -668,7 +668,7 @@ $ bitcoin-cli getblock 0000000000000001b6b9a13b095e96db41c4a928b97ef2d944a9b3↵
 ----
  
 
-Blocul conține 419 tranzacții, iar a 64-a tranzacție listată (_0627052b..._) este plata pentru cafea a lui Alice. Valoarea câmpului _height_ ne spune că acesta este al 277316-lea bloc din lanțul de blocuri.
+Blocul conține 419 tranzacții, iar a 64-a tranzacție listată (_0627052b..._) este plata pentru cafea a lui Alice. Valoarea câmpului _height_ ne spune că acesta este al 277316-lea bloc din lanțul-de-blocuri.
 
 ==== Folosirea Interfeței Programatice a Bitcoin Core
 
@@ -708,7 +708,7 @@ $ python rpc_example.py
 394075
 ----
 
-Ne spune că nodul nostru local Bitcoin Core are 394075 de blocuri în lanțul de blocuri. Nu este un rezultat spectaculos, dar demonstrează utilizarea de bază a bibliotecii ca o interfață simplificată la API-ul JSON-RPC al Bitcoin Core.
+Ne spune că nodul nostru local Bitcoin Core are 394075 de blocuri în lanțul-de-blocuri. Nu este un rezultat spectaculos, dar demonstrează utilizarea de bază a bibliotecii ca o interfață simplificată la API-ul JSON-RPC al Bitcoin Core.
 
 În continuare, vom folosi apelurile  _getrawtransaction_ și _decodetransaction_ pentru a primi detaliile plății pentru cafeaua lui Alice. În <<rpc_transaction>>, preluăm tranzacția lui Alice și enumerăm ieșirile tranzacției. Pentru fiecare ieșire, afișăm adresa destinatarului și valoarea. Să ne aminitim că tranzacția lui Alice a avut o ieșire pentru plata la Cafeneaua lui Bob și o ieșire pentru restul primit de Alice.
 
@@ -789,7 +789,7 @@ https://github.com/sinisterchipmunk/bitcoin-client[bitcoin-client]:: O bibliotec
 https://github.com/btcsuite/btcd[btcd]:: Un client bitcoin nod-complet scris în Go
 
 ==== Rust
-https://github.com/apoelstra/rust-bitcoin[rust-bitcoin]:: Bibliotecă bitcoin pentru serializare, parsare, și apeluri de API scrisă în Rust
+https://github.com/rust-bitcoin/rust-bitcoin[rust-bitcoin]:: Biblioteca bitcoin Rust pentru serializare, analizare și apeluri API
 
 ==== C#
 https://github.com/MetacoSA/NBitcoin[NBitcoin]:: Bibliotecă bitcoin cuprinzătoare pentru platforma .NET
