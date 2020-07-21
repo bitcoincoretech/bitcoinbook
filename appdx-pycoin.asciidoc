@@ -3,13 +3,13 @@
 == pycoin, ku, și tx
 
 
-((("biblioteca pycoin")))Biblioteca Python http://github.com/richardkiss/pycoin[+pycoin+], scrisă inițial și întreținută de Richard Kiss, este o bibliotecă bazată pe Python care acceptă manipularea cheilor bitcoin și a tranzacțiilor, chiar și suportarea limbajului de script suficient pentru a face față corect tranzacțiilor non standard.
+((("biblioteca pycoin")))Biblioteca Python http://github.com/richardkiss/pycoin[_pycoin_], scrisă inițial și întreținută de Richard Kiss, este o bibliotecă bazată pe Python care acceptă manipularea cheilor bitcoin și a tranzacțiilor, chiar și suportarea limbajului de script suficient pentru a face față corect tranzacțiilor non standard.
 
-Biblioteca pycoin acceptă atât Python 2 (2.7.x) cât și Python 3 (3.3 și ulterioare) și vine cu câteva utilitare pentru linia de comandă, +ku+ și +tx+.
+Biblioteca pycoin acceptă atât Python 2 (2.7.x) cât și Python 3 (3.3 și ulterioare) și vine cu câteva utilitare pentru linia de comandă, `ku` și `tx`.
 
 === Utilitar pentru Chei (Key Utility - KU)
 
-((("utilitare pentru chei (ku)", id="keyutil17")))Utilitarul din linia de comandă +ku+ ("key utility") este ca un cuțit elvețian pentru manipularea cheilor. Acceptă cheile BIP-32, WIF și adrese (monede bitcoin și altcoin). Urmează câteva exemple.
+((("utilitare pentru chei (ku)", id="keyutil17")))Utilitarul din linia de comandă `ku` ("key utility") este ca un cuțit elvețian pentru manipularea cheilor. Acceptă cheile BIP-32, WIF și adrese (monede bitcoin și altcoin). Urmează câteva exemple.
 
 Crează o cheie BIP-32 folosind sursele de entropie implicite ale GPG și _/dev/random_:
 
@@ -49,7 +49,7 @@ Bitcoin address : 1FNNRQ5fSv1wBi5gyfVBs2rkNheMGt86sp
 
 Crează o cheie BIP-32 dintr-o frază de acces:
 
-[ATENȚIE]
+[WARNING]
 ====
 Fraza de acces din acest exemplu este mult prea ușor de ghicit.
 ====
@@ -330,7 +330,7 @@ Dogecoin address : DFpN6QqFfUm3gKNaxN6tNcab1FArL9cZLE
 ==== Utilitar pentru Tranzacții (TX)
 
 ((("utilitar pentru tranzacții (TX)", id="TX17")))
-Utilitarul de la linia de comandă +tx+ va afișa tranzacții sub o formă care poate fi citită de oameni, va prelua tranzacțiile de bază din cache-ul Pycoin sau de la servicii web (blockchain.info, blockcypher.com, blockr.io și chain.so sunt acceptate în prezent), va uni tranzacțiile , va adăuga sau șterge intrări sau ieșiri și va semna tranzacțiile tranzacțiile.
+Utilitarul de la linia de comandă `tx` va afișa tranzacții sub o formă care poate fi citită de oameni, va prelua tranzacțiile de bază din cache-ul Pycoin sau de la servicii web (blockchain.info, blockcypher.com, blockr.io și chain.so sunt acceptate în prezent), va uni tranzacțiile , va adăuga sau șterge intrări sau ieșiri și va semna tranzacțiile.
 
 În continuare sunt prezentate câteva exemple
 
@@ -383,7 +383,7 @@ includem unspents în hex deoarece tranzacția nu este total semnată
 ** can't validate transaction as source transactions missing
 ----
 
-Linia finală apare pentru că pentru a valida semnăturile tranzacțiilor, aveți tehnic nevoie de tranzacțiile sursă. Deci, să adăugăm +-a+ pentru a augmenta tranzacțiile cu informații sursă:
+Linia finală apare pentru a valida semnăturile tranzacțiilor, aveți tehnic nevoie de tranzacțiile sursă. Deci, să adăugăm `-a` pentru a augmenta tranzacțiile cu informații sursă:
 
 ----
 $ tx -a 49d2adb6e476fa46d8357babf78b1b501fd39e177ac7833124b3f67b17c40c2a
@@ -405,7 +405,7 @@ Total fees        0.00000 mBTC
 all incoming transaction values validated
 ----
 
-((("", startref="TX17")))Acum, să ne uităm la ieșirile necheltuite pentru o anumită adresă (UTXO). În blocul #1, vedem o tranzacție coinbase la +12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX+. Să folosim +fetch_unspent+ pentru a găsi toate monedele de la această adresă:
+((("", startref="TX17")))Acum, să ne uităm la ieșirile necheltuite pentru o anumită adresă (UTXO). În blocul #1, vedem o tranzacție coinbase la _12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX_. Să folosim `fetch_unspent` pentru a găsi toate monedele de la această adresă:
 
 ----
 $ fetch_unspent 12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX
